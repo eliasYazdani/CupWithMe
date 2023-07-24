@@ -76,7 +76,7 @@ jobs:
         with:
           push: true
           #Set dockerhub project (replace "bartfastiel/java-capstone-project.de-example-app")
-          tags: kajochin/delta
+          tags: sia1981/cupwithme
           context: .
 
   deploy:
