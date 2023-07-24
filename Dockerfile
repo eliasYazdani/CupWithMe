@@ -2,7 +2,7 @@ FROM openjdk:20
 
 ENV ENVIRONMENT=prod
 
-LABEL maintainer="eliasYazdani@neuefische.de"
+LABEL maintainer="elias_yazdani@yahoo.com"
 
 EXPOSE 8080
 
