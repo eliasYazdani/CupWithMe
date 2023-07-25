@@ -1,35 +1,41 @@
-import {Player} from "./Player.ts";
+
 import PlayerColumn from "./PlayerColumn.tsx";
+import {Player} from "./Player.ts";
+import "./App.css"
 
 
-function App() {
+export default function App() {
 
     const players: Player[] = [
         {
             "id": "1",
             "firstName": "Timo",
-            "lastName": "B"
+            "lastName": "B",
+            "age":35,
         },
         {
             "id": "2",
             "firstName": "Franck",
-            "lastName": "C"
+            "lastName": "C",
+            "age":23,
         },
         {
             "id": "3",
             "firstName": "Janis",
-            "lastName": "H"
+            "lastName": "H",
+            "age":40,
         },
 
     ]
 
     return (
         <>
-            <h1>Cup with me🏆</h1>
-            <PlayerColumn players={players}/>
+            <h1 className="main-Title">Cup with me🏆</h1>
+
+            <PlayerColumn players={players} />
 
         </>
     )
 }
 
-export default App
+
