@@ -96,7 +96,7 @@ jobs:
           script: |
             sudo docker stop cgn-java-23-2-elias
             sudo docker rm cgn-java-23-2-elias
-            sudo docker run --pull=always --name cgn-java-23-2-elias --network capstones --ip 10.0.1.8 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme:latest
+            sudo docker run --pull=always --name cgn-java-23-2-elias --network capstones --ip 10.0.5.8 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme:latest
             sleep 15s
             sudo docker logs cgn-java-23-2-elias
 
