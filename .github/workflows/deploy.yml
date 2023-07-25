@@ -94,11 +94,11 @@ jobs:
           #Set dockerhub project (replace "bartfastiel/java-capstone-project.de-example-app")
           #Set IP (replace "10.0.1.99" with "10.0.1.1"-"10.0.1.20")
           script: |
-            docker stop cgn-java-23-2-elias
-            docker rm cgn-java-23-2-elias
-            docker run --pull=always --name cgn-java-23-2-elias --network capstones --ip 10.0.1.8 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme:latest
+            sudo docker stop cgn-java-23-2-elias
+            sudo docker rm cgn-java-23-2-elias
+            sudo docker run --pull=always --name cgn-java-23-2-elias --network capstones --ip 10.0.1.8 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme:latest
             sleep 15s
-            docker logs cgn-java-23-2-elias
+            sudo docker logs cgn-java-23-2-elias
 
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
