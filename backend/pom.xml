@@ -17,12 +17,13 @@
 		<java.version>20</java.version>
 		<sonar.organization>eliasyazdani-1</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectName>eliasyazdani-1_CupWithMe-backen</sonar.projectName>
+		<sonar.projectName>eliasyazdani-1_CupWithMe-backend</sonar.projectName>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<version>3.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
