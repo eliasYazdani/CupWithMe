@@ -1,6 +1,5 @@
 package eliasyazdani.capstone.cupwithme.backend.player;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +17,8 @@ public class PlayerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlayerWithOrdinalNumber>> getAllPlayers(){
-       return playerService.getAllPlayers();
+    public List<PlayerWithOrdinalNumber> getAllPlayers() {
+        return playerService.getAllPlayers();
     }
 
 
