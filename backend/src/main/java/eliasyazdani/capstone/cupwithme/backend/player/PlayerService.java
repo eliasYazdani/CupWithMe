@@ -18,11 +18,13 @@ public class PlayerService {
     public List<PlayerWithOrdinalNumber> getAllPlayers() {
         List<Player> playerFromDB = playerRepository.findAll();
         List<PlayerWithOrdinalNumber> playerWithOrdinalNumbers = new ArrayList<>();
-        for (int i = 0; i < playerFromDB.size(); i++) {
-            Player player = playerFromDB.get(i);
+        int ordinalNumber = 1;
+        for (Player player : playerFromDB) {
             playerWithOrdinalNumbers.add(new PlayerWithOrdinalNumber(
-                    i + 1, player.firstName(), player.lastName(), player.age()));
+                    ordinalNumber, player.firstName(), player.lastName(), player.age()));
+            ordinalNumber++;
         }
+
         return playerWithOrdinalNumbers;
 
 
