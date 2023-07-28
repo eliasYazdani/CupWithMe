@@ -1,28 +1,29 @@
 package eliasyazdani.capstone.cupwithme.backend.player;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cup")
+@RequestMapping("/api/cup/players")
 
 public class PlayerController {
     private final PlayerService playerService;
+
 
     public PlayerController(PlayerService playerService) {
         this.playerService = playerService;
     }
 
-    @GetMapping("/players")
+    @GetMapping
     public List<PlayerWithOrdinalNumber> getAllPlayers() {
         return playerService.getAllPlayers();
     }
 
-
-
+    @PostMapping
+    PlayerDTO addNewPlayer(@RequestBody PlayerDTO playerWithoutId) {
+        return playerService.addNewPlayer(playerWithoutId);
+    }
 
 
 }

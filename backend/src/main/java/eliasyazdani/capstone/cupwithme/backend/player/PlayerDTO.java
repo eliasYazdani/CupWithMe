@@ -1,10 +1,12 @@
 package eliasyazdani.capstone.cupwithme.backend.player;
 
-public record PlayerWithOrdinalNumber(
-        int id,
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("players")
+public record PlayerDTO(
         String firstName,
         String lastName,
         int age
-) {
 
+) {
 }
