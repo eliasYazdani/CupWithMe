@@ -20,7 +20,7 @@ class PlayerIntegrationTest {
         //  GIVEN
         //  WHEN
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/players")
+                MockMvcRequestBuilders.get("/api/cup/players")
         )
         //  THEN
                 .andExpect(

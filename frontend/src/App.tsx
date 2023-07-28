@@ -11,7 +11,7 @@ export default function App() {
 
 
     function allPlayersList() {
-        axios.get("/api/players")
+        axios.get("/api/cup/players")
             .then(response => {
                 setPlayers(response.data)
             })
