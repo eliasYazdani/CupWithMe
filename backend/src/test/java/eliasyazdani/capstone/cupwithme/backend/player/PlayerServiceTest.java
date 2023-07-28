@@ -3,7 +3,9 @@ package eliasyazdani.capstone.cupwithme.backend.player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
 import java.util.List;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -24,5 +26,23 @@ class PlayerServiceTest {
         //  then
         verify(playerRepository).findAll();
         Assertions.assertEquals(testPlayer, actual);
+    }
+
+    @Test
+    void addNewPlayerTest() {
+        // given
+        PlayerDTO testPlayerWithoutId = new PlayerDTO("ATest", "BTest", 20);
+        Player testPlayer =
+                new Player(null, testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
+        PlayerDTO testPlayerWithoutIdBack =
+                new PlayerDTO(testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
+        Mockito.when(playerRepository.insert(testPlayer))
+                .thenReturn(testPlayer);
+
+        // when
+        PlayerDTO actual = playerService.addNewPlayer(testPlayerWithoutId);
+        // then
+        verify(playerRepository).insert(testPlayer);
+        Assertions.assertEquals(testPlayerWithoutIdBack, actual);
     }
 }
