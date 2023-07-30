@@ -24,7 +24,7 @@ export default function App() {
         <>
             <h1 className="main-Title">Cup with me🏆</h1>
 
-            <PlayerColumn players={players}/>
+            <PlayerColumn players={players} onSavePlayer={allPlayersList}/>
 
         </>
     )

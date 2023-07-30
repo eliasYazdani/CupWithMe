@@ -1,11 +1,12 @@
 import "./PlayerColumn.css"
 import {Player} from "./Player.ts";
 import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
+import NewPlayerModal from "./NewPlayerModal.tsx";
 
 
 type PropsPlayerColumn = {
+    onSavePlayer: () => void;
     players: Player[],
-
 }
 const columns: GridColDef[] = [
     {field: 'id', headerName: 'ID', width: 70},
@@ -48,6 +49,8 @@ export default function PlayerColumn(propsPlayerColumn: PropsPlayerColumn) {
                     checkboxSelection
                 />
             </div>
+
+            <NewPlayerModal onSaveNewPlayer={propsPlayerColumn.onSavePlayer}/>
         </div>
     );
 }
