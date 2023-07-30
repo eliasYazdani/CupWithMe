@@ -21,7 +21,7 @@ public class PlayerController {
     }
 
     @PostMapping("/players")
-    PlayerDTO addNewPlayer(@RequestBody PlayerDTO playerWithoutId) {
+    DTO addNewPlayer(@RequestBody DTO playerWithoutId) {
         return playerService.addNewPlayer(playerWithoutId);
     }
 

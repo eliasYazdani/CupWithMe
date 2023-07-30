@@ -29,11 +29,11 @@ public class PlayerService {
 
     }
 
-    public PlayerDTO addNewPlayer(PlayerDTO playerWithoutId) {
+    public DTO addNewPlayer(DTO playerWithoutId) {
         Player newPlayerWithoutId = new Player(null,
                 playerWithoutId.firstName(), playerWithoutId.lastName(), playerWithoutId.age());
         Player newPlayerBack = playerRepository.insert(newPlayerWithoutId);
-        return new PlayerDTO(newPlayerBack.firstName(), newPlayerBack.lastName(), newPlayerBack.age());
+        return new DTO(newPlayerBack.firstName(), newPlayerBack.lastName(), newPlayerBack.age());
 
     }
 

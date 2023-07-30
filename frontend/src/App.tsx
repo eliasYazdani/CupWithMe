@@ -1,31 +1,18 @@
-import PlayerColumn from "./PlayerColumn.tsx";
-import {Player} from "./Player.ts";
+
 import "./App.css"
-import axios from "axios";
-import {useEffect, useState} from "react";
+import {Route, Routes} from "react-router-dom";
+import Home from "./Home.tsx";
+import PlayerList from "./PlayerList.tsx";
 
 
 export default function App() {
-
-    const [players, setPlayers] = useState<Player[]>([])
-
-
-    function allPlayersList() {
-        axios.get("/api/cup/players")
-            .then(response => {
-                setPlayers(response.data)
-            })
-    }
-
-    useEffect(allPlayersList, [])
-
-
-    return (
+        return (
         <>
-            <h1 className="main-Title">Cup with me🏆</h1>
 
-            <PlayerColumn players={players} onSavePlayer={allPlayersList}/>
-
+            <Routes>
+                <Route path={"/"} element={<Home/>} />
+                <Route path={"/players"} element={<PlayerList/>}/>
+            </Routes>
         </>
     )
 }

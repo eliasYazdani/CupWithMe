@@ -31,16 +31,16 @@ class PlayerServiceTest {
     @Test
     void addNewPlayerTest() {
         // given
-        PlayerDTO testPlayerWithoutId = new PlayerDTO("ATest", "BTest", 20);
+        DTO testPlayerWithoutId = new DTO("ATest", "BTest", 20);
         Player testPlayer =
                 new Player(null, testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
-        PlayerDTO testPlayerWithoutIdBack =
-                new PlayerDTO(testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
+        DTO testPlayerWithoutIdBack =
+                new DTO(testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
         Mockito.when(playerRepository.insert(testPlayer))
                 .thenReturn(testPlayer);
 
         // when
-        PlayerDTO actual = playerService.addNewPlayer(testPlayerWithoutId);
+        DTO actual = playerService.addNewPlayer(testPlayerWithoutId);
         // then
         verify(playerRepository).insert(testPlayer);
         Assertions.assertEquals(testPlayerWithoutIdBack, actual);
