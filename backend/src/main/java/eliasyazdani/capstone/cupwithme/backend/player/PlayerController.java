@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cup/players")
+@RequestMapping("/api/cup")
 
 public class PlayerController {
     private final PlayerService playerService;
@@ -15,12 +15,12 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @GetMapping
+    @GetMapping("/players")
     public List<PlayerWithOrdinalNumber> getAllPlayers() {
         return playerService.getAllPlayers();
     }
 
-    @PostMapping
+    @PostMapping("/players")
     PlayerDTO addNewPlayer(@RequestBody PlayerDTO playerWithoutId) {
         return playerService.addNewPlayer(playerWithoutId);
     }
