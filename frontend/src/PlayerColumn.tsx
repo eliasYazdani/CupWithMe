@@ -1,3 +1,4 @@
+/*
 import "./PlayerColumn.css"
 import {Player} from "./Player.ts";
 import {DataGrid, GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
@@ -27,7 +28,7 @@ const columns: GridColDef[] = [
         valueGetter: (params: GridValueGetterParams) =>
             `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
-   // {field:'edit', headerName:'Edit', width:70,type:'actions'},
+
 ];
 
 export default function PlayerColumn(propsPlayerColumn: PropsPlayerColumn) {
@@ -56,3 +57,4 @@ export default function PlayerColumn(propsPlayerColumn: PropsPlayerColumn) {
     );
 }
 
+*/

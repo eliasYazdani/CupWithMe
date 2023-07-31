@@ -16,12 +16,12 @@ public class PlayerController {
     }
 
     @GetMapping("/players")
-    public List<PlayerWithOrdinalNumber> getAllPlayers() {
+    public List<Player> getAllPlayers() {
         return playerService.getAllPlayers();
     }
 
     @PostMapping("/players")
-    PlayerWithoutId addNewPlayer(@RequestBody PlayerWithoutId playerWithoutId) {
+    Player addNewPlayer(@RequestBody PlayerWithoutId playerWithoutId) {
         return playerService.addNewPlayer(playerWithoutId);
     }
 

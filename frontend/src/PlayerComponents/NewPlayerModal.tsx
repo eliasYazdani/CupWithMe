@@ -12,6 +12,7 @@ import {Player} from "./Player.ts";
 
 type PropsPlayerModal = {
     onSaveNewPlayer: () => void
+    handleClickOpen: ()=> void
 }
 export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     const [open, setOpen] = useState(false);
@@ -32,6 +33,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     }
 
     const handleClickOpen = () => {
+
         setOpen(true);
     };
 

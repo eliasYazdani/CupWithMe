@@ -2,7 +2,7 @@ package eliasyazdani.capstone.cupwithme.backend.player;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -14,26 +14,18 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public List<PlayerWithOrdinalNumber> getAllPlayers() {
-        List<Player> playerFromDB = playerRepository.findAll();
-        List<PlayerWithOrdinalNumber> playerWithOrdinalNumbers = new ArrayList<>();
-        int ordinalNumber = 1;
-        for (Player player : playerFromDB) {
-            playerWithOrdinalNumbers.add(new PlayerWithOrdinalNumber(
-                    ordinalNumber, player.firstName(), player.lastName(), player.age()));
-            ordinalNumber++;
-        }
+    public List<Player> getAllPlayers() {
 
-        return playerWithOrdinalNumbers;
 
+        return (playerRepository.findAll());
 
     }
 
-    public PlayerWithoutId addNewPlayer(PlayerWithoutId playerWithoutId) {
+    public Player addNewPlayer(PlayerWithoutId playerWithoutId) {
         Player newPlayerWithoutId = new Player(null,
                 playerWithoutId.firstName(), playerWithoutId.lastName(), playerWithoutId.age());
-        Player newPlayerBack = playerRepository.insert(newPlayerWithoutId);
-        return new PlayerWithoutId(newPlayerBack.firstName(), newPlayerBack.lastName(), newPlayerBack.age());
+        return (playerRepository.insert(newPlayerWithoutId));
+
 
     }
 
