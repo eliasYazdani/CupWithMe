@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 @Service
 public class PlayerService {
     private final PlayerRepository playerRepository;
@@ -29,4 +28,13 @@ public class PlayerService {
 
 
     }
+
+    public PlayerDTO addNewPlayer(PlayerDTO playerWithoutId) {
+        Player newPlayerWithoutId = new Player(null,
+                playerWithoutId.firstName(), playerWithoutId.lastName(), playerWithoutId.age());
+        Player newPlayerBack = playerRepository.insert(newPlayerWithoutId);
+        return new PlayerDTO(newPlayerBack.firstName(), newPlayerBack.lastName(), newPlayerBack.age());
+
+    }
+
 }

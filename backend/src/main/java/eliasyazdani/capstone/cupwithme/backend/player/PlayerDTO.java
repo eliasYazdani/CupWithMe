@@ -1,10 +1,12 @@
 package eliasyazdani.capstone.cupwithme.backend.player;
 
-public record PlayerWithOrdinalNumber(
-        int id,
+
+
+
+public record PlayerDTO(
         String firstName,
         String lastName,
         int age
-) {
 
+) {
 }
