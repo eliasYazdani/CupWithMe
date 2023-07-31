@@ -36,6 +36,9 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     };
 
     const handleClose = () => {
+        setFirstName("")
+        setLastName("")
+        setAge(0)
         setOpen(false);
     };
     const handleSave = () => {
