@@ -47,7 +47,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         propsPlayerModal.setOpen(false)
 
     };
-    const handleSave = () => {
+    const handleSaveNewPlayer = () => {
         setFirstName("")
         setLastName("")
         setAge(0)
@@ -59,10 +59,20 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         } as Player)
 
         propsPlayerModal.setOpen(false)
+    }
+    const handleSaveChange=()=>{
+        axios.put("/api/cup/players"+ propsPlayerModal.player?.id ,{
+            "firstName": firstName,
+            "lastName": lastName,
+            "age": age,
+        } as Player)
+        propsPlayerModal.setOpen(false)
+        }
 
+
+    const handleDelete=()=>{
 
     }
-
 
     return (
         <div>
@@ -108,8 +118,11 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                     />
                 </DialogContent>
                 <DialogActions>
+                    <Button onClick={handleDelete}>Delete</Button>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSave}>Save</Button>
+                    <Button onClick={handleSaveNewPlayer}>SaveNewPlayer</Button>
+                    <Button onClick={handleSaveChange}>SaveChange</Button>
+
                 </DialogActions>
             </Dialog>
         </div>

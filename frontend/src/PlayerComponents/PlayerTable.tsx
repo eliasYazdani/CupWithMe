@@ -13,7 +13,7 @@ import NewPlayerModal from "./NewPlayerModal.tsx";
 
 type PropsPlayerTable = {
     players: Player[],
-    //onSavePlayer: () => void;
+
 
 
 }
@@ -55,7 +55,7 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <NewPlayerModal open={open} setOpen={setOpen} player={selectedPlayer}/>
+            <NewPlayerModal open={open} setOpen={setOpen} player={selectedPlayer} />
         </div>
     );
 }

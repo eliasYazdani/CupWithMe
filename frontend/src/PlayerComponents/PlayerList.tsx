@@ -33,11 +33,10 @@ export default function PlayerList() {
             <h1 className="main-Title">Cup with me🏆</h1>
 
             <PlayerTable players={players}/>
-            <NewPlayerModal open={open} setOpen={setOpen}/>
-
             <Button variant="contained" onClick={handleClickOpen}>
                 new player
             </Button>
+            <NewPlayerModal open={open} setOpen={setOpen}/>
         </>
     )
 }
