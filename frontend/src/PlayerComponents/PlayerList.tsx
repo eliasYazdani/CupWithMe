@@ -1,14 +1,16 @@
-
 import {Player} from "./Player.ts";
 import "../App.css"
 import axios from "axios";
 import {useEffect, useState} from "react";
-import PlayerBasicTable from "./PlayerBasicTable.tsx"
+import PlayerTable from "./PlayerTable.tsx"
+import Button from "@mui/material/Button";
+import NewPlayerModal from "./NewPlayerModal.tsx";
 
 
 export default function PlayerList() {
 
     const [players, setPlayers] = useState<Player[]>([])
+    const [open, setOpen] = useState(false);
 
 
     function allPlayersList() {
@@ -23,13 +25,19 @@ export default function PlayerList() {
 
     useEffect(allPlayersList, [])
 
-
+    const handleClickOpen = () => {
+        setOpen(true)
+    }
     return (
         <>
             <h1 className="main-Title">Cup with me🏆</h1>
 
-            <PlayerBasicTable players={players}  />
+            <PlayerTable players={players}/>
+            <NewPlayerModal open={open} setOpen={setOpen}/>
 
+            <Button variant="contained" onClick={handleClickOpen}>
+                new player
+            </Button>
         </>
     )
 }

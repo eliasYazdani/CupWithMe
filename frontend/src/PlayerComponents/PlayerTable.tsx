@@ -6,15 +6,21 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Player} from "./Player.ts";
+
+import {useState} from "react";
 import NewPlayerModal from "./NewPlayerModal.tsx";
 
 
-type PropsPlayerBasicTable = {
+type PropsPlayerTable = {
     players: Player[],
-    onSavePlayer: () => void;
-    handleClickOpen:() => void;
+    //onSavePlayer: () => void;
+
+
 }
-export default function PlayerBasicTable(propsPlayerBasicTable: PropsPlayerBasicTable) {
+export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
+    const [selectedPlayer, setSelectedPlayer] = useState<Player>()
+    const [open, setOpen] = useState(false)
+
 
     return (
         <div>
@@ -30,11 +36,15 @@ export default function PlayerBasicTable(propsPlayerBasicTable: PropsPlayerBasic
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {propsPlayerBasicTable.players.map((player) => (
+                        {propsPlayerTable.players.map((player) => (
                             <TableRow
                                 key={player.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                onClick={propsPlayerBasicTable.handleClickOpen}
+                                onClick={() => {
+                                    setOpen(true)
+                                    setSelectedPlayer(player)
+                                }}
+
                             >
                                 <TableCell component="th" scope="row">{player.id}</TableCell>
                                 <TableCell align="center">{player.firstName}</TableCell>
@@ -45,7 +55,7 @@ export default function PlayerBasicTable(propsPlayerBasicTable: PropsPlayerBasic
                     </TableBody>
                 </Table>
             </TableContainer>
-            <NewPlayerModal onSaveNewPlayer={propsPlayerBasicTable.onSavePlayer}/>
+            <NewPlayerModal open={open} setOpen={setOpen} player={selectedPlayer}/>
         </div>
     );
 }
