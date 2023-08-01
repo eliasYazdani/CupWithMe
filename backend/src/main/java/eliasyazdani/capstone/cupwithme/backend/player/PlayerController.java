@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cup/players/")
+@RequestMapping("/api/cup/players")
 
 public class PlayerController {
     private final PlayerService playerService;
@@ -26,14 +26,14 @@ public class PlayerController {
         return playerService.addNewPlayer(playerWithoutId);
     }
 
-   //@GetMapping("{id}")
-   //public Player getDetails(@PathVariable String id){
-   //    return playerService.getDetails(id);
-   //}
+   @GetMapping("/{id}")
+   public Player getDetails(@PathVariable String id){
+       return playerService.getDetailsById(id);
+   }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public Player changePlayerInfo(@PathVariable String id,@Valid @RequestBody PlayerWithoutId playerWithoutId){
-        return playerService.changePlayerInfo(playerWithoutId,id);
+        return playerService.changePlayerInfo(id,playerWithoutId);
     }
 
 

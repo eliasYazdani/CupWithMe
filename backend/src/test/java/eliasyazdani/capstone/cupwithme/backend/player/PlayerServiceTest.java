@@ -5,27 +5,29 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class PlayerServiceTest {
     PlayerRepository playerRepository = mock(PlayerRepository.class);
-    PlayerService playerService = new PlayerService(playerRepository);
+    IdService idService= mock(IdService.class);
+    PlayerService playerService = new PlayerService(playerRepository,idService);
 
     @Test
     void getAllPlayersTest() {
         //  given
-        List<Player> testPlayerFromDB = List.of(new Player("abc", "E", "Y", 42));
-        List<PlayerWithOrdinalNumber> testPlayer = List.of(new PlayerWithOrdinalNumber(1, "E", "Y", 42));
+        List<Player> testPlayerFromDB = List.of(new Player("a1", "E", "Y", 42),
+                                                new Player("a2","I","S",35));
+        //List<PlayerWithOrdinalNumber> testPlayer = List.of(new PlayerWithOrdinalNumber(1, "E", "Y", 42));
         Mockito.when(playerRepository.findAll())
                 .thenReturn(testPlayerFromDB);
         //  when
-        List<PlayerWithOrdinalNumber> actual = playerService.getAllPlayers();
+        List<Player> actual = playerService.getAllPlayers();
 
         //  then
         verify(playerRepository).findAll();
-        Assertions.assertEquals(testPlayer, actual);
+        Assertions.assertEquals(testPlayerFromDB, actual);
     }
 
     @Test
@@ -34,15 +36,51 @@ class PlayerServiceTest {
         PlayerWithoutId testPlayerWithoutId = new PlayerWithoutId("ATest", "BTest", 20);
         Player testPlayer =
                 new Player(null, testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
-        PlayerWithoutId testPlayerWithoutIdBack =
-                new PlayerWithoutId(testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
+        Player testPlayerBackFromDB =
+                new Player("1",testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
         Mockito.when(playerRepository.insert(testPlayer))
-                .thenReturn(testPlayer);
+                .thenReturn(testPlayerBackFromDB);
 
         // when
-        PlayerWithoutId actual = playerService.addNewPlayer(testPlayerWithoutId);
+        Player actual = playerService.addNewPlayer(testPlayerWithoutId);
         // then
         verify(playerRepository).insert(testPlayer);
-        Assertions.assertEquals(testPlayerWithoutIdBack, actual);
+        Assertions.assertEquals(testPlayerBackFromDB, actual);
     }
+
+    @Test
+    void getDetailsByIdTest(){
+      // Given
+        Optional<Player> expected = Optional.of(
+              new Player("1a","P","Y",46));
+        String idToFind="1a";
+       // When
+       when(playerRepository.findById(idToFind)).thenReturn(expected);
+        Player actual = playerService.getDetailsById(idToFind);
+
+        // Then
+        Assertions.assertEquals(expected.get(),actual);
+    }
+
+     @Test
+     void changePlayerInfoTest(){
+         // Given
+         Player playerInDB = new Player("1A","S","S",24);
+         PlayerWithoutId newPlayerInfoWithoutID = new PlayerWithoutId("A","B",28);
+         String idToUpdate="1A";
+         Player  newPlayerInfo = new Player(
+                 idToUpdate,
+                 newPlayerInfoWithoutID.firstName(),
+                 newPlayerInfoWithoutID.lastName(),
+                 newPlayerInfoWithoutID.age());
+
+
+
+         // When
+         Mockito.when(playerRepository.save(newPlayerInfo)).thenReturn(newPlayerInfo);
+         Player actual = playerService.changePlayerInfo(idToUpdate, newPlayerInfoWithoutID);
+         // Then
+         Assertions.assertEquals(newPlayerInfo,actual);
+
+     }
 }

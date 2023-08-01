@@ -15,7 +15,7 @@ type PropsPlayerModal = {
     open: boolean
     setOpen: (value: boolean) => void
     player?: Player
-
+    allPlayerList: ()=> void
 }
 export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName)
@@ -57,22 +57,27 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
             "lastName": lastName,
             "age": age,
         } as Player)
+            .then(propsPlayerModal.allPlayerList)
 
         propsPlayerModal.setOpen(false)
     }
     const handleSaveChange=()=>{
-        axios.put("/api/cup/players"+ propsPlayerModal.player?.id ,{
+        axios.put("/api/cup/players/" + propsPlayerModal.player?.id, {
             "firstName": firstName,
             "lastName": lastName,
             "age": age,
-        } as Player)
+        } as Player).then(response => {
+
+            setFirstName(response.data.firstName)
+            setLastName(response.data.lastName)
+            setAge(response.data.age)
+
+        })
         propsPlayerModal.setOpen(false)
         }
 
 
-    const handleDelete=()=>{
 
-    }
 
     return (
         <div>

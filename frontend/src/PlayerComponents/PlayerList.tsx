@@ -36,7 +36,7 @@ export default function PlayerList() {
             <Button variant="contained" onClick={handleClickOpen}>
                 new player
             </Button>
-            <NewPlayerModal open={open} setOpen={setOpen}/>
+            <NewPlayerModal open={open} setOpen={setOpen} allPlayerList={allPlayersList}/>
         </>
     )
 }
