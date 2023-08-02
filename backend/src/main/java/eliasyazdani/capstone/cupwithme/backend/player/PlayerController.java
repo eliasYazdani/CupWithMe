@@ -26,16 +26,20 @@ public class PlayerController {
         return playerService.addNewPlayer(playerWithoutId);
     }
 
-   @GetMapping("/{id}")
-   public Player getDetails(@PathVariable String id){
-       return playerService.getDetailsById(id);
-   }
-
-    @PutMapping("/{id}")
-    public Player changePlayerInfo(@PathVariable String id,@Valid @RequestBody PlayerWithoutId playerWithoutId){
-        return playerService.changePlayerInfo(id,playerWithoutId);
+    @GetMapping("/{id}")
+    public Player getDetails(@PathVariable String id) {
+        return playerService.getDetailsById(id);
     }
 
+    @PutMapping("/{id}")
+    public Player changePlayerInfo(@PathVariable String id, @Valid @RequestBody PlayerWithoutId playerWithoutId) {
+        return playerService.changePlayerInfo(id, playerWithoutId);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePlayer(@PathVariable String id) {
+        playerService.deletePlayer(id);
+    }
 
 
 }

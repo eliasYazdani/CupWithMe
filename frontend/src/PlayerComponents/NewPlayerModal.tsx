@@ -75,9 +75,12 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
 
         })
         propsPlayerModal.setOpen(false)
-        }
+    }
+    const handleDelete = () => {
+        axios.delete("/api/cup/players/" + propsPlayerModal.player?.id,)
 
-
+        propsPlayerModal.setOpen(false)
+    }
 
 
     return (
@@ -124,6 +127,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                     />
                 </DialogContent>
                 <DialogActions>
+                    <Button onClick={handleDelete}>Delete </Button>
                     <Button onClick={handleClose}>Cancel</Button>
                     {propsPlayerModal.visibilitySaveToAddNewPlayer && (
                         <Button onClick={handleSaveNewPlayer}>Save</Button>)}
