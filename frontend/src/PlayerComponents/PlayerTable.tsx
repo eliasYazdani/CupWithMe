@@ -20,7 +20,8 @@ type PropsPlayerTable = {
 export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
     const [selectedPlayer, setSelectedPlayer] = useState<Player>()
     const [open, setOpen] = useState(false)
-
+    const [visibilitySaveToAddNewPlayer, setVisibilitySaveToAddNewPlayer] = useState<boolean>(false)
+    const [visibilitySaveChangePlayer, setVisibilitySaveToChangePlayer] = useState<boolean>(false)
 
     return (
         <div>
@@ -41,6 +42,8 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
                                 key={player.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 onClick={() => {
+                                    setVisibilitySaveToAddNewPlayer(false)
+                                    setVisibilitySaveToChangePlayer(true)
                                     setOpen(true)
                                     setSelectedPlayer(player)
                                 }}
@@ -55,7 +58,9 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <NewPlayerModal open={open} setOpen={setOpen} player={selectedPlayer} />
+            <NewPlayerModal visibilitySaveToAddNewPlayer={visibilitySaveToAddNewPlayer}
+                            visibilitySaveToChangePlayer={visibilitySaveChangePlayer} open={open} setOpen={setOpen}
+                            player={selectedPlayer}/>
         </div>
     );
 }

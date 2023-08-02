@@ -15,7 +15,8 @@ type PropsPlayerModal = {
     open: boolean
     setOpen: (value: boolean) => void
     player?: Player
-    allPlayerList: ()=> void
+    visibilitySaveToAddNewPlayer: boolean
+    visibilitySaveToChangePlayer: boolean
 }
 export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName)
@@ -57,7 +58,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
             "lastName": lastName,
             "age": age,
         } as Player)
-            .then(propsPlayerModal.allPlayerList)
+
 
         propsPlayerModal.setOpen(false)
     }
@@ -123,10 +124,11 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDelete}>Delete</Button>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSaveNewPlayer}>SaveNewPlayer</Button>
-                    <Button onClick={handleSaveChange}>SaveChange</Button>
+                    {propsPlayerModal.visibilitySaveToAddNewPlayer && (
+                        <Button onClick={handleSaveNewPlayer}>Save</Button>)}
+                    {propsPlayerModal.visibilitySaveToChangePlayer && (
+                        <Button onClick={handleSaveChange}>Save</Button>)}
 
                 </DialogActions>
             </Dialog>

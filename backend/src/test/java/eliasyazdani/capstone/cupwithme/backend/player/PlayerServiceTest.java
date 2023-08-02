@@ -35,17 +35,18 @@ class PlayerServiceTest {
         // given
         PlayerWithoutId testPlayerWithoutId = new PlayerWithoutId("ATest", "BTest", 20);
         Player testPlayer =
-                new Player(null, testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
-        Player testPlayerBackFromDB =
-                new Player("1",testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
-        Mockito.when(playerRepository.insert(testPlayer))
-                .thenReturn(testPlayerBackFromDB);
+                new Player("1A", testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
+
+
 
         // when
+        Mockito.when(idService.randomId()).thenReturn("1A");
+        Mockito.when(playerRepository.insert(testPlayer))
+                .thenReturn(testPlayer);
         Player actual = playerService.addNewPlayer(testPlayerWithoutId);
         // then
         verify(playerRepository).insert(testPlayer);
-        Assertions.assertEquals(testPlayerBackFromDB, actual);
+        Assertions.assertEquals(testPlayer, actual);
     }
 
     @Test
@@ -65,7 +66,6 @@ class PlayerServiceTest {
      @Test
      void changePlayerInfoTest(){
          // Given
-         Player playerInDB = new Player("1A","S","S",24);
          PlayerWithoutId newPlayerInfoWithoutID = new PlayerWithoutId("A","B",28);
          String idToUpdate="1A";
          Player  newPlayerInfo = new Player(
