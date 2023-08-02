@@ -1,40 +1,52 @@
 package eliasyazdani.capstone.cupwithme.backend.player;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class PlayerService {
     private final PlayerRepository playerRepository;
+    private final IdService idService;
 
-    public PlayerService(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
+
+    public List<Player> getAllPlayers() {
+        return playerRepository.findAll();
     }
 
-    public List<PlayerWithOrdinalNumber> getAllPlayers() {
-        List<Player> playerFromDB = playerRepository.findAll();
-        List<PlayerWithOrdinalNumber> playerWithOrdinalNumbers = new ArrayList<>();
-        int ordinalNumber = 1;
-        for (Player player : playerFromDB) {
-            playerWithOrdinalNumbers.add(new PlayerWithOrdinalNumber(
-                    ordinalNumber, player.firstName(), player.lastName(), player.age()));
-            ordinalNumber++;
+    public Player addNewPlayer(PlayerWithoutId playerWithoutId) {
+        Player newPlayer = new Player(
+                idService.randomId(),
+                playerWithoutId.firstName(),
+                playerWithoutId.lastName(),
+                playerWithoutId.age());
+        playerRepository.insert(newPlayer);
+        return newPlayer;
+    }
+
+    public Player changePlayerInfo(String id,PlayerWithoutId playerWithoutId) {
+        Player newChangedPlayer = new Player(
+                id,
+                playerWithoutId.firstName(),
+                playerWithoutId.lastName(),
+                playerWithoutId.age());
+        return playerRepository.save(newChangedPlayer);
+    }
+
+
+    public Player getDetailsById(String id) {
+        Optional<Player> foundPlayer = playerRepository.findById(id);
+        if(foundPlayer.isPresent()){
+            return foundPlayer.get();
+        } else{
+            throw  new NoSuchElementException();
         }
 
-        return playerWithOrdinalNumbers;
-
-
     }
-
-    public PlayerDTO addNewPlayer(PlayerDTO playerWithoutId) {
-        Player newPlayerWithoutId = new Player(null,
-                playerWithoutId.firstName(), playerWithoutId.lastName(), playerWithoutId.age());
-        Player newPlayerBack = playerRepository.insert(newPlayerWithoutId);
-        return new PlayerDTO(newPlayerBack.firstName(), newPlayerBack.lastName(), newPlayerBack.age());
-
-    }
-
 }

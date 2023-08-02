@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,7 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PlayerIntegrationTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
+
+    @Autowired
+    PlayerRepository playerRepository;
 
     @Test
     void expectEmptyListOnGet() throws Exception {
@@ -58,6 +62,28 @@ class PlayerIntegrationTest {
                 ));
 
 
+    }
+
+    @DirtiesContext
+    @Test
+    void whenExistedIdWithNewInfo_thenReturnThisIdWithNewInfo() throws Exception {
+
+        Player playerTOUpdate = new Player("1A", "F", "Y", 55);
+        playerRepository.insert(playerTOUpdate);
+
+
+        mockMvc.perform(
+
+                        put("/api/cup/players/1A")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                        {"id": "1A","firstName": "I","lastName": "A","age": 66}
+                                        """)
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {"id": "1A","firstName": "I","lastName": "A","age": 66}
+                        """));
     }
 
 }

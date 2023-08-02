@@ -5,19 +5,23 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Player} from "./Player.ts";
 
 
 type PropsPlayerModal = {
-    onSaveNewPlayer: () => void
+
+    open: boolean
+    setOpen: (value: boolean) => void
+    player?: Player
+    visibilitySaveToAddNewPlayer: boolean
+    visibilitySaveToChangePlayer: boolean
 }
 export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
-    const [open, setOpen] = useState(false);
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [age, setAge] = useState(0)
+    const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName)
+    const [lastName, setLastName] = useState(propsPlayerModal.player?.lastName)
+    const [age, setAge] = useState(propsPlayerModal.player?.age)
 
     function changeFirstName(event: React.ChangeEvent<HTMLInputElement>) {
         setFirstName(event.target.value)
@@ -31,17 +35,20 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         setAge(parseInt(event.target.value))
     }
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    useEffect(() => {
+        setFirstName(propsPlayerModal.player?.firstName)
+        setLastName(propsPlayerModal.player?.lastName)
+        setAge(propsPlayerModal.player?.age)
+    }, [propsPlayerModal.player])
 
     const handleClose = () => {
         setFirstName("")
         setLastName("")
         setAge(0)
-        setOpen(false);
+        propsPlayerModal.setOpen(false)
+
     };
-    const handleSave = () => {
+    const handleSaveNewPlayer = () => {
         setFirstName("")
         setLastName("")
         setAge(0)
@@ -51,18 +58,32 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
             "lastName": lastName,
             "age": age,
         } as Player)
-            .then(propsPlayerModal.onSaveNewPlayer)
 
-        setOpen(false);
+
+        propsPlayerModal.setOpen(false)
     }
+    const handleSaveChange=()=>{
+        axios.put("/api/cup/players/" + propsPlayerModal.player?.id, {
+            "firstName": firstName,
+            "lastName": lastName,
+            "age": age,
+        } as Player).then(response => {
+
+            setFirstName(response.data.firstName)
+            setLastName(response.data.lastName)
+            setAge(response.data.age)
+
+        })
+        propsPlayerModal.setOpen(false)
+        }
+
+
 
 
     return (
         <div>
-            <Button variant="contained" onClick={handleClickOpen}>
-                new player
-            </Button>
-            <Dialog open={open} onClose={handleClose}>
+
+            <Dialog open={propsPlayerModal.open} onClose={handleClose}>
                 <DialogTitle>➕Info</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -104,7 +125,11 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSave}>Save</Button>
+                    {propsPlayerModal.visibilitySaveToAddNewPlayer && (
+                        <Button onClick={handleSaveNewPlayer}>Save</Button>)}
+                    {propsPlayerModal.visibilitySaveToChangePlayer && (
+                        <Button onClick={handleSaveChange}>Save</Button>)}
+
                 </DialogActions>
             </Dialog>
         </div>
