@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class PlayerServiceTest {
@@ -62,6 +64,16 @@ class PlayerServiceTest {
     }
 
     @Test
+    void getDetailsNotFoundId() {
+        // Given
+        String idToFind = "1A";
+        Optional<Player> foundPlayerTest = Optional.empty();
+        Mockito.when(playerRepository.findById(idToFind)).thenReturn(foundPlayerTest);
+        // When  and Then
+        assertThrows(NoSuchElementException.class, () -> playerService.getDetailsById(idToFind));
+    }
+
+    @Test
     void changePlayerInfoTest() {
         // Given
         PlayerWithoutId newPlayerInfoWithoutID = new PlayerWithoutId("A", "B", 28);
@@ -88,11 +100,21 @@ class PlayerServiceTest {
 
         // When
         List<Player> actual = playerService.deletePlayer(idToDelete);
-        // List<Player> actual = playerService.getAllPlayers();
+
         // Then
         verify(playerRepository).deleteById(idToDelete);
         verify(playerRepository).findAll();
         Assertions.assertTrue(actual.isEmpty());
+
+    }
+
+    @Test
+    void deleteNotFoundPlayer() {
+        // Given
+        String idToDelete = "1A";
+        Mockito.when(playerRepository.existsById(idToDelete)).thenReturn(false);
+        // When  and Then
+        assertThrows(NoSuchElementException.class, () -> playerService.deletePlayer(idToDelete));
 
     }
 }
