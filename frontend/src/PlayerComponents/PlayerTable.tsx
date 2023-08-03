@@ -13,15 +13,16 @@ import NewPlayerModal from "./NewPlayerModal.tsx";
 
 type PropsPlayerTable = {
     players: Player[],
-
-
-
+    allPlayersList: () => void
 }
+
 export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
     const [selectedPlayer, setSelectedPlayer] = useState<Player>()
     const [open, setOpen] = useState(false)
-    const [visibilitySaveToAddNewPlayer, setVisibilitySaveToAddNewPlayer] = useState<boolean>(false)
-    const [visibilitySaveChangePlayer, setVisibilitySaveToChangePlayer] = useState<boolean>(false)
+    const [visibilitySaveToAddNewPlayerButton, setVisibilitySaveToAddNewPlayerButton] = useState<boolean>(false)
+    const [visibilitySaveChangePlayerButton, setVisibilitySaveToChangePlayerButton] = useState<boolean>(false)
+    const [visibilityDeletePlayerButton, setVisibilityDeletePlayerButton] = useState<boolean>(false)
+
 
     return (
         <div>
@@ -42,12 +43,12 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
                                 key={player.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 onClick={() => {
-                                    setVisibilitySaveToAddNewPlayer(false)
-                                    setVisibilitySaveToChangePlayer(true)
+                                    setVisibilityDeletePlayerButton(true)
+                                    setVisibilitySaveToAddNewPlayerButton(false)
+                                    setVisibilitySaveToChangePlayerButton(true)
                                     setOpen(true)
                                     setSelectedPlayer(player)
                                 }}
-
                             >
                                 <TableCell component="th" scope="row">{player.id}</TableCell>
                                 <TableCell align="center">{player.firstName}</TableCell>
@@ -58,8 +59,11 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <NewPlayerModal visibilitySaveToAddNewPlayer={visibilitySaveToAddNewPlayer}
-                            visibilitySaveToChangePlayer={visibilitySaveChangePlayer} open={open} setOpen={setOpen}
+            <NewPlayerModal visibilitySaveToAddNewPlayerButton={visibilitySaveToAddNewPlayerButton}
+                            visibilitySaveToChangePlayerButton={visibilitySaveChangePlayerButton}
+                            visibilityDeletePlayerButton={visibilityDeletePlayerButton}
+                            open={open} setOpen={setOpen}
+                            allPlayersList={propsPlayerTable.allPlayersList}
                             player={selectedPlayer}/>
         </div>
     );

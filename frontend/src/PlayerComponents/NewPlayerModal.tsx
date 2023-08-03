@@ -14,9 +14,12 @@ type PropsPlayerModal = {
 
     open: boolean
     setOpen: (value: boolean) => void
-    player?: Player
-    visibilitySaveToAddNewPlayer: boolean
-    visibilitySaveToChangePlayer: boolean
+    player?: Player;
+    visibilitySaveToAddNewPlayerButton: boolean
+    visibilitySaveToChangePlayerButton: boolean
+    visibilityDeletePlayerButton: boolean
+    allPlayersList: () => void
+
 }
 export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName)
@@ -46,8 +49,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         setLastName("")
         setAge(0)
         propsPlayerModal.setOpen(false)
-
-    };
+    }
     const handleSaveNewPlayer = () => {
         setFirstName("")
         setLastName("")
@@ -58,28 +60,24 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
             "lastName": lastName,
             "age": age,
         } as Player)
-
-
-        propsPlayerModal.setOpen(false)
+            .then(() => propsPlayerModal.allPlayersList())
+            .then(() => propsPlayerModal.setOpen(false))
     }
+
     const handleSaveChange=()=>{
         axios.put("/api/cup/players/" + propsPlayerModal.player?.id, {
             "firstName": firstName,
             "lastName": lastName,
             "age": age,
-        } as Player).then(response => {
-
-            setFirstName(response.data.firstName)
-            setLastName(response.data.lastName)
-            setAge(response.data.age)
-
-        })
-        propsPlayerModal.setOpen(false)
+        } as Player)
+            .then(() => propsPlayerModal.allPlayersList())
+            .then(() => propsPlayerModal.setOpen(false))
     }
+
     const handleDelete = () => {
         axios.delete("/api/cup/players/" + propsPlayerModal.player?.id,)
-
-        propsPlayerModal.setOpen(false)
+            .then(() => propsPlayerModal.allPlayersList())
+            .then(() => propsPlayerModal.setOpen(false))
     }
 
 
@@ -127,13 +125,13 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDelete}>Delete </Button>
+                    {propsPlayerModal.visibilityDeletePlayerButton && (
+                        <Button onClick={handleDelete}>Delete </Button>)}
                     <Button onClick={handleClose}>Cancel</Button>
-                    {propsPlayerModal.visibilitySaveToAddNewPlayer && (
+                    {propsPlayerModal.visibilitySaveToAddNewPlayerButton && (
                         <Button onClick={handleSaveNewPlayer}>Save</Button>)}
-                    {propsPlayerModal.visibilitySaveToChangePlayer && (
+                    {propsPlayerModal.visibilitySaveToChangePlayerButton && (
                         <Button onClick={handleSaveChange}>Save</Button>)}
-
                 </DialogActions>
             </Dialog>
         </div>
