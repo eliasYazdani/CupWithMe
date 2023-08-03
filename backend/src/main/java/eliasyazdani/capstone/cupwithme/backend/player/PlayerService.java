@@ -51,10 +51,12 @@ public class PlayerService {
 
     }
 
-    public void deletePlayer(String id) {
+    public List<Player> deletePlayer(String id) {
         if (!playerRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Spieler nicht gefunden");
         }
         playerRepository.deleteById(id);
+        return playerRepository.findAll();
     }
+
 }

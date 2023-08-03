@@ -85,14 +85,14 @@ class PlayerServiceTest {
         // Given
         String idToDelete = "1A";
         Mockito.when(playerRepository.existsById(idToDelete)).thenReturn(true);
-        Mockito.doNothing().when(playerRepository).deleteById(idToDelete);
 
         // When
-        playerService.deletePlayer(idToDelete);
+        List<Player> actual = playerService.deletePlayer(idToDelete);
         // List<Player> actual = playerService.getAllPlayers();
         // Then
         verify(playerRepository).deleteById(idToDelete);
-        // Assertions.assertTrue(actual.isEmpty());
+        verify(playerRepository).findAll();
+        Assertions.assertTrue(actual.isEmpty());
 
     }
 }
