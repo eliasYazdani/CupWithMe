@@ -31,10 +31,10 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left">ID</TableCell>
-                            <TableCell align="center">First name</TableCell>
-                            <TableCell align="center">Lastname</TableCell>
-                            <TableCell align="center">Age</TableCell>
+                            <TableCell align="left">First name</TableCell>
+                            <TableCell align="left">Last name</TableCell>
+                            <TableCell align="left">Age</TableCell>
+                            <TableCell align="right">ID</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -50,10 +50,10 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
                                     setSelectedPlayer(player)
                                 }}
                             >
-                                <TableCell component="th" scope="row">{player.id}</TableCell>
-                                <TableCell align="center">{player.firstName}</TableCell>
-                                <TableCell align="center">{player.lastName}</TableCell>
-                                <TableCell align="center">{player.age}</TableCell>
+                                <TableCell align="left">{player.firstName}</TableCell>
+                                <TableCell align="left">{player.lastName}</TableCell>
+                                <TableCell align="left">{player.age}</TableCell>
+                                <TableCell align="right" component="th" scope="row">{player.id}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
