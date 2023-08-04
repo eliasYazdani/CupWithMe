@@ -3,7 +3,6 @@ package eliasyazdani.capstone.cupwithme.backend.player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -42,11 +41,20 @@ public class PlayerService {
 
     public Player getDetailsById(String id) {
         Optional<Player> foundPlayer = playerRepository.findById(id);
-        if(foundPlayer.isPresent()){
+        if (foundPlayer.isPresent()) {
             return foundPlayer.get();
-        } else{
-            throw  new NoSuchElementException();
+        } else {
+            throw new NoSuchElementException();
         }
 
     }
+
+    public List<Player> deletePlayer(String id) {
+        if (!playerRepository.existsById(id)) {
+            throw new NoSuchElementException();
+        }
+        playerRepository.deleteById(id);
+        return playerRepository.findAll();
+    }
+
 }

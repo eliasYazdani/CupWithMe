@@ -11,39 +11,42 @@ export default function PlayerList() {
 
     const [players, setPlayers] = useState<Player[]>([])
     const [open, setOpen] = useState(false);
-    const [visibilitySaveToAddNewPlayer, setVisibilitySaveToAddNewPlayer] = useState<boolean>(false)
-    const [visibilitySaveChangePlayer, setVisibilitySaveToChangePlayer] = useState<boolean>(false)
-
+    const [visibilitySaveToAddNewPlayerButton, setVisibilitySaveToAddNewPlayerButton] = useState<boolean>(false)
+    const [visibilitySaveChangePlayerButton, setVisibilitySaveToChangePlayerButton] = useState<boolean>(false)
+    const [visibilityDeletePlayerButton, setVisibilityDeletePlayerButton] = useState<boolean>(false)
 
     function allPlayersList() {
         axios.get("/api/cup/players")
             .then(response => {
-
                 setPlayers(response.data)
-
             })
-
     }
 
-    useEffect(allPlayersList, [players])
+    useEffect(allPlayersList, [])
+
 
     const handleClickOpen = () => {
-        setVisibilitySaveToAddNewPlayer(true)
-        setVisibilitySaveToChangePlayer(false)
+        setVisibilitySaveToAddNewPlayerButton(true)
+        setVisibilitySaveToChangePlayerButton(false)
+        setVisibilityDeletePlayerButton(false)
         setOpen(true)
     }
     return (
         <>
             <h1 className="main-Title">Cup with me🏆</h1>
 
-            <PlayerTable players={players}/>
+            <PlayerTable players={players} allPlayersList={allPlayersList}/>
             <Button variant="contained" onClick={handleClickOpen}>
                 new player
             </Button>
-            <NewPlayerModal visibilitySaveToAddNewPlayer={visibilitySaveToAddNewPlayer}
-                            visibilitySaveToChangePlayer={visibilitySaveChangePlayer} open={open} setOpen={setOpen}/>
+            <NewPlayerModal visibilitySaveToAddNewPlayerButton={visibilitySaveToAddNewPlayerButton}
+                            visibilitySaveToChangePlayerButton={visibilitySaveChangePlayerButton}
+                            visibilityDeletePlayerButton={visibilityDeletePlayerButton}
+                            open={open} setOpen={setOpen}
+                            allPlayersList={allPlayersList}
+
+
+            />
         </>
     )
 }
-
-

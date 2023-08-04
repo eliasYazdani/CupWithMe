@@ -9,9 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,8 +25,7 @@ class PlayerIntegrationTest {
 
     @Test
     void expectEmptyListOnGet() throws Exception {
-        //  GIVEN
-        //  WHEN
+
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/api/cup/players")
                 )
@@ -68,8 +65,8 @@ class PlayerIntegrationTest {
     @Test
     void whenExistedIdWithNewInfo_thenReturnThisIdWithNewInfo() throws Exception {
 
-        Player playerTOUpdate = new Player("1A", "F", "Y", 55);
-        playerRepository.insert(playerTOUpdate);
+        Player playerToUpdate = new Player("1A", "F", "Y", 55);
+        playerRepository.insert(playerToUpdate);
 
 
         mockMvc.perform(
@@ -86,4 +83,29 @@ class PlayerIntegrationTest {
                         """));
     }
 
+    @DirtiesContext
+    @Test
+    void whenExistId_thenDeleteAndReturnNothing() throws Exception {
+        Player playerToDelete = new Player("2A", "A", "S", 29);
+        playerRepository.insert(playerToDelete);
+
+
+        mockMvc.perform(
+                        delete("/api/cup/players/2A")
+
+                )
+                .andExpect(status().isOk());
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/cup/players")
+                ).andExpect(status().isOk())
+                .andExpect(content().json("""
+                            []
+                        """));
+
+
+    }
 }
+
+
+
+
