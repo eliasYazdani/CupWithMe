@@ -13,7 +13,9 @@ export default function Home() {
                  alt="football"/>
             <Button variant="contained" onClick={() => navigate("/players")}>
                 PlayerList
-            </Button>
+            </Button><Button variant="contained" onClick={() => navigate("/tournaments")}>
+            Tournaments
+        </Button>
         </>
 
     )
