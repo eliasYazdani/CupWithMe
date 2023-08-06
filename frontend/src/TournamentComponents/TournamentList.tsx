@@ -2,9 +2,15 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {Tournament} from "./Tournament.ts";
 import TournamentTable from "../TournamentComponents/TournamentTable.tsx";
+import Button from "@mui/material/Button";
+import {NavigateFunction} from "react-router-dom";
 
+type PropsTournamentList = {
 
-export default function TournamentList() {
+    navigate: NavigateFunction
+}
+
+export default function TournamentList(propsTournamentList: PropsTournamentList) {
     const [tournaments, setTournaments] = useState<Tournament[]>([])
 
     function allTournamentsList() {
@@ -22,6 +28,10 @@ export default function TournamentList() {
             <h1 className="main-Title">Cup with me🏆</h1>
 
             <TournamentTable tournaments={tournaments}/>
+            <Button variant="contained" onClick={() => propsTournamentList.navigate("/")}
+                    sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                Home
+            </Button>
         </>
     )
 }

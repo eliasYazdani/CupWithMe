@@ -5,9 +5,15 @@ import {useEffect, useState} from "react";
 import PlayerTable from "./PlayerTable.tsx"
 import Button from "@mui/material/Button";
 import NewPlayerModal from "./NewPlayerModal.tsx";
+import {NavigateFunction} from "react-router-dom";
+
+type PropsPlayerList = {
+
+    navigate: NavigateFunction
+}
 
 
-export default function PlayerList() {
+export default function PlayerList(propsPlayerList: PropsPlayerList) {
 
     const [players, setPlayers] = useState<Player[]>([])
     const [open, setOpen] = useState(false);
@@ -36,9 +42,16 @@ export default function PlayerList() {
             <h1 className="main-Title">Cup with me🏆</h1>
 
             <PlayerTable players={players} allPlayersList={allPlayersList}/>
-            <Button variant="contained" onClick={handleClickOpen}>
-                new player
-            </Button>
+            <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
+                <Button variant="contained" onClick={handleClickOpen}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                    new player
+                </Button>
+                <Button variant="contained" onClick={() => propsPlayerList.navigate("/")}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                    Home
+                </Button>
+            </div>
             <NewPlayerModal visibilitySaveToAddNewPlayerButton={visibilitySaveToAddNewPlayerButton}
                             visibilitySaveToChangePlayerButton={visibilitySaveChangePlayerButton}
                             visibilityDeletePlayerButton={visibilityDeletePlayerButton}
