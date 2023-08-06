@@ -8,14 +8,16 @@ import Paper from '@mui/material/Paper';
 
 
 import {Tournament} from "./Tournament.ts";
+import {NavigateFunction} from "react-router-dom";
 
 
 type PropsTournamentTable = {
     tournaments: Tournament[],
+    navigate: NavigateFunction,
 
 }
 
-export default function TournamentTable(PropsTournamentTable: PropsTournamentTable) {
+export default function TournamentTable(propsTournamentTable: PropsTournamentTable) {
 
 
     return (
@@ -32,10 +34,11 @@ export default function TournamentTable(PropsTournamentTable: PropsTournamentTab
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {PropsTournamentTable.tournaments.map((tournament) => (
+                        {propsTournamentTable.tournaments.map((tournament) => (
                             <TableRow
                                 key={tournament.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                onClick={() => propsTournamentTable.navigate("/Bracket")}
 
                             >
                                 <TableCell align="left">{tournament.tournamentName}</TableCell>
