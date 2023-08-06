@@ -28,10 +28,12 @@ export default function TournamentList(propsTournamentList: PropsTournamentList)
             <h1 className="main-Title">Cup with me🏆</h1>
 
             <TournamentTable tournaments={tournaments}/>
-            <Button variant="contained" onClick={() => propsTournamentList.navigate("/")}
-                    sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
-                Home
-            </Button>
+            <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
+                <Button variant="contained" onClick={() => propsTournamentList.navigate("/")}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                    Home
+                </Button>
+            </div>
         </>
     )
 }

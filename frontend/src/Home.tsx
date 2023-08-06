@@ -15,7 +15,7 @@ export default function Home() {
 
                 <Button variant="contained" onClick={() => navigate("/players")}
                         sx={{fontSize: "10px", padding: "5px 10px"}}>
-                    PlayerList
+                    Players
                 </Button>
                 <Button variant="contained" onClick={() => navigate("/tournaments")}
                         sx={{fontSize: "10px", padding: "5px 10px"}}>

@@ -85,7 +85,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         <div>
 
             <Dialog open={propsPlayerModal.open} onClose={handleClose}>
-                <DialogTitle>New player information:</DialogTitle>
+                <DialogTitle>Player information:</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Give player information like First name,Last name and Age.
