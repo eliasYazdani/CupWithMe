@@ -1,5 +1,6 @@
 package eliasyazdani.capstone.cupwithme.backend.tournament;
 
+import eliasyazdani.capstone.cupwithme.backend.player.IdService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +12,9 @@ import static org.mockito.Mockito.verify;
 
 class TournamentServiceTest {
     TournamentRepository tournamentRepository = mock(TournamentRepository.class);
-    TournamentService tournamentService = new TournamentService(tournamentRepository);
+    IdService idService = mock(IdService.class);
+
+    TournamentService tournamentService = new TournamentService(tournamentRepository, idService);
 
 
     @Test
@@ -27,6 +30,25 @@ class TournamentServiceTest {
         //  then
         verify(tournamentRepository).findAll();
         Assertions.assertEquals(testTournamentFromDB, actual);
+
+    }
+
+    @Test
+    void addNewTournamentTest() {
+        // given
+        TournamentWithoutID testTournamentWithoutId = new TournamentWithoutID("2022", "Hamburg", 32);
+        Tournament testTournament =
+                new Tournament("1A", testTournamentWithoutId.tournamentName(), testTournamentWithoutId.location(), testTournamentWithoutId.numberOfPlayers());
+        Mockito.when(idService.randomId()).thenReturn("1A");
+        Mockito.when(tournamentRepository.insert(testTournament))
+                .thenReturn(testTournament);
+        // when
+
+        Tournament actual = tournamentService.addNewTournament(testTournamentWithoutId);
+        // then
+        verify(tournamentRepository).insert(testTournament);
+        verify(idService).randomId();
+        Assertions.assertEquals(testTournament, actual);
 
     }
 }
