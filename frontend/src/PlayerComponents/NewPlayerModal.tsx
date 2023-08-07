@@ -85,10 +85,10 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         <div>
 
             <Dialog open={propsPlayerModal.open} onClose={handleClose}>
-                <DialogTitle>➕Info</DialogTitle>
+                <DialogTitle>Player information:</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Give player info like First name,Last name and age.
+                        Give player information like First name,Last name and Age.
                     </DialogContentText>
                     <TextField
                         autoFocus
@@ -126,12 +126,16 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                 </DialogContent>
                 <DialogActions>
                     {propsPlayerModal.visibilityDeletePlayerButton && (
-                        <Button onClick={handleDelete}>Delete </Button>)}
-                    <Button onClick={handleClose}>Cancel</Button>
+                        <Button variant="contained" onClick={handleDelete}
+                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Delete </Button>)}
+                    <Button variant="contained" onClick={handleClose}
+                            sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Cancel</Button>
                     {propsPlayerModal.visibilitySaveToAddNewPlayerButton && (
-                        <Button onClick={handleSaveNewPlayer}>Save</Button>)}
+                        <Button variant="contained" onClick={handleSaveNewPlayer}
+                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Save</Button>)}
                     {propsPlayerModal.visibilitySaveToChangePlayerButton && (
-                        <Button onClick={handleSaveChange}>Save</Button>)}
+                        <Button variant="contained" onClick={handleSaveChange}
+                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Save</Button>)}
                 </DialogActions>
             </Dialog>
         </div>

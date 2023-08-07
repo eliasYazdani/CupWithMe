@@ -28,7 +28,7 @@ export default function PlayerTable(propsPlayerTable: PropsPlayerTable) {
         <div>
             <h2>Players:</h2>
             <TableContainer component={Paper}>
-                <Table sx={{minWidth: 650}} aria-label="simple table">
+                <Table sx={{minWidth: 650, margin: "0px 0"}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">First name</TableCell>
