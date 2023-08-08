@@ -11,32 +11,23 @@ import {Tournament} from "../Models/Tournament.ts";
 import {NavigateFunction} from "react-router-dom";
 import Button from "@mui/material/Button";
 import NewTournamentModal from "./NewTournamentModal.tsx";
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useState} from "react";
 
 
 type PropsTournamentTable = {
 
     navigate: NavigateFunction,
+    tournaments: Tournament[],
+    allTournamentList: () => void
 
 
 }
 
 export default function TournamentList(propsTournamentTable: PropsTournamentTable) {
-    const [tournaments, setTournaments] = useState<Tournament[]>([])
+
     const [open, setOpen] = useState(false);
     const [visibilitySaveToAddNewTournamentButton, setVisibilitySaveToAddNewTournamentButton] = useState<boolean>(false)
 
-    function allTournamentsList() {
-        axios.get("/api/cup/tournaments")
-            .then(response => {
-                setTournaments(response.data)
-                console.log(response.data)
-            })
-
-    }
-
-    useEffect(allTournamentsList, [])
 
     const handleClickOpen = () => {
         setVisibilitySaveToAddNewTournamentButton(true)
@@ -60,7 +51,7 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {tournaments.map((tournament) => (
+                        {propsTournamentTable.tournaments.map((tournament) => (
                             <TableRow
                                 key={tournament.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -93,7 +84,7 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
             <NewTournamentModal visibilitySaveToAddNewTournamentButton={visibilitySaveToAddNewTournamentButton}
 
                                 open={open} setOpen={setOpen}
-                                allTournamentsList={allTournamentsList}
+                                allTournamentsList={propsTournamentTable.allTournamentList}
 
             />
 
