@@ -38,9 +38,9 @@ export default function App() {
     const navigate = useNavigate();
     return (
         <>
-            <TournamentGrid playerCount={4}/>
 
-            <Routes>
+
+        <Routes>
                 <Route path={"/"} element={<Home/>}/>
                 <Route path={"/players"}
                        element={<PlayerList players={players} allPlayerList={allPlayerList} navigate={navigate}/>}/>
