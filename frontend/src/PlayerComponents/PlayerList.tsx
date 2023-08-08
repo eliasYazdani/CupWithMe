@@ -1,35 +1,30 @@
-import {Player} from "./Player.ts";
-import "../App.css"
-import axios from "axios";
-import {useEffect, useState} from "react";
-import PlayerTable from "./PlayerTable.tsx"
-import Button from "@mui/material/Button";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import {Player} from "../Models/Player.ts";
+
+import {useState} from "react";
 import NewPlayerModal from "./NewPlayerModal.tsx";
+import Button from "@mui/material/Button";
 import {NavigateFunction} from "react-router-dom";
 
-type PropsPlayerList = {
 
+type PropsPlayerList = {
     navigate: NavigateFunction
+    players: Player[],
+    allPlayerList: () => void
 }
 
-
 export default function PlayerList(propsPlayerList: PropsPlayerList) {
-
-    const [players, setPlayers] = useState<Player[]>([])
-    const [open, setOpen] = useState(false);
+    const [selectedPlayer, setSelectedPlayer] = useState<Player>()
+    const [open, setOpen] = useState(false)
     const [visibilitySaveToAddNewPlayerButton, setVisibilitySaveToAddNewPlayerButton] = useState<boolean>(false)
     const [visibilitySaveChangePlayerButton, setVisibilitySaveToChangePlayerButton] = useState<boolean>(false)
     const [visibilityDeletePlayerButton, setVisibilityDeletePlayerButton] = useState<boolean>(false)
-
-    function allPlayersList() {
-        axios.get("/api/cup/players")
-            .then(response => {
-                setPlayers(response.data)
-            })
-    }
-
-    useEffect(allPlayersList, [])
-
 
     const handleClickOpen = () => {
         setVisibilitySaveToAddNewPlayerButton(true)
@@ -38,10 +33,41 @@ export default function PlayerList(propsPlayerList: PropsPlayerList) {
         setOpen(true)
     }
     return (
-        <>
+        <div>
             <h1 className="main-Title">Cup with me🏆</h1>
-
-            <PlayerTable players={players} allPlayersList={allPlayersList}/>
+            <h2>Players:</h2>
+            <TableContainer component={Paper}>
+                <Table sx={{minWidth: 650, margin: "0px 0"}} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="left">First name</TableCell>
+                            <TableCell align="left">Last name</TableCell>
+                            <TableCell align="left">Age</TableCell>
+                            <TableCell align="right">ID</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {propsPlayerList.players.map((player) => (
+                            <TableRow
+                                key={player.id}
+                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                onClick={() => {
+                                    setVisibilityDeletePlayerButton(true)
+                                    setVisibilitySaveToAddNewPlayerButton(false)
+                                    setVisibilitySaveToChangePlayerButton(true)
+                                    setOpen(true)
+                                    setSelectedPlayer(player)
+                                }}
+                            >
+                                <TableCell align="left">{player.firstName}</TableCell>
+                                <TableCell align="left">{player.lastName}</TableCell>
+                                <TableCell align="left">{player.age}</TableCell>
+                                <TableCell align="right" component="th" scope="row">{player.id}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
             <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
                 <Button variant="contained" onClick={handleClickOpen}
                         sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
@@ -51,15 +77,23 @@ export default function PlayerList(propsPlayerList: PropsPlayerList) {
                         sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
                     Home
                 </Button>
+                <Button variant="contained" onClick={() => propsPlayerList.navigate("/tournaments")}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                    Tournaments
+                </Button>
             </div>
             <NewPlayerModal visibilitySaveToAddNewPlayerButton={visibilitySaveToAddNewPlayerButton}
                             visibilitySaveToChangePlayerButton={visibilitySaveChangePlayerButton}
                             visibilityDeletePlayerButton={visibilityDeletePlayerButton}
                             open={open} setOpen={setOpen}
-                            allPlayersList={allPlayersList}
-
-
+                            allPlayersList={propsPlayerList.allPlayerList}
             />
-        </>
-    )
+            <NewPlayerModal visibilitySaveToAddNewPlayerButton={visibilitySaveToAddNewPlayerButton}
+                            visibilitySaveToChangePlayerButton={visibilitySaveChangePlayerButton}
+                            visibilityDeletePlayerButton={visibilityDeletePlayerButton}
+                            open={open} setOpen={setOpen}
+                            allPlayersList={propsPlayerList.allPlayerList}
+                            player={selectedPlayer}/>
+        </div>
+    );
 }

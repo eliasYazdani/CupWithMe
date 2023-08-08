@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Player} from "./Player.ts";
+import {Player} from "../Models/Player.ts";
 
 
 type PropsPlayerModal = {
