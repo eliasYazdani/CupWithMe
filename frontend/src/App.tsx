@@ -2,7 +2,6 @@ import "./App.css"
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Home from "./Home.tsx";
 import TournamentBracket from "./TournamentComponents/TournamentBracket.tsx";
-import TournamentGrid from "./TournamentComponents/TournamentGrid.tsx";
 import {useEffect, useState} from "react";
 import {Player} from "./Models/Player.ts";
 import axios from "axios";
