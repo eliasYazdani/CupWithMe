@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Tournament} from "./Tournament.ts";
+import {Tournament} from "../Models/Tournament.ts";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
