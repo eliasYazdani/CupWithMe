@@ -25,6 +25,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/cup/players").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/cup/players/**").permitAll()
                                 .requestMatchers("/api/cup/players/**").authenticated()
+                                .requestMatchers("/api/cup/users/me").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults())
