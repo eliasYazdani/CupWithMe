@@ -96,4 +96,26 @@ class TournamentIntegrationTest {
                         """));
     }
 
+    @DirtiesContext
+    @Test
+    void whenExistId_thenDeleteAndReturnNothing() throws Exception {
+        Tournament tournamentToDelete = new Tournament("2A", "2022", "Hamburg", 16);
+        tournamentRepository.insert(tournamentToDelete);
+
+
+        mockMvc.perform(
+                        delete("/api/cup/tournaments/2A")
+
+                )
+                .andExpect(status().isOk());
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/cup/tournaments")
+                ).andExpect(status().isOk())
+                .andExpect(content().json("""
+                            []
+                        """));
+
+
+    }
+
 }

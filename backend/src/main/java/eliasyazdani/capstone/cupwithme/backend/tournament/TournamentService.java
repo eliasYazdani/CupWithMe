@@ -49,4 +49,12 @@ public class TournamentService {
                 tournamentWithoutID.numberOfPlayers());
         return tournamentRepository.save(newChangedTournament);
     }
+
+    public List<Tournament> deleteTournament(String id) {
+        if (!tournamentRepository.existsById(id)) {
+            throw new NoSuchElementException();
+        }
+        tournamentRepository.deleteById(id);
+        return tournamentRepository.findAll();
+    }
 }

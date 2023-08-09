@@ -97,4 +97,30 @@ class TournamentServiceTest {
 
     }
 
+    @Test
+    void deleteTournamentTest() {
+        // Given
+        String idToDelete = "1A";
+        Mockito.when(tournamentRepository.existsById(idToDelete)).thenReturn(true);
+
+        // When
+        List<Tournament> actual = tournamentService.deleteTournament(idToDelete);
+
+        // Then
+        verify(tournamentRepository).deleteById(idToDelete);
+        verify(tournamentRepository).findAll();
+        Assertions.assertTrue(actual.isEmpty());
+
+    }
+
+    @Test
+    void deleteNotFoundTournament() {
+        // Given
+        String idToDelete = "1A";
+        Mockito.when(tournamentRepository.existsById(idToDelete)).thenReturn(false);
+        // When  and Then
+        assertThrows(NoSuchElementException.class, () -> tournamentService.deleteTournament(idToDelete));
+
+    }
+
 }
