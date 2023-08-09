@@ -1,5 +1,6 @@
 package eliasyazdani.capstone.cupwithme.backend.tournament;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,4 +21,15 @@ public class TournamentController {
     Tournament addNewTournament(@RequestBody TournamentWithoutID tournamentWithoutID) {
         return tournamentService.addNewTournament(tournamentWithoutID);
     }
+
+    @GetMapping("/{id}")
+    public Tournament getDetails(@PathVariable String id) {
+        return tournamentService.getDetailsById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Tournament changeTournamentInfo(@PathVariable String id, @Valid @RequestBody TournamentWithoutID tournamentWithoutID) {
+        return tournamentService.changeTournamentInfo(id, tournamentWithoutID);
+    }
+
 }

@@ -63,6 +63,27 @@ class PlayerIntegrationTest {
 
     @DirtiesContext
     @Test
+    void expectSearchedPlayer_whenGetRequestWithIdPlayer() throws Exception {
+        Player searchedPlayer = new Player("1A", "M", "S", 65);
+        playerRepository.insert(searchedPlayer);
+        String expectedPlayer = """
+                    {
+                        "id": "1A",
+                        "firstName": "M",
+                        "lastName": "S",
+                        "age": 65
+                    }
+                """;
+
+        mockMvc.perform(get("/api/cup/players/1A")
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedPlayer));
+    }
+
+
+    @DirtiesContext
+    @Test
     void whenExistedIdWithNewInfo_thenReturnThisIdWithNewInfo() throws Exception {
 
         Player playerToUpdate = new Player("1A", "F", "Y", 55);
