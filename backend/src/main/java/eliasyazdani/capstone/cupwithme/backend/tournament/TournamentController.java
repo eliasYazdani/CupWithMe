@@ -32,4 +32,10 @@ public class TournamentController {
         return tournamentService.changeTournamentInfo(id, tournamentWithoutID);
     }
 
+    @DeleteMapping("/{id}")
+    public List<Tournament> deleteTournament(@PathVariable String id) {
+        return tournamentService.deleteTournament(id);
+    }
+
+
 }
