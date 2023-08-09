@@ -60,7 +60,7 @@ class TournamentServiceTest {
         Optional<Tournament> expected = Optional.of(
                 new Tournament("1a", "2022", "Hamburg", 32));
         String idToFind = "1a";
-        when(tournamentRepository.findById(idToFind)).thenReturn(expected);
+        Mockito.when(tournamentRepository.findById(idToFind)).thenReturn(expected);
         // When
         Tournament actual = tournamentService.getDetailsById(idToFind);
         // Then
@@ -73,9 +73,11 @@ class TournamentServiceTest {
         // Given
         String idToFind = "1A";
         Optional<Tournament> foundTournamentTest = Optional.empty();
-        Mockito.when(tournamentRepository.findById(idToFind)).thenReturn(foundTournamentTest);
+        when(tournamentRepository.findById(idToFind)).thenReturn(Optional.empty());
+
         // When  and Then
         assertThrows(NoSuchElementException.class, () -> tournamentService.getDetailsById(idToFind));
+        verify(tournamentRepository, times(1)).findById(idToFind);
     }
 
     @Test
