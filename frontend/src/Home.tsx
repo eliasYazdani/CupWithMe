@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
+import LoginPage from "./LoginPage.tsx";
 
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
                 alignItems: "center",
                 gap: "20px",
             }}>
+                <LoginPage/>
                 <img style={{width: "75%", margin: "40px 0"}}
                      src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
                      alt="Football field"/>

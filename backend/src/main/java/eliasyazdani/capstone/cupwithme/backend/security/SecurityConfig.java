@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,6 +18,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 @Configuration
 public class SecurityConfig {
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
@@ -26,6 +28,9 @@ public class SecurityConfig {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(requestHandler))
                 .httpBasic(Customizer.withDefaults())
+                .sessionManagement(httpSecurity -> httpSecurity
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
                 .authorizeHttpRequests(httpRequests ->
@@ -34,10 +39,15 @@ public class SecurityConfig {
                                 .requestMatchers("/api/cup/players").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/cup/players/**").permitAll()
                                 .requestMatchers("/api/cup/players/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/cup/tournaments").permitAll()
+                                .requestMatchers("/api/cup/tournaments").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/cup/tournaments/**").permitAll()
+                                .requestMatchers("/api/cup/tournaments/**").authenticated()
                                 .requestMatchers("/api/cup/users/me").permitAll()
+                                .requestMatchers("/api/cup/users/login").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+
                 .build();
     }
 

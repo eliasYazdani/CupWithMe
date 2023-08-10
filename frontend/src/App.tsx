@@ -28,7 +28,7 @@ export default function App() {
         axios.get("/api/cup/tournaments")
             .then(response => {
                 setTournaments(response.data)
-                console.log(response.data)
+
             })
 
     }
