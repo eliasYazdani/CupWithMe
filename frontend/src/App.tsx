@@ -72,8 +72,4 @@ export default function App() {
     )
 }
 
-/*const isAuthenticated = propsProtectedRoutes.user !== undefined && propsProtectedRoutes.user !=="anonymousUser"
 
-return(
-    isAuthenticated ? <Outlet/> :<Navigate to="/"/>    );
-}*/
