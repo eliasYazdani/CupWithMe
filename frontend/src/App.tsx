@@ -38,6 +38,14 @@ export default function App() {
             })
     }
 
+    function logout() {
+        axios.post("/api/cup/users/logout")
+            .then(() => {
+                setUser("anonymousUser")
+            })
+    }
+
+
     function me() {
         axios.get("/api/cup/users/me")
             .then(response => {
@@ -56,7 +64,7 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route path={"/"} element={<Home user={user} onLogin={login}/>}/>
+                <Route path={"/"} element={<Home user={user} onLogin={login} onLogout={logout}/>}/>
                 <Route path={"/players"}
                        element={<PlayerList players={players} allPlayerList={allPlayerList} navigate={navigate}/>}/>
                 <Route path={"/tournaments"}

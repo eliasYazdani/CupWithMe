@@ -45,6 +45,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/cup/tournaments/**").authenticated()
                                 .requestMatchers("/api/cup/users/me").permitAll()
                                 .requestMatchers("/api/cup/users/login").permitAll()
+                                .requestMatchers("/api/cup/users/logout").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout(logout -> logout.logoutUrl("/api/cup/users/logout"))

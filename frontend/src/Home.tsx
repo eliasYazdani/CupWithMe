@@ -5,6 +5,7 @@ import LoginPage from "./LoginPage.tsx";
 type PropsHome = {
     user: string
     onLogin: (username: string, password: string) => void
+    onLogout: () => void,
 }
 export default function Home(propsHome: PropsHome) {
 
@@ -24,8 +25,9 @@ export default function Home(propsHome: PropsHome) {
                     ?
                     <div>
                         <p>{propsHome.user}</p>
-                        <Button variant="contained"
-                                sx={{fontSize: "10px", padding: "5px 10px"}}>Logout
+                        <Button variant="contained" onClick={propsHome.onLogout}
+                                sx={{fontSize: "10px", padding: "5px 10px"}}>
+                            Logout
                         </Button>
                     </div>
                     :
@@ -33,7 +35,9 @@ export default function Home(propsHome: PropsHome) {
                         <img style={{width: "100%", margin: "40px 0"}}
                              src="https://media.istockphoto.com/id/1449580178/vector/under-construction-sign-vector-for-banner-website-ig.jpg?s=2048x2048&w=is&k=20&c=ckEOtEfJX6tpR0ApGnPu6B3GTuNcMVWFo5c-BjuKdRE="
                              alt="Construction"/>
+
                         <p>Please use the username 'abc', Password '123' as long as there is construction</p>
+
                         <LoginPage user={propsHome.user} onLogin={propsHome.onLogin}/>
                     </div>
                 }
