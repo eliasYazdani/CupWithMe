@@ -37,13 +37,12 @@ export default function PlayerList(propsPlayerList: PropsPlayerList) {
             <h1 className="main-Title">Cup with me🏆</h1>
             <h2>Players:</h2>
             <TableContainer component={Paper}>
-                <Table sx={{minWidth: 650, margin: "0px 0"}} aria-label="simple table">
+                <Table sx={{width: "100%", margin: "0px 0"}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">First name</TableCell>
                             <TableCell align="left">Last name</TableCell>
                             <TableCell align="left">Age</TableCell>
-                            <TableCell align="right">ID</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -62,7 +61,6 @@ export default function PlayerList(propsPlayerList: PropsPlayerList) {
                                 <TableCell align="left">{player.firstName}</TableCell>
                                 <TableCell align="left">{player.lastName}</TableCell>
                                 <TableCell align="left">{player.age}</TableCell>
-                                <TableCell align="right" component="th" scope="row">{player.id}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

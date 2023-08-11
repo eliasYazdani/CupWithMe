@@ -41,13 +41,13 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
             <h1 className="main-Title">Cup with me🏆</h1>
             <h2>Tournaments:</h2>
             <TableContainer component={Paper}>
-                <Table sx={{minWidth: 650}} aria-label="simple table">
+                <Table sx={{width: '100%'}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">Name</TableCell>
                             <TableCell align="left">Location</TableCell>
                             <TableCell align="left">Number of Players</TableCell>
-                            <TableCell align="right">ID</TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -61,7 +61,7 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
                                 <TableCell align="left">{tournament.tournamentName}</TableCell>
                                 <TableCell align="left">{tournament.location}</TableCell>
                                 <TableCell align="left">{tournament.numberOfPlayers}</TableCell>
-                                <TableCell align="right" component="th" scope="row">{tournament.id}</TableCell>
+
                             </TableRow>
                         ))}
                     </TableBody>
@@ -92,3 +92,5 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
     )
         ;
 }
+//<TableCell align="right" component="th" scope="row">{tournament.id}</TableCell>    <TableCell align="right">ID</TableCell>
+
