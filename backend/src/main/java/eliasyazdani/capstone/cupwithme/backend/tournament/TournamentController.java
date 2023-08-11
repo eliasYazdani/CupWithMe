@@ -18,7 +18,7 @@ public class TournamentController {
     }
 
     @PostMapping()
-    Tournament addNewTournament(@RequestBody TournamentWithoutID tournamentWithoutID) {
+    Tournament addNewTournament(@Valid @RequestBody TournamentWithoutID tournamentWithoutID) {
         return tournamentService.addNewTournament(tournamentWithoutID);
     }
 

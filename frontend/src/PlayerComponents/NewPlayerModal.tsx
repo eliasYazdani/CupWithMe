@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Player} from "../Models/Player.ts";
+import {red} from "@mui/material/colors";
 
 
 type PropsPlayerModal = {
@@ -25,17 +26,36 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName)
     const [lastName, setLastName] = useState(propsPlayerModal.player?.lastName)
     const [age, setAge] = useState(propsPlayerModal.player?.age)
+    const [errorTextFirstName, setErrorTextFirstName] = useState<string>("")
+    const [errorTextLastName, setErrorTextLastName] = useState<string>("")
+    const [errorTextAge, setErrorTextAge] = useState<string>("")
 
     function changeFirstName(event: React.ChangeEvent<HTMLInputElement>) {
         setFirstName(event.target.value)
+        if (event.target.value == "") {
+            setErrorTextFirstName("Please enter your First name.")
+        } else {
+            setErrorTextFirstName("")
+        }
+
     }
 
     function changeLastName(event: React.ChangeEvent<HTMLInputElement>) {
         setLastName(event.target.value)
+        if (event.target.value == "") {
+            setErrorTextLastName("Please enter a your Last name.")
+        } else {
+            setErrorTextLastName("")
+        }
     }
 
     function changeAge(event: React.ChangeEvent<HTMLInputElement>) {
         setAge(parseInt(event.target.value))
+        if (parseInt(event.target.value) < 1) {
+            setErrorTextAge("Please enter a valid age.")
+        } else {
+            setErrorTextAge("")
+        }
     }
 
     useEffect(() => {
@@ -54,24 +74,30 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         setFirstName("")
         setLastName("")
         setAge(0)
-
-        axios.post("/api/cup/players", {
-            "firstName": firstName,
-            "lastName": lastName,
-            "age": age,
-        } as Player)
-            .then(() => propsPlayerModal.allPlayersList())
-            .then(() => propsPlayerModal.setOpen(false))
+        if (firstName !== "" && lastName !== "" && age !== undefined && age > 0) {
+            axios.post("/api/cup/players", {
+                "firstName": firstName,
+                "lastName": lastName,
+                "age": age,
+            } as Player)
+                .then(() => propsPlayerModal.allPlayersList())
+                .then(() => propsPlayerModal.setOpen(false))
+        }
     }
 
-    const handleSaveChange=()=>{
-        axios.put("/api/cup/players/" + propsPlayerModal.player?.id, {
-            "firstName": firstName,
-            "lastName": lastName,
-            "age": age,
-        } as Player)
-            .then(() => propsPlayerModal.allPlayersList())
-            .then(() => propsPlayerModal.setOpen(false))
+    const handleSaveChange = () => {
+        if (firstName !== "" && lastName !== "" && age !== undefined && age > 0) {
+            axios.put("/api/cup/players/" + propsPlayerModal.player?.id, {
+                "firstName": firstName,
+                "lastName": lastName,
+                "age": age,
+            } as Player)
+                .then(() => propsPlayerModal.allPlayersList())
+                .then(() => propsPlayerModal.setOpen(false))
+        }
+        setFirstName("")
+        setLastName("")
+        setAge(0)
     }
 
     const handleDelete = () => {
@@ -90,6 +116,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                     <DialogContentText>
                         Give player information like First name,Last name and Age.
                     </DialogContentText>
+
                     <TextField
                         autoFocus
                         margin="dense"
@@ -101,6 +128,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                         fullWidth
                         variant="standard"
                     />
+                    <p style={{color: red[500]}}>{errorTextFirstName}</p>
                     <TextField
                         autoFocus
                         margin="dense"
@@ -112,6 +140,8 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                         fullWidth
                         variant="standard"
                     />
+                    <p style={{color: red[500]}}>{errorTextLastName}</p>
+
                     <TextField
                         autoFocus
                         margin="dense"
@@ -123,6 +153,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                         fullWidth
                         variant="standard"
                     />
+                    <p style={{color: red[500]}}>{errorTextAge}</p>
                 </DialogContent>
                 <DialogActions>
                     {propsPlayerModal.visibilityDeletePlayerButton && (

@@ -20,7 +20,7 @@ public class PlayerController {
     }
 
     @PostMapping()
-    Player addNewPlayer(@RequestBody PlayerWithoutId playerWithoutId) {
+    Player addNewPlayer(@Valid @RequestBody PlayerWithoutId playerWithoutId) {
         return playerService.addNewPlayer(playerWithoutId);
     }
 
