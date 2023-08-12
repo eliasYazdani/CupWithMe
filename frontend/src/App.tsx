@@ -13,7 +13,7 @@ import {Tournament} from "./Models/Tournament.ts";
 export default function App() {
     const [players, setPlayers] = useState<Player[]>([])
     const [tournaments, setTournaments] = useState<Tournament[]>([])
-
+    const [user, setUser] = useState<string>("")
 
     function allPlayerList() {
         axios.get("/api/cup/players")
@@ -22,38 +22,53 @@ export default function App() {
             })
     }
 
-    useEffect(allPlayerList, [])
 
     function allTournamentsList() {
         axios.get("/api/cup/tournaments")
             .then(response => {
                 setTournaments(response.data)
-                console.log(response.data)
             })
-
     }
 
-    useEffect(allTournamentsList, [])
+
+    function login(username: string, password: string) {
+        axios.post("/api/cup/users/login", null, {auth: {username, password}})
+            .then((response) => {
+                setUser(response.data)
+            })
+    }
+
+    function me() {
+        axios.get("/api/cup/users/me")
+            .then(response => {
+                setUser(response.data)
+            })
+    }
+
+    useEffect(() => {
+        allPlayerList()
+        allTournamentsList()
+        me()
+    }, [user])
+
 
     const navigate = useNavigate();
     return (
         <>
-
-
-        <Routes>
-                <Route path={"/"} element={<Home/>}/>
+            <Routes>
+                <Route path={"/"} element={<Home user={user} onLogin={login}/>}/>
                 <Route path={"/players"}
                        element={<PlayerList players={players} allPlayerList={allPlayerList} navigate={navigate}/>}/>
                 <Route path={"/tournaments"}
                        element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
                                                 navigate={navigate}/>}/>
                 <Route path={"/Bracket"}
-                       element={<TournamentBracket tournaments={tournaments} players={players} navigate={navigate}/>}/>
+                       element={<TournamentBracket tournaments={tournaments} players={players}
+                                                   navigate={navigate}/>}/>
             </Routes>
 
+
         </>
-
-
     )
 }
 
