@@ -1,8 +1,9 @@
 import {FormEvent, useState} from "react";
+import {UserWithoutId} from "./Models/UserWithoutId.ts";
 
 type PropsSignUp = {
     user: string
-    onSignup: (username: string, password: string) => void
+    onSignup: (newUser: UserWithoutId) => void
 }
 export default function SignUp(propsSignUp: PropsSignUp) {
     const [username, setUsername] = useState<string>("")
@@ -10,7 +11,12 @@ export default function SignUp(propsSignUp: PropsSignUp) {
 
     function onSignUp(event: FormEvent) {
         event.preventDefault()
-        propsSignUp.onSignup(username, password)
+        const newUser: UserWithoutId = {
+            username: username,
+            password: password
+        };
+
+        propsSignUp.onSignup(newUser);
 
 
     }

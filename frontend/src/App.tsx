@@ -9,6 +9,7 @@ import TournamentList from "./TournamentComponents/TournamentList.tsx";
 import PlayerList from "./PlayerComponents/PlayerList.tsx";
 import {Tournament} from "./Models/Tournament.ts";
 import SignUp from "./SignUp.tsx";
+import {UserWithoutId} from "./Models/UserWithoutId.ts";
 
 
 export default function App() {
@@ -33,6 +34,15 @@ export default function App() {
             })
     }
 
+    function signup(newUserToSignup: UserWithoutId) {
+        axios.post("/api/cup/users/signup", newUserToSignup,)
+            .then(() => {
+                login(newUserToSignup.username, newUserToSignup.password)
+            })
+            .then(() => {
+                navigate("/")
+            })
+    }
 
     function login(username: string, password: string) {
         axios.post("/api/cup/users/login", null, {auth: {username, password}})
@@ -51,12 +61,6 @@ export default function App() {
             });
     }
 
-    function signup(username: string, password: string) {
-        axios.post("/api/cup/users/signup", null, {auth: {username, password}})
-            .then((response) => {
-                setUser(response.data)
-            })
-    }
 
     console.log(user);
 

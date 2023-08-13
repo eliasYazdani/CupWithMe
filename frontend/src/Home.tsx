@@ -48,20 +48,18 @@ export default function Home(propsHome: PropsHome) {
                     </div>
                     :
                     <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center"}}>
-                        <img style={{width: "100%", margin: "40px 0"}}
+                        <img style={{width: "100%", margin: "10px 0"}}
                              src="https://media.istockphoto.com/id/1449580178/vector/under-construction-sign-vector-for-banner-website-ig.jpg?s=2048x2048&w=is&k=20&c=ckEOtEfJX6tpR0ApGnPu6B3GTuNcMVWFo5c-BjuKdRE="
                              alt="Construction"/>
-
-                        <p>Please use the username 'abc', Password '123' as long as there is construction</p>
-
                         <LoginPage user={propsHome.user} onLogin={propsHome.onLogin}/>
 
                         <Button onClick={() => navigate("/signup")} variant="contained"
-                                sx={{fontSize: "10px", padding: "5px 10px"}}>Sign up</Button>
-
+                                sx={{fontSize: "10px", padding: "5px 10px"}}>
+                            Sign up
+                        </Button>
                     </div>
                 }
-                <img style={{width: "75%", margin: "40px 0"}}
+                <img style={{width: "75%", margin: "10px 0"}}
                      src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
                      alt="Football field"/>
             </div>
