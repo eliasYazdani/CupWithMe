@@ -14,7 +14,7 @@ import NewTournamentModal from "./NewTournamentModal.tsx";
 import {useState} from "react";
 
 
-type PropsTournamentTable = {
+type PropsTournamentList = {
 
     navigate: NavigateFunction,
     tournaments: Tournament[],
@@ -23,7 +23,7 @@ type PropsTournamentTable = {
 
 }
 
-export default function TournamentList(propsTournamentTable: PropsTournamentTable) {
+export default function TournamentList(propsTournamentList: PropsTournamentList) {
 
     const [open, setOpen] = useState(false);
     const [visibilitySaveToAddNewTournamentButton, setVisibilitySaveToAddNewTournamentButton] = useState<boolean>(false)
@@ -33,6 +33,9 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
         setVisibilitySaveToAddNewTournamentButton(true)
 
         setOpen(true)
+    }
+    const handleClickTournament = (tournament: Tournament) => {
+        propsTournamentList.navigate(`/Bracket/${tournament.id}`);
     }
 
 
@@ -51,17 +54,20 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {propsTournamentTable.tournaments.map((tournament) => (
+                        {propsTournamentList.tournaments.map((tournament) => (
                             <TableRow
                                 key={tournament.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                onClick={() => propsTournamentTable.navigate("/Bracket")}
-
+                                onClick={() => handleClickTournament(tournament)}
                             >
                                 <TableCell align="left">{tournament.tournamentName}</TableCell>
                                 <TableCell align="left">{tournament.location}</TableCell>
                                 <TableCell align="left">{tournament.numberOfPlayers}</TableCell>
-
+                                <TableCell>
+                                    <Button variant="contained" sx={{padding: "5px 10px"}}>
+                                        View Bracket
+                                    </Button>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -72,11 +78,11 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
                         sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
                     new Tournament
                 </Button>
-                <Button variant="contained" onClick={() => propsTournamentTable.navigate("/")}
+                <Button variant="contained" onClick={() => propsTournamentList.navigate("/")}
                         sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
                     Home
                 </Button>
-                <Button variant="contained" onClick={() => propsTournamentTable.navigate("/players")}
+                <Button variant="contained" onClick={() => propsTournamentList.navigate("/players")}
                         sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
                     Players
                 </Button>
@@ -84,7 +90,7 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
             <NewTournamentModal visibilitySaveToAddNewTournamentButton={visibilitySaveToAddNewTournamentButton}
 
                                 open={open} setOpen={setOpen}
-                                allTournamentsList={propsTournamentTable.allTournamentList}
+                                allTournamentsList={propsTournamentList.allTournamentList}
 
             />
 
@@ -92,5 +98,5 @@ export default function TournamentList(propsTournamentTable: PropsTournamentTabl
     )
         ;
 }
-//<TableCell align="right" component="th" scope="row">{tournament.id}</TableCell>    <TableCell align="right">ID</TableCell>
+
 
