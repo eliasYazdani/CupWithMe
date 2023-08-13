@@ -6,11 +6,12 @@ type PropsHome = {
     user: string
     onLogin: (username: string, password: string) => void
     onLogout: () => void,
+    isAuthenticated: boolean
 }
 export default function Home(propsHome: PropsHome) {
 
     const navigate = useNavigate();
-    const isAuthenticated = propsHome.user !== undefined && propsHome.user !== "anonymousUser"
+
     return (
         <>
             <h1 style={{color: "red", textAlign: "center"}}>Cup With Me🏆</h1>
@@ -21,14 +22,29 @@ export default function Home(propsHome: PropsHome) {
                 gap: "20px"
             }}>
 
-                {isAuthenticated
+                {propsHome.isAuthenticated
                     ?
-                    <div>
-                        <p>{propsHome.user}</p>
-                        <Button variant="contained" onClick={propsHome.onLogout}
-                                sx={{fontSize: "10px", padding: "5px 10px"}}>
-                            Logout
-                        </Button>
+                    <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center"}}>
+                        <div style={{display: "flex", gap: "10px", justifyContent: "right"}}>
+                            <p>{propsHome.user}</p>
+                            <Button variant="contained" onClick={propsHome.onLogout}
+                                    sx={{fontSize: "10px", padding: "5px 5px"}}>
+                                Logout
+                            </Button>
+                        </div>
+                        <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
+
+                            <Button variant="contained"
+                                    onClick={() => propsHome.isAuthenticated ? navigate("/players") : navigate("/")}
+                                    sx={{fontSize: "10px", padding: "5px 10px"}}>
+                                Players
+                            </Button>
+                            <Button variant="contained"
+                                    onClick={() => propsHome.isAuthenticated ? navigate("/tournaments") : navigate("/")}
+                                    sx={{fontSize: "10px", padding: "5px 10px"}}>
+                                Tournaments
+                            </Button>
+                        </div>
                     </div>
                     :
                     <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center"}}>
@@ -39,27 +55,19 @@ export default function Home(propsHome: PropsHome) {
                         <p>Please use the username 'abc', Password '123' as long as there is construction</p>
 
                         <LoginPage user={propsHome.user} onLogin={propsHome.onLogin}/>
+
+                        <Button onClick={() => navigate("/signup")} variant="contained"
+                                sx={{fontSize: "10px", padding: "5px 10px"}}>Sign up</Button>
+
                     </div>
                 }
                 <img style={{width: "75%", margin: "40px 0"}}
                      src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
                      alt="Football field"/>
             </div>
-            <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
 
-                <Button variant="contained"
-                        onClick={() => isAuthenticated ? navigate("/players") : navigate("/")}
-                        sx={{fontSize: "10px", padding: "5px 10px"}}>
-                    Players
-                </Button>
-                <Button variant="contained" onClick={() => isAuthenticated ? navigate("/tournaments") : navigate("/")}
-                        sx={{fontSize: "10px", padding: "5px 10px"}}>
-                    Tournaments
-                </Button>
-            </div>
         </>
 
     )
 }
-/*
-isAuthenticated ? <Outlet/> :<Navigate to="/"/>    );*/
+
