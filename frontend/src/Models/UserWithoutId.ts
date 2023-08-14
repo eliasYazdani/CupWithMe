@@ -3,4 +3,3 @@ export type UserWithoutId = {
     password: string,
 
 }
-

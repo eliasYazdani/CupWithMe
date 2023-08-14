@@ -1,0 +1,45 @@
+/* TournamentBracket.css */
+
+.bracket-container {
+    display: flex;
+    gap: 20px;
+}
+
+.round {
+
+    padding: 10px;
+}
+
+.round h4 {
+    margin: 0;
+}
+
+.round-matches {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+
+.match {
+    display: flex;
+    gap: 10px;
+}
+
+/* Adjust input field width for player name */
+.match input {
+    width: 200px; /* Adjust this width as needed */
+}
+
+.round {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Adjust this value to increase or decrease the distance */
+}
+
+.match {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Same value as above */
+}

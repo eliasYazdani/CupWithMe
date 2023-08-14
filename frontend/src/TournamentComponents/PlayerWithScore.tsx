@@ -54,4 +54,3 @@ export default function PlayerWithScore(propsPlayerWithScore: PropsPlayerWithSco
 }
 
 
-// value={`${player.firstName} ${player.lastName}`}                    >                        {`${player.firstName} ${player.lastName}`}
