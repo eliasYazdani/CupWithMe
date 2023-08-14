@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/cup/users/me").permitAll()
                                 .requestMatchers("/api/cup/users/login").permitAll()
                                 .requestMatchers("/api/cup/users/logout").permitAll()
+                                .requestMatchers("/api/cup/users/signup").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout(logout -> logout.logoutUrl("/api/cup/users/logout")
