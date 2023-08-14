@@ -1,5 +1,6 @@
 package eliasyazdani.capstone.cupwithme.backend.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -48,7 +49,11 @@ public class SecurityConfig {
                                 .requestMatchers("/api/cup/users/logout").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.logoutUrl("/api/cup/users/logout"))
+                .logout(logout -> logout.logoutUrl("/api/cup/users/logout")
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler((request, response, authentication) ->
+                                response.setStatus(HttpServletResponse.SC_OK)
+                        ))
                 .build();
     }
 
