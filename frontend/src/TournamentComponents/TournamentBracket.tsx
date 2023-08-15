@@ -57,7 +57,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                     {/* Winner's name input */}
                     <div className="winner-input">
                         <h1>Winner🏆</h1>
-                        <FormControl sx={{m: 1, width: "10%"}}>
+                        <FormControl sx={{m: 1, width: "70%"}}>
                             <InputLabel id="demo-simple-select-label">Players</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"

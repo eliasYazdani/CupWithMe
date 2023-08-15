@@ -22,7 +22,7 @@ export default function PlayerWithScore(propsPlayerWithScore: PropsPlayerWithSco
 
     return (
         <Box style={{display: 'flex', flexDirection: 'row'}}>
-            <FormControl sx={{m: 1, width: "10%"}}>
+            <FormControl sx={{m: 1, width: "100%"}}>
                 <InputLabel id="demo-simple-select-label">Players</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"

@@ -1,45 +1,34 @@
-/* TournamentBracket.css */
 
 .bracket-container {
     display: flex;
-    gap: 20px;
-}
+    flex-direction: row;
 
-.round {
-
+    gap: 100px;
+    border: 2px solid red;
+    min-width: 600px;
+    width: max-content;
+    margin: 0 auto;
     padding: 10px;
 }
 
 .round h4 {
     margin: 0;
+
 }
 
 .round-matches {
     display: flex;
     flex-direction: column;
+    height: 100%;
+
+    justify-content: space-around;
     gap: 100px;
 }
 
-.match {
-    display: flex;
-    gap: 10px;
-}
-
-/* Adjust input field width for player name */
 .match input {
-    width: 200px; /* Adjust this width as needed */
+    width: 100px;
 }
 
-.round {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* Adjust this value to increase or decrease the distance */
-}
-
-.match {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* Same value as above */
+.winner-input {
+    align-self: center;
 }

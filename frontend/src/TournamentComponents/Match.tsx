@@ -7,7 +7,7 @@ type Props = {
 }
 export default function Match(props: Props) {
     return (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}>
             <PlayerWithScore players={props.players}/>
             <PlayerWithScore players={props.players}/>
         </div>
