@@ -3,19 +3,26 @@ import {NavigateFunction, useParams} from "react-router-dom";
 import {Player} from "../Models/Player.ts";
 import Match from "./Match.tsx";
 import {Tournament} from "../Models/Tournament.ts";
-import {useState} from "react";
+import React, {useState} from "react";
 import "./TournamentBracket.css";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {SelectChangeEvent} from "@mui/material/Select";
+import {MatchModel} from "../Models/MatchModel.ts";
+import axios from "axios";
 
 
 type PropsTournamentBracket = {
     navigate: NavigateFunction;
     players: Player[];
     tournaments: Tournament[];
+    match?: MatchModel;
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {
+    const [score1, setScore1] = useState(propsTournamentBracket.match?.score1)
+    const [player1, setPlayer1] = useState(propsTournamentBracket.match?.player1)
+    const [score2, setScore2] = useState(propsTournamentBracket.match?.score2)
+    const [player2, setPlayer2] = useState(propsTournamentBracket.match?.player2)
     const [winnerName, setWinnerName] = useState("");
     const {tournamentId} = useParams();
     const selectedTournament = propsTournamentBracket.tournaments.find(
@@ -31,9 +38,35 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     const totalBracketSize = Math.pow(2, Math.ceil(Math.log2(numPlayers)));
 
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setWinnerName(event.target.value as string);
+    const handleChangeWinner = (event: SelectChangeEvent) => {
+        setWinnerName(event.target.value);
     };
+
+    const handleScoreChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setScore1(parseInt(event.target.value));
+    };
+    const handlePlayerChange1 = (event: SelectChangeEvent) => {
+        setPlayer1(event.target.value);
+    }
+    const handleScoreChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setScore2(parseInt(event.target.value));
+    };
+    const handlePlayerChange2 = (event: SelectChangeEvent) => {
+        setPlayer2(event.target.value);
+    }
+    const handleSaveBracket = () => {
+        if (selectedTournament) {
+            const tournamentId = selectedTournament.id;
+
+            axios.put("/api/cup/tournaments/" + tournamentId, {
+                "score1": score1,
+                "player1": player1,
+                "score2": score2,
+                "player2": player2,
+            } as MatchModel)
+            // ...rest of your code
+        }
+    }
 
     return (
         <div>
@@ -47,7 +80,13 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                 {[...Array(totalBracketSize / Math.pow(2, roundIndex + 1))].map(
                                     (_, matchIndex) => (
                                         <div key={matchIndex} className="match">
-                                            <Match players={propsTournamentBracket.players}/>
+                                            <Match matchIndex={matchIndex}
+                                                   players={propsTournamentBracket.players}
+                                                   onScoreChange1={handleScoreChange1}
+                                                   onPlayerChange1={handlePlayerChange1}
+                                                   onScoreChange2={handleScoreChange2}
+                                                   onPlayerChange2={handlePlayerChange2}/>
+
                                         </div>
                                     )
                                 )}
@@ -64,7 +103,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                 id="demo-simple-select"
                                 value={winnerName}
                                 label="Player name"
-                                onChange={handleChange}
+                                onChange={handleChangeWinner}
                                 autoWidth
                             >
                                 <MenuItem value="">
@@ -72,7 +111,8 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                 </MenuItem>
                                 {propsTournamentBracket.players.map((player) => (
                                     <MenuItem key={player.id}
-                                              value={`${player.firstName} ${player.lastName}`}>{`${player.firstName} ${player.lastName}`}</MenuItem>
+                                              value={`${player.firstName} ${player.lastName}`}
+                                    >{`${player.firstName} ${player.lastName}`}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -92,6 +132,13 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                         sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}
                     >
                         Tournaments
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleSaveBracket} // Call the handleSave function when the button is clicked
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}
+                    >
+                        Save
                     </Button>
                 </div>
             </div>
