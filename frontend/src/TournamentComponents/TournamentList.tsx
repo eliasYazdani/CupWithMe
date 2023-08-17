@@ -44,7 +44,7 @@ export default function TournamentList(propsTournamentList: PropsTournamentList)
             <h1 className="main-Title">Cup with me🏆</h1>
             <h2>Tournaments:</h2>
             <TableContainer component={Paper}>
-                <Table sx={{width: '100%'}} aria-label="simple table">
+                <Table sx={{width: '80vw'}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">Name</TableCell>
@@ -64,9 +64,7 @@ export default function TournamentList(propsTournamentList: PropsTournamentList)
                                 <TableCell align="left">{tournament.location}</TableCell>
                                 <TableCell align="left">{tournament.numberOfPlayers}</TableCell>
                                 <TableCell>
-                                    <Button variant="contained" sx={{padding: "5px 10px"}}>
-                                        View Bracket
-                                    </Button>
+
                                 </TableCell>
                             </TableRow>
                         ))}

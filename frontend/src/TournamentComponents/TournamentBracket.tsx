@@ -4,7 +4,7 @@ import {Player} from "../Models/Player.ts";
 import Match from "./Match.tsx";
 import {Tournament} from "../Models/Tournament.ts";
 import React, {useEffect, useState} from "react";
-import "./TournamentBracket.css";
+import "../CSS/TournamentBracket.css";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {SelectChangeEvent} from "@mui/material/Select";
 import {MatchModel} from "../Models/MatchModel.ts";

@@ -1,3 +1,4 @@
+import "./CSS/Home.css"
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 import LoginPage from "./LoginPage.tsx";
@@ -13,22 +14,22 @@ export default function Home(propsHome: PropsHome) {
     const navigate = useNavigate();
 
     return (
-        <>
+        <div className="home">
             <h1 style={{color: "red", textAlign: "center"}}>Cup With Me🏆</h1>
             <div style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
+                alignContent: "center",
                 gap: "20px"
             }}>
 
                 {propsHome.isAuthenticated
                     ?
-                    <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center"}}>
-                        <div style={{display: "flex", gap: "10px", justifyContent: "right"}}>
-                            <p>{propsHome.user}</p>
+                    <div style={{display: "flex", flexDirection: "column", gap: "150px", alignItems: "center"}}>
+                        <div style={{display: "flex", gap: "50vw"}}>
+                            <p style={{color: 'white', fontSize: "20px"}}>{propsHome.user}</p>
                             <Button variant="contained" onClick={propsHome.onLogout}
-                                    sx={{fontSize: "10px", padding: "5px 5px"}}>
+                                    sx={{fontSize: "10px", padding: "5px 10px"}}>
                                 Logout
                             </Button>
                         </div>
@@ -47,10 +48,8 @@ export default function Home(propsHome: PropsHome) {
                         </div>
                     </div>
                     :
-                    <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center"}}>
-                        <img style={{width: "100%", margin: "10px 0"}}
-                             src="https://media.istockphoto.com/id/1449580178/vector/under-construction-sign-vector-for-banner-website-ig.jpg?s=2048x2048&w=is&k=20&c=ckEOtEfJX6tpR0ApGnPu6B3GTuNcMVWFo5c-BjuKdRE="
-                             alt="Construction"/>
+                    <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center "}}>
+
                         <LoginPage user={propsHome.user} onLogin={propsHome.onLogin}/>
 
                         <Button onClick={() => navigate("/signup")} variant="contained"
@@ -59,12 +58,12 @@ export default function Home(propsHome: PropsHome) {
                         </Button>
                     </div>
                 }
-                <img style={{width: "75%", margin: "10px 0"}}
+                <img style={{width: "95vw", margin: "0px 0"}}
                      src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
                      alt="Football field"/>
             </div>
 
-        </>
+        </div>
 
     )
 }

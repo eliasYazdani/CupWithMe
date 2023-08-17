@@ -78,7 +78,7 @@ export default function App() {
 
     const navigate = useNavigate();
     return (
-        <>
+        <div className="app">
             <Routes>
                 <Route path={"/"}
                        element={<Home isAuthenticated={isAuthenticated} user={user} onLogin={login}
@@ -98,7 +98,7 @@ export default function App() {
             </Routes>
 
 
-        </>
+        </div>
     )
 }
 
