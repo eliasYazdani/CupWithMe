@@ -92,7 +92,8 @@ export default function App() {
                        element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
                                                 navigate={navigate}/>}/>
                 <Route path="/Bracket/:tournamentId"
-                       element={<TournamentBracket tournaments={tournaments} players={players}
+                       element={<TournamentBracket allTournamentsList={allTournamentsList} tournaments={tournaments}
+                                                   players={players}
                                                    navigate={navigate}/>}/>
             </Routes>
 

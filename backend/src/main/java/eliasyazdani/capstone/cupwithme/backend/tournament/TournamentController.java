@@ -28,8 +28,8 @@ public class TournamentController {
     }
 
     @PutMapping("/{id}")
-    public Tournament changeTournamentInfo(@PathVariable String id, @Valid @RequestBody TournamentWithoutID tournamentWithoutID) {
-        return tournamentService.changeTournamentInfo(id, tournamentWithoutID);
+    public Tournament changeTournamentInfo(@PathVariable String id, @Valid @RequestBody TournamentWithoutIdWithMatch tournamentWithoutIdWithMatch) {
+        return tournamentService.changeTournamentInfo(id, tournamentWithoutIdWithMatch);
     }
 
     @DeleteMapping("/{id}")

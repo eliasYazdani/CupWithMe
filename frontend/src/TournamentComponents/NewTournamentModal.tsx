@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Tournament} from "../Models/Tournament.ts";
+import {TournamentWithoutId} from "../Models/TournamentWithoutId.ts";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -79,7 +80,8 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
                 "tournamentName": tournamentName,
                 "location": location,
                 "numberOfPlayers": numberOfPlayers,
-            } as Tournament)
+                "matchWithoutId": {"player1": "", "score1": 0, "player2": "", "score2": 0}
+            } as TournamentWithoutId)
                 .then(() => propsNewTournamentModal.allTournamentsList())
                 .then(() => propsNewTournamentModal.setOpen(false))
         }

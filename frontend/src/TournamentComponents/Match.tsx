@@ -4,6 +4,7 @@ import PlayerWithScore2 from "./PlayerWithScore2.tsx";
 import {SelectChangeEvent} from "@mui/material/Select";
 
 type PropsMatch = {
+    id: string
     matchIndex: number; // Add the matchIndex prop
     players: Player[];
     onScoreChange1: (event: React.ChangeEvent<HTMLInputElement>) => void;

@@ -21,11 +21,19 @@ public class TournamentService {
     }
 
     public Tournament addNewTournament(TournamentWithoutID tournamentWithoutID) {
+        Match newMatch = new Match(
+                idService.randomId(),
+                tournamentWithoutID.matchWithoutId().player1(),
+                tournamentWithoutID.matchWithoutId().score1(),
+                tournamentWithoutID.matchWithoutId().player2(),
+                tournamentWithoutID.matchWithoutId().score2()
+        );
         Tournament newTournament = new Tournament(
                 idService.randomId(),
                 tournamentWithoutID.tournamentName(),
                 tournamentWithoutID.location(),
-                tournamentWithoutID.numberOfPlayers()
+                tournamentWithoutID.numberOfPlayers(),
+                newMatch
         );
         tournamentRepository.insert(newTournament);
         return newTournament;
@@ -41,12 +49,22 @@ public class TournamentService {
 
     }
 
-    public Tournament changeTournamentInfo(String id, TournamentWithoutID tournamentWithoutID) {
+    public Tournament changeTournamentInfo(String id, TournamentWithoutIdWithMatch tournamentWithoutIdWithMatch) {
+        Match matchToEdit = new Match(
+                tournamentWithoutIdWithMatch.match().id(),
+                tournamentWithoutIdWithMatch.match().player1(),
+                tournamentWithoutIdWithMatch.match().score1(),
+                tournamentWithoutIdWithMatch.match().player2(),
+                tournamentWithoutIdWithMatch.match().score2()
+        );
         Tournament newChangedTournament = new Tournament(
                 id,
-                tournamentWithoutID.tournamentName(),
-                tournamentWithoutID.location(),
-                tournamentWithoutID.numberOfPlayers());
+                tournamentWithoutIdWithMatch.tournamentName(),
+                tournamentWithoutIdWithMatch.location(),
+                tournamentWithoutIdWithMatch.numberOfPlayers(),
+                matchToEdit
+        );
+
         return tournamentRepository.save(newChangedTournament);
     }
 
@@ -57,4 +75,6 @@ public class TournamentService {
         tournamentRepository.deleteById(id);
         return tournamentRepository.findAll();
     }
+
+
 }

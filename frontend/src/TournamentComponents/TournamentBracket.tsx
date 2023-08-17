@@ -3,12 +3,13 @@ import {NavigateFunction, useParams} from "react-router-dom";
 import {Player} from "../Models/Player.ts";
 import Match from "./Match.tsx";
 import {Tournament} from "../Models/Tournament.ts";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./TournamentBracket.css";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {SelectChangeEvent} from "@mui/material/Select";
 import {MatchModel} from "../Models/MatchModel.ts";
 import axios from "axios";
+import {TournamentWithoutIdWithMatch} from "../Models/TournamentWithoutIdWithMatch.ts";
 
 
 type PropsTournamentBracket = {
@@ -16,6 +17,7 @@ type PropsTournamentBracket = {
     players: Player[];
     tournaments: Tournament[];
     match?: MatchModel;
+    allTournamentsList: () => void
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {
@@ -54,17 +56,31 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     const handlePlayerChange2 = (event: SelectChangeEvent) => {
         setPlayer2(event.target.value);
     }
+    useEffect(() => {
+        setPlayer1(propsTournamentBracket.match?.player1)
+        setScore1(propsTournamentBracket.match?.score1)
+        setPlayer2(propsTournamentBracket.match?.player2)
+        setScore2(propsTournamentBracket.match?.score2)
+    }, [propsTournamentBracket.match])
     const handleSaveBracket = () => {
         if (selectedTournament) {
             const tournamentId = selectedTournament.id;
 
             axios.put("/api/cup/tournaments/" + tournamentId, {
-                "score1": score1,
-                "player1": player1,
-                "score2": score2,
-                "player2": player2,
-            } as MatchModel)
-            // ...rest of your code
+                "tournamentName": selectedTournament.tournamentName,
+                "location": selectedTournament.location,
+                "numberOfPlayers": selectedTournament.numberOfPlayers,
+                "match": {
+                    "id": selectedTournament.match.id,
+                    "player1": player1,
+                    "score1": score1,
+                    "player2": player2,
+                    "score2": score2
+                }
+            } as TournamentWithoutIdWithMatch)
+                .then(() => propsTournamentBracket.allTournamentsList())
+
+
         }
     }
 
@@ -80,12 +96,14 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                 {[...Array(totalBracketSize / Math.pow(2, roundIndex + 1))].map(
                                     (_, matchIndex) => (
                                         <div key={matchIndex} className="match">
-                                            <Match matchIndex={matchIndex}
-                                                   players={propsTournamentBracket.players}
-                                                   onScoreChange1={handleScoreChange1}
-                                                   onPlayerChange1={handlePlayerChange1}
-                                                   onScoreChange2={handleScoreChange2}
-                                                   onPlayerChange2={handlePlayerChange2}/>
+                                            <Match
+                                                id={selectedTournament.match.id}
+                                                matchIndex={matchIndex}
+                                                players={propsTournamentBracket.players}
+                                                onScoreChange1={handleScoreChange1}
+                                                onPlayerChange1={handlePlayerChange1}
+                                                onScoreChange2={handleScoreChange2}
+                                                onPlayerChange2={handlePlayerChange2}/>
 
                                         </div>
                                     )
