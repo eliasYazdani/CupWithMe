@@ -76,11 +76,21 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
         setNumberOfPlayers(0)
 
         if (tournamentName !== "" && location !== "" && numberOfPlayers !== undefined && numberOfPlayers > 0) {
+            const initialMatches = [];
+            for (let i = 0; i < (numberOfPlayers - 1); i++) {
+                initialMatches.push({
+                    player1: "",
+                    score1: 0,
+                    player2: "",
+                    score2: 0
+                });
+            }
+            console.log("Initial matches array:", initialMatches);
             axios.post("/api/cup/tournaments", {
                 "tournamentName": tournamentName,
                 "location": location,
                 "numberOfPlayers": numberOfPlayers,
-                "matchWithoutId": {"player1": "", "score1": 0, "player2": "", "score2": 0}
+                matchesWithoutId: initialMatches
             } as TournamentWithoutId)
                 .then(() => propsNewTournamentModal.allTournamentsList())
                 .then(() => propsNewTournamentModal.setOpen(false))

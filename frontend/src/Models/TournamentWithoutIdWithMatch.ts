@@ -4,6 +4,6 @@ export type TournamentWithoutIdWithMatch = {
     tournamentName: string,
     location: string,
     numberOfPlayers: number,
-    match: MatchModel
+    matches: MatchModel[]
 
 }

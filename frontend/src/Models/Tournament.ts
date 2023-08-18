@@ -5,6 +5,6 @@ export type Tournament = {
     tournamentName: string,
     location: string,
     numberOfPlayers: number,
-    match: MatchModel
+    matches: MatchModel[]
 
 }

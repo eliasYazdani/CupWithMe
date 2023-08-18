@@ -4,6 +4,6 @@ export type TournamentWithoutId = {
     tournamentName: string,
     location: string,
     numberOfPlayers: number,
-    matchWithoutId: MatchWithoutId
+    matchesWithoutId: MatchWithoutId[]
 
 }
