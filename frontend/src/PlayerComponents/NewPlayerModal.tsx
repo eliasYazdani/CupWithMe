@@ -23,9 +23,9 @@ type PropsPlayerModal = {
 
 }
 export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
-    const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName)
-    const [lastName, setLastName] = useState(propsPlayerModal.player?.lastName)
-    const [age, setAge] = useState(propsPlayerModal.player?.age)
+    const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName || "")
+    const [lastName, setLastName] = useState(propsPlayerModal.player?.lastName || "")
+    const [age, setAge] = useState(propsPlayerModal.player?.age || 0)
     const [errorTextFirstName, setErrorTextFirstName] = useState<string>("")
     const [errorTextLastName, setErrorTextLastName] = useState<string>("")
     const [errorTextAge, setErrorTextAge] = useState<string>("")
@@ -59,9 +59,9 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     }
 
     useEffect(() => {
-        setFirstName(propsPlayerModal.player?.firstName)
-        setLastName(propsPlayerModal.player?.lastName)
-        setAge(propsPlayerModal.player?.age)
+        setFirstName(propsPlayerModal.player?.firstName || "")
+        setLastName(propsPlayerModal.player?.lastName || "")
+        setAge(propsPlayerModal.player?.age || 0)
     }, [propsPlayerModal.player])
 
     const handleClose = () => {
