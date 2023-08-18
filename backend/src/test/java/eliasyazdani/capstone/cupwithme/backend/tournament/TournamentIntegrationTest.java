@@ -1,5 +1,6 @@
 package eliasyazdani.capstone.cupwithme.backend.tournament;
 
+import eliasyazdani.capstone.cupwithme.backend.player.IdService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,8 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,7 +23,8 @@ class TournamentIntegrationTest {
 
     @Autowired
     TournamentRepository tournamentRepository;
-
+    @Autowired
+    IdService idService;
     @Test
     @WithMockUser
     void expectedEmptyListOnGet() throws Exception {
@@ -43,20 +44,26 @@ class TournamentIntegrationTest {
     @Test
     @WithMockUser
     void whenAddNewTournament_thenReturnNewTournament() throws Exception {
+
         mockMvc.perform(
                         post("/api/cup/tournaments")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
-                                        {"tournamentName": "2022","location": "Hamburg","numberOfPlayers": 32}
+                                        {"tournamentName": "Bezirk2","location": "Hamburg","numberOfPlayers": 2,
+                                        "matchWithoutId":{"player1":"","score1":0,"player2": "","score2": 0}}
                                         """)
                                 .with(csrf())
                 )
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {"tournamentName": "2022","location": "Hamburg","numberOfPlayers": 32}
-                        """
-                ));
-
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("id").isNotEmpty())
+                .andExpect(jsonPath("tournamentName").value("Bezirk2"))
+                .andExpect(jsonPath("location").value("Hamburg"))
+                .andExpect(jsonPath("numberOfPlayers").value(2))
+                .andExpect(jsonPath("match.id").isNotEmpty())
+                .andExpect(jsonPath("match.player1").value(""))
+                .andExpect(jsonPath("match.score1").value(0))
+                .andExpect(jsonPath("match.player2").value(""))
+                .andExpect(jsonPath("match.score2").value(0));
 
     }
 
@@ -64,14 +71,16 @@ class TournamentIntegrationTest {
     @Test
     @WithMockUser
     void expectSearchedTournament_whenGetRequestWithIdTournament() throws Exception {
-        Tournament searchedTournament = new Tournament("1A", "2022", "Hamburg", 64);
+        Match matchInSearchedTournament = new Match("M1", "E Y", 3, "L S", 2);
+        Tournament searchedTournament = new Tournament("1A", "2022", "Hamburg", 64, matchInSearchedTournament);
         tournamentRepository.insert(searchedTournament);
         String expectedTournament = """
                     {
                         "id": "1A",
                         "tournamentName": "2022",
                         "location": "Hamburg",
-                        "numberOfPlayers": 64
+                        "numberOfPlayers": 64,
+                        "match":{"id":"M1","player1":"E Y","score1":3,"player2": "L S","score2": 2}
                     }
                 """;
 
@@ -86,8 +95,9 @@ class TournamentIntegrationTest {
     @Test
     @WithMockUser
     void whenExistedIdWithNewInfo_thenReturnThisIdWithNewInfo() throws Exception {
-
-        Tournament tournamentToUpdate = new Tournament("1A", "2022", "Berlin", 32);
+        Match matchToUpdate = new Match("M1", "", 0, "", 0);
+        Tournament tournamentToUpdate = new Tournament(
+                "1A", "Bezirk2", "Berlin", 2, matchToUpdate);
         tournamentRepository.insert(tournamentToUpdate);
 
 
@@ -96,13 +106,15 @@ class TournamentIntegrationTest {
                         put("/api/cup/tournaments/1A")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
-                                        {"id": "1A","tournamentName": "2023","location": "Hamburg","numberOfPlayers": 64}
+                                        {"id": "1A","tournamentName": "Bezirk1","location": "Hamburg","numberOfPlayers": 2,
+                                        "match":{"id":"M1","player1":"E Y","score1":3,"player2": "L S","score2": 2}}
                                         """)
                                 .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                        {"id": "1A","tournamentName": "2023","location": "Hamburg","numberOfPlayers": 64}
+                        {"id": "1A","tournamentName": "Bezirk1","location": "Hamburg","numberOfPlayers": 2,
+                                        "match":{"id":"M1","player1":"E Y","score1":3,"player2": "L S","score2": 2}}
                         """));
     }
 
@@ -110,7 +122,8 @@ class TournamentIntegrationTest {
     @Test
     @WithMockUser
     void whenExistId_thenDeleteAndReturnNothing() throws Exception {
-        Tournament tournamentToDelete = new Tournament("2A", "2022", "Hamburg", 16);
+        Match matchInTournamentToDelete = new Match("M1", "E Y", 3, "L S", 2);
+        Tournament tournamentToDelete = new Tournament("2A", "2022", "Hamburg", 16, matchInTournamentToDelete);
         tournamentRepository.insert(tournamentToDelete);
 
 
