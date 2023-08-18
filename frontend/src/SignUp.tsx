@@ -1,10 +1,13 @@
 import {FormEvent, useState} from "react";
 import {UserWithoutId} from "./Models/UserWithoutId.ts";
 import "./CSS/signUp.css"
+import Button from "@mui/material/Button";
+import {NavigateFunction} from "react-router-dom";
 
 type PropsSignUp = {
     user: string
     onSignup: (newUser: UserWithoutId) => void
+    navigate: NavigateFunction,
 }
 export default function SignUp(propsSignUp: PropsSignUp) {
     const [username, setUsername] = useState<string>("")
@@ -34,9 +37,16 @@ export default function SignUp(propsSignUp: PropsSignUp) {
                 placeholder="Password"
                 type="password"
             />
-            <button className="login-button">
-                <span style={{color: "white"}}>Sign Up</span>
-            </button>
+            <div className="buttons">
+                <Button variant="contained" onClick={onSignUp}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                    Sign Up
+                </Button>
+                <Button variant="contained" onClick={() => propsSignUp.navigate("/")}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                    Home
+                </Button>
+            </div>
         </form>
     );
 }

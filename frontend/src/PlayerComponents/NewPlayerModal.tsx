@@ -159,15 +159,19 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
                 <DialogActions>
                     {propsPlayerModal.visibilityDeletePlayerButton && (
                         <Button variant="contained" onClick={handleDelete}
-                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Delete </Button>)}
+                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                            Delete </Button>)}
                     <Button variant="contained" onClick={handleClose}
-                            sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Cancel</Button>
+                            sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                        Cancel</Button>
                     {propsPlayerModal.visibilitySaveToAddNewPlayerButton && (
                         <Button variant="contained" onClick={handleSaveNewPlayer}
-                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Save</Button>)}
+                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                            Save</Button>)}
                     {propsPlayerModal.visibilitySaveToChangePlayerButton && (
                         <Button variant="contained" onClick={handleSaveChange}
-                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Save</Button>)}
+                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                            Save</Button>)}
                 </DialogActions>
             </Dialog>
         </div>

@@ -74,11 +74,14 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                 }
             } as TournamentWithoutIdWithMatch)
                 .then(() => propsTournamentBracket.allTournamentsList())
-
-
         }
     }
 
+    const handleDeleteBracket = () => {
+        axios.delete("/api/cup/tournaments/" + tournamentId,)
+            .then(() => propsTournamentBracket.allTournamentsList())
+            .then(() => propsTournamentBracket.navigate("/tournaments"))
+    }
     return (
         <div>
             <div key={selectedTournament.id}>
@@ -131,27 +134,30 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                         </FormControl>
                     </div>
                 </div>
-                <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
+                <div style={{display: "flex", flexDirection: "row", gap: "100px", justifyItems: "center"}}>
                     <Button
                         variant="contained"
                         onClick={() => propsTournamentBracket.navigate("/")}
-                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}
-                    >
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
                         Home
                     </Button>
                     <Button
                         variant="contained"
                         onClick={() => propsTournamentBracket.navigate("/tournaments")}
-                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}
-                    >
+                        sx={{fontSize: "10px", padding: "5px 50px", margin: "40px 0"}}>
                         Tournaments
                     </Button>
                     <Button
                         variant="contained"
-                        onClick={handleSaveBracket} // Call the handleSave function when the button is clicked
-                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}
-                    >
+                        onClick={handleSaveBracket}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
                         Save
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleDeleteBracket}
+                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
+                        Delete
                     </Button>
                 </div>
             </div>
