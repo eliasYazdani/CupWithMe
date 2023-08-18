@@ -10,31 +10,25 @@ type PropsHome = {
     isAuthenticated: boolean
 }
 export default function Home(propsHome: PropsHome) {
-
     const navigate = useNavigate();
 
     return (
         <div className="home">
-            <h1 style={{color: "red", textAlign: "center"}}>Cup With Me🏆</h1>
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                alignContent: "center",
-                gap: "20px"
-            }}>
-
-                {propsHome.isAuthenticated
-                    ?
-                    <div style={{display: "flex", flexDirection: "column", gap: "150px", alignItems: "center"}}>
-                        <div style={{display: "flex", gap: "50vw"}}>
-                            <p style={{color: 'white', fontSize: "20px"}}>{propsHome.user}</p>
+            <h1 className="main-Title">Cup With Me🏆</h1>
+            <img className="image"
+                 src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
+                 alt="Football field"/>
+            <div className="content">
+                {propsHome.isAuthenticated ? (
+                    <div className="button-container">
+                        <div className="userLogout">
+                            <p className="user">{propsHome.user}</p>
                             <Button variant="contained" onClick={propsHome.onLogout}
                                     sx={{fontSize: "10px", padding: "5px 10px"}}>
                                 Logout
                             </Button>
                         </div>
-                        <div style={{display: "flex", gap: "10px", justifyContent: "center"}}>
-
+                        <div className="playersTournamentsButtons">
                             <Button variant="contained"
                                     onClick={() => propsHome.isAuthenticated ? navigate("/players") : navigate("/")}
                                     sx={{fontSize: "10px", padding: "5px 10px"}}>
@@ -42,29 +36,24 @@ export default function Home(propsHome: PropsHome) {
                             </Button>
                             <Button variant="contained"
                                     onClick={() => propsHome.isAuthenticated ? navigate("/tournaments") : navigate("/")}
-                                    sx={{fontSize: "10px", padding: "5px 10px"}}>
+                                    sx={{fontSize: "10px", padding: "0px 10px"}}>
                                 Tournaments
                             </Button>
                         </div>
                     </div>
-                    :
-                    <div style={{display: "flex", flexDirection: "column", gap: "10px", alignItems: "center "}}>
-
+                ) : (
+                    <div className="login-signup">
                         <LoginPage user={propsHome.user} onLogin={propsHome.onLogin}/>
-
                         <Button onClick={() => navigate("/signup")} variant="contained"
                                 sx={{fontSize: "10px", padding: "5px 10px"}}>
                             Sign up
                         </Button>
                     </div>
-                }
-                <img style={{width: "95vw", margin: "0px 0"}}
-                     src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
-                     alt="Football field"/>
+                )}
+
             </div>
-
         </div>
-
-    )
+    );
 }
+
 

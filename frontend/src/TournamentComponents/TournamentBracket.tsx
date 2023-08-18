@@ -3,7 +3,7 @@ import {NavigateFunction, useParams} from "react-router-dom";
 import {Player} from "../Models/Player.ts";
 import Match from "./Match.tsx";
 import {Tournament} from "../Models/Tournament.ts";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import "../CSS/TournamentBracket.css";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {SelectChangeEvent} from "@mui/material/Select";
@@ -56,12 +56,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     const handlePlayerChange2 = (event: SelectChangeEvent) => {
         setPlayer2(event.target.value);
     }
-    useEffect(() => {
-        setPlayer1(propsTournamentBracket.match?.player1)
-        setScore1(propsTournamentBracket.match?.score1)
-        setPlayer2(propsTournamentBracket.match?.player2)
-        setScore2(propsTournamentBracket.match?.score2)
-    }, [propsTournamentBracket.match])
+
     const handleSaveBracket = () => {
         if (selectedTournament) {
             const tournamentId = selectedTournament.id;
@@ -87,15 +82,15 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     return (
         <div>
             <div key={selectedTournament.id}>
-                <h1>{selectedTournament.tournamentName}</h1>
+                <h1 style={{color: "white"}}>{selectedTournament.tournamentName + " in " + selectedTournament.location + "🏆"} </h1>
                 <div className="bracket-container">
                     {[...Array(numRounds)].map((_, roundIndex) => (
                         <div key={roundIndex} className="round">
-                            <h4>Round {roundIndex + 1}</h4>
+                            <h4 style={{color: "white"}}>Round {roundIndex + 1}</h4>
                             <div className="round-matches">
                                 {[...Array(totalBracketSize / Math.pow(2, roundIndex + 1))].map(
                                     (_, matchIndex) => (
-                                        <div key={matchIndex} className="match">
+                                        <div key={matchIndex}>
                                             <Match
                                                 id={selectedTournament.match.id}
                                                 matchIndex={matchIndex}
@@ -113,9 +108,9 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                     ))}
                     {/* Winner's name input */}
                     <div className="winner-input">
-                        <h1>Winner🏆</h1>
+                        <h1 style={{color: "gold"}}>Winner🏆</h1>
                         <FormControl sx={{m: 1, width: "70%"}}>
-                            <InputLabel id="demo-simple-select-label">Players</InputLabel>
+                            <InputLabel id="demo-simple-select-label" style={{color: 'gold'}}>Players</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
