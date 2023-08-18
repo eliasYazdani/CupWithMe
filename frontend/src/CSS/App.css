@@ -1,12 +1,29 @@
 .main-Title {
     text-align: center;
+    color: white;
+    margin-top: 30px;
 }
 
 .app {
     background-color: #009f3f; /* Green color in RGB: #009f3f */
-    width: max-content;
+    width: 100%;
     min-height: 100vh; /* Ensure the background covers the entire viewport height */
     display: flex;
     flex-direction: column;
-    align-items: center;
+
+
+}
+
+@media (max-width: 768px) {
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* Make the green background entire of the page */
+body {
+    background-color: #009f3f;
 }

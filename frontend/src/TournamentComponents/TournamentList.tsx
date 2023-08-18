@@ -42,9 +42,9 @@ export default function TournamentList(propsTournamentList: PropsTournamentList)
     return (
         <div>
             <h1 className="main-Title">Cup with me🏆</h1>
-            <h2>Tournaments:</h2>
+            <h2 style={{color: "white"}}>Tournaments</h2>
             <TableContainer component={Paper}>
-                <Table sx={{width: '80vw'}} aria-label="simple table">
+                <Table sx={{width: "100%", backgroundColor: "lightgreen", margin: "0px 0px"}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">Name</TableCell>

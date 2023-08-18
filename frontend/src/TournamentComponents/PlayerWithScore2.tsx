@@ -30,7 +30,7 @@ export default function PlayerWithScore2(propsPlayerWithScore2: PropsPlayerWithS
     return (
         <Box style={{display: 'flex', flexDirection: 'row'}}>
             <FormControl sx={{m: 1, width: "100%"}}>
-                <InputLabel id="demo-simple-select-label">Players</InputLabel>
+                <InputLabel id="demo-simple-select-label" style={{color: 'white'}}>Players</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -58,6 +58,23 @@ export default function PlayerWithScore2(propsPlayerWithScore2: PropsPlayerWithS
                 variant="standard"
                 value={playerScore2 ?? ""}
                 onChange={handleChangeScore2}
+                sx={{
+                    color: 'white', // Text color for input field
+                    '& input::placeholder': {
+                        color: 'white', // Color of the placeholder text
+                    },
+                    '& .MuiInputBase-input': {
+                        '&::before': {
+                            borderColor: 'white', // Color of the outline before input
+                        },
+                        '&::after': {
+                            borderColor: 'white', // Color of the outline after input
+                        },
+                    },
+                    '& .MuiInputLabel-root': {
+                        color: 'white', // Color of the label (placeholder)
+                    },
+                }}
             />
         </Box>
     );

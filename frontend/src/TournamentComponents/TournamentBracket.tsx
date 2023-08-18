@@ -87,15 +87,15 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     return (
         <div>
             <div key={selectedTournament.id}>
-                <h1>{selectedTournament.tournamentName}</h1>
+                <h1 style={{color: "white"}}>{selectedTournament.tournamentName + " in " + selectedTournament.location + "🏆"} </h1>
                 <div className="bracket-container">
                     {[...Array(numRounds)].map((_, roundIndex) => (
                         <div key={roundIndex} className="round">
-                            <h4>Round {roundIndex + 1}</h4>
+                            <h4 style={{color: "white"}}>Round {roundIndex + 1}</h4>
                             <div className="round-matches">
                                 {[...Array(totalBracketSize / Math.pow(2, roundIndex + 1))].map(
                                     (_, matchIndex) => (
-                                        <div key={matchIndex} className="match">
+                                        <div key={matchIndex}>
                                             <Match
                                                 id={selectedTournament.match.id}
                                                 matchIndex={matchIndex}
@@ -113,9 +113,9 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                     ))}
                     {/* Winner's name input */}
                     <div className="winner-input">
-                        <h1>Winner🏆</h1>
+                        <h1 style={{color: "gold"}}>Winner🏆</h1>
                         <FormControl sx={{m: 1, width: "70%"}}>
-                            <InputLabel id="demo-simple-select-label">Players</InputLabel>
+                            <InputLabel id="demo-simple-select-label" style={{color: 'gold'}}>Players</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"

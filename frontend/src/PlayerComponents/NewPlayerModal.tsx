@@ -110,7 +110,8 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     return (
         <div>
 
-            <Dialog open={propsPlayerModal.open} onClose={handleClose}>
+            <Dialog open={propsPlayerModal.open} onClose={handleClose}
+                    PaperProps={{style: {backgroundColor: 'lightgreen'}}}>
                 <DialogTitle>Player information:</DialogTitle>
                 <DialogContent>
                     <DialogContentText>

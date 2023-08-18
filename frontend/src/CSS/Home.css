@@ -1,4 +1,68 @@
-/*
-.home{
-    background-color: rgb(0,159,63);
-}*/
+.home {
+    background-color: rgb(0, 159, 63);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.title {
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+    margin: 20px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    /* Align items vertically */
+}
+
+.user, .login { /* Select elements with class 'user' and 'login' */
+    color: white; /* Set the text color to white */
+}
+
+.image {
+    width: 95vw;
+    margin-top: 20px;
+    align-items: center;
+
+
+    /* Center vertically */
+}
+
+/* Home.css */
+
+
+.login-signup {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.playersTournamentsButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+
+
+}
+
+.userLogout {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    gap: 20px;
+
+
+}

@@ -1,5 +1,6 @@
 import {FormEvent, useState} from "react";
 import {UserWithoutId} from "./Models/UserWithoutId.ts";
+import "./CSS/signUp.css"
 
 type PropsSignUp = {
     user: string
@@ -17,19 +18,25 @@ export default function SignUp(propsSignUp: PropsSignUp) {
         };
 
         propsSignUp.onSignup(newUser);
-
-
     }
 
     return (
-        <form onSubmit={onSignUp}>
-
-            <p>{propsSignUp.user}</p>
-            <p> Sign Up</p>
-            <input value={username} onChange={event => setUsername(event.target.value)} placeholder="Username"/>
-            <input value={password} onChange={event => setPassword(event.target.value)} placeholder="Password"
-                   type="password"/>
-            <button>Signup</button>
+        <form onSubmit={onSignUp} className="signUp">
+            <p style={{color: "white"}}>{propsSignUp.user}</p>
+            <input
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                placeholder="Username"
+            />
+            <input
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Password"
+                type="password"
+            />
+            <button className="login-button">
+                <span style={{color: "white"}}>Sign Up</span>
+            </button>
         </form>
-    )
+    );
 }
