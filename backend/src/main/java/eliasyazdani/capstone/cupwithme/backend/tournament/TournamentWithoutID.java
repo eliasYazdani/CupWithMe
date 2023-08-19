@@ -3,6 +3,8 @@ package eliasyazdani.capstone.cupwithme.backend.tournament;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
+import java.util.List;
+
 public record TournamentWithoutID(
         @NotBlank
         String tournamentName,
@@ -11,6 +13,6 @@ public record TournamentWithoutID(
         @Positive
         int numberOfPlayers,
 
-        MatchWithoutId matchWithoutId
+        List<MatchWithoutId> matchesWithoutId
 ) {
 }

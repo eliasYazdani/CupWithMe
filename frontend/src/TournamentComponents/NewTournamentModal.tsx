@@ -90,7 +90,7 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
                 "tournamentName": tournamentName,
                 "location": location,
                 "numberOfPlayers": numberOfPlayers,
-                matchesWithoutId: initialMatches
+                "matchesWithoutId": initialMatches
             } as TournamentWithoutId)
                 .then(() => propsNewTournamentModal.allTournamentsList())
                 .then(() => propsNewTournamentModal.setOpen(false))

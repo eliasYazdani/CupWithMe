@@ -61,17 +61,18 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
         if (selectedTournament) {
             const tournamentId = selectedTournament.id;
 
+            const updatedMatches = selectedTournament.matches.map(match => ({
+                id: match.id,
+                player1: match.player1,
+                score1: match.score1,
+                player2: match.player2,
+                score2: match.score2
+            }));
             axios.put("/api/cup/tournaments/" + tournamentId, {
                 "tournamentName": selectedTournament.tournamentName,
                 "location": selectedTournament.location,
                 "numberOfPlayers": selectedTournament.numberOfPlayers,
-                "match": {
-                    "id": selectedTournament.match.id,
-                    "player1": player1,
-                    "score1": score1,
-                    "player2": player2,
-                    "score2": score2
-                }
+                "matches": updatedMatches
             } as TournamentWithoutIdWithMatch)
                 .then(() => propsTournamentBracket.allTournamentsList())
         }
@@ -95,7 +96,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                     (_, matchIndex) => (
                                         <div key={matchIndex}>
                                             <Match
-                                                id={selectedTournament.match.id}
+                                                id={selectedTournament.matches.id}
                                                 matchIndex={matchIndex}
                                                 players={propsTournamentBracket.players}
                                                 onScoreChange1={handleScoreChange1}
