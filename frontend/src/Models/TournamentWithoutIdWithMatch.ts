@@ -1,7 +1,6 @@
 import {MatchModel} from "./MatchModel.ts";
 
-export type Tournament = {
-    id: string,
+export type TournamentWithoutIdWithMatch = {
     tournamentName: string,
     location: string,
     numberOfPlayers: number,

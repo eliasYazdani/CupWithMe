@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Tournament} from "../Models/Tournament.ts";
+import {TournamentWithoutId} from "../Models/TournamentWithoutId.ts";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -79,7 +80,8 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
                 "tournamentName": tournamentName,
                 "location": location,
                 "numberOfPlayers": numberOfPlayers,
-            } as Tournament)
+                "matchWithoutId": {"player1": "", "score1": 0, "player2": "", "score2": 0}
+            } as TournamentWithoutId)
                 .then(() => propsNewTournamentModal.allTournamentsList())
                 .then(() => propsNewTournamentModal.setOpen(false))
         }
@@ -87,57 +89,59 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
 
 
     return (
-        <div><Dialog open={propsNewTournamentModal.open} onClose={handleClose}>
-            <DialogTitle>Tournament information:</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Give Tournament information like name,Location and Number of players.
-                </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="tournament"
-                    value={tournamentName}
-                    label="Tournament name"
-                    type="text"
-                    onInput={changeTournamentName}
-                    fullWidth
-                    variant="standard"
-                />
-                <p style={{color: red[500]}}>{errorTextTournamentName}</p>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="tournament"
-                    value={location}
-                    label="Location"
-                    type="text"
-                    onInput={changeLocation}
-                    fullWidth
-                    variant="standard"
-                />
-                <p style={{color: red[500]}}>{errorTextLocation}</p>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="tournament"
-                    value={numberOfPlayers}
-                    label="Number of players"
-                    type="number"
-                    onInput={changeNumberOfPlayers}
-                    fullWidth
-                    variant="standard"
-                />
-                <p style={{color: red[500]}}>{errorTextNumberOfPlayers}</p>
-            </DialogContent>
-            <DialogActions>
-                <Button variant="contained" onClick={handleClose}
-                        sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Cancel</Button>
-                {propsNewTournamentModal.visibilitySaveToAddNewTournamentButton && (
-                    <Button variant="contained" onClick={handleSaveNewTournament}
-                            sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Save</Button>)}
+        <div>
+            <Dialog open={propsNewTournamentModal.open} onClose={handleClose}
+                    PaperProps={{style: {backgroundColor: 'lightgreen'}}}>
+                <DialogTitle>Tournament information:</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Give Tournament information like name,Location and Number of players.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="tournament"
+                        value={tournamentName}
+                        label="Tournament name"
+                        type="text"
+                        onInput={changeTournamentName}
+                        fullWidth
+                        variant="standard"
+                    />
+                    <p style={{color: red[500]}}>{errorTextTournamentName}</p>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="tournament"
+                        value={location}
+                        label="Location"
+                        type="text"
+                        onInput={changeLocation}
+                        fullWidth
+                        variant="standard"
+                    />
+                    <p style={{color: red[500]}}>{errorTextLocation}</p>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="tournament"
+                        value={numberOfPlayers}
+                        label="Number of players"
+                        type="number"
+                        onInput={changeNumberOfPlayers}
+                        fullWidth
+                        variant="standard"
+                    />
+                    <p style={{color: red[500]}}>{errorTextNumberOfPlayers}</p>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" onClick={handleClose}
+                            sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Cancel</Button>
+                    {propsNewTournamentModal.visibilitySaveToAddNewTournamentButton && (
+                        <Button variant="contained" onClick={handleSaveNewTournament}
+                                sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>Save</Button>)}
 
-            </DialogActions>
-        </Dialog></div>
+                </DialogActions>
+            </Dialog></div>
     );
 }

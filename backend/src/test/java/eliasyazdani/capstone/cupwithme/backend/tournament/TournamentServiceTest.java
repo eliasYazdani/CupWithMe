@@ -20,10 +20,12 @@ class TournamentServiceTest {
 
 
     @Test
-    void getAllTournamentsTes() {
+    void getAllTournamentsTest() {
         //  given
-        List<Tournament> testTournamentFromDB = List.of(new Tournament("1A", "2022", "Hamburg", 32),
-                new Tournament("2A", "2023", "Berlin", 64));
+        List<Tournament> testTournamentFromDB = List.of(new Tournament("1A", "2022", "Hamburg", 32, new Match("M1", "E Y", 3, "L S", 2)),
+                new Tournament("2A", "2023", "Berlin", 64, new Match("M2", "I S", 1, "P Y", 4)));
+
+
         Mockito.when(tournamentRepository.findAll())
                 .thenReturn(testTournamentFromDB);
         //  when
@@ -38,10 +40,13 @@ class TournamentServiceTest {
     @Test
     void addNewTournamentTest() {
         // given
-        TournamentWithoutID testTournamentWithoutId = new TournamentWithoutID("2022", "Hamburg", 32);
+        MatchWithoutId testMatchWithoutIdInTournamentWithoutId = new MatchWithoutId("", 0, "", 0);
+        TournamentWithoutID testTournamentWithoutId = new TournamentWithoutID("Bezirk1", "Hamburg", 2, testMatchWithoutIdInTournamentWithoutId);
         Tournament testTournament =
-                new Tournament("1A", testTournamentWithoutId.tournamentName(), testTournamentWithoutId.location(), testTournamentWithoutId.numberOfPlayers());
-        Mockito.when(idService.randomId()).thenReturn("1A");
+                new Tournament("1A", testTournamentWithoutId.tournamentName(), testTournamentWithoutId.location(), testTournamentWithoutId.numberOfPlayers(),
+                        (new Match("M1", testMatchWithoutIdInTournamentWithoutId.player1(), testMatchWithoutIdInTournamentWithoutId.score1(),
+                                testMatchWithoutIdInTournamentWithoutId.player2(), testMatchWithoutIdInTournamentWithoutId.score2())));
+        Mockito.when(idService.randomId()).thenReturn("M1").thenReturn("1A");
         Mockito.when(tournamentRepository.insert(testTournament))
                 .thenReturn(testTournament);
         // when
@@ -49,7 +54,7 @@ class TournamentServiceTest {
         Tournament actual = tournamentService.addNewTournament(testTournamentWithoutId);
         // then
         verify(tournamentRepository).insert(testTournament);
-        verify(idService).randomId();
+        verify(idService, times(2)).randomId();
         Assertions.assertEquals(testTournament, actual);
 
     }
@@ -58,7 +63,7 @@ class TournamentServiceTest {
     void getDetailsByIdTest() {
         // Given
         Optional<Tournament> expected = Optional.of(
-                new Tournament("1a", "2022", "Hamburg", 32));
+                new Tournament("1a", "2022", "Hamburg", 32, new Match("M2", "I S", 1, "P Y", 4)));
         String idToFind = "1a";
         Mockito.when(tournamentRepository.findById(idToFind)).thenReturn(expected);
         // When
@@ -83,16 +88,19 @@ class TournamentServiceTest {
     @Test
     void changeTournamentInfoTest() {
         // Given
-        TournamentWithoutID newTournamentInfoWithoutID = new TournamentWithoutID("2023", "Berlin", 16);
+        Match match = new Match("M1", "E Y", 3, "L S", 2);
+        TournamentWithoutIdWithMatch newTournamentInfoWithoutIdWithMatch = new TournamentWithoutIdWithMatch
+                ("2023", "Berlin", 16, match);
         String idToUpdate = "1A";
         Tournament newTournamentInfo = new Tournament(
                 idToUpdate,
-                newTournamentInfoWithoutID.tournamentName(),
-                newTournamentInfoWithoutID.location(),
-                newTournamentInfoWithoutID.numberOfPlayers());
+                newTournamentInfoWithoutIdWithMatch.tournamentName(),
+                newTournamentInfoWithoutIdWithMatch.location(),
+                newTournamentInfoWithoutIdWithMatch.numberOfPlayers(),
+                newTournamentInfoWithoutIdWithMatch.match());
         Mockito.when(tournamentRepository.save(newTournamentInfo)).thenReturn(newTournamentInfo);
         // When
-        Tournament actual = tournamentService.changeTournamentInfo(idToUpdate, newTournamentInfoWithoutID);
+        Tournament actual = tournamentService.changeTournamentInfo(idToUpdate, newTournamentInfoWithoutIdWithMatch);
         // Then
         verify(tournamentRepository).save(newTournamentInfo);
         Assertions.assertEquals(newTournamentInfo, actual);

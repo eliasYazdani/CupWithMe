@@ -1,0 +1,53 @@
+.home {
+    background-color: rgb(0, 159, 63);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.loginMode {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+
+.logoutMode {
+    display: flex;
+    flex-direction: column;
+}
+
+.buttonsWithImage {
+    display: flex;
+    flex-direction: column;
+}
+
+.user {
+    color: white;
+}
+
+.image {
+    width: 95vw;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.login-signup {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.playersTournamentsButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
+
+.userLogout {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    gap: 20px;
+}

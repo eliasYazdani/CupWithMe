@@ -6,7 +6,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Player} from "../Models/Player.ts";
-
 import {useState} from "react";
 import NewPlayerModal from "./NewPlayerModal.tsx";
 import Button from "@mui/material/Button";
@@ -35,9 +34,9 @@ export default function PlayerList(propsPlayerList: PropsPlayerList) {
     return (
         <div>
             <h1 className="main-Title">Cup with me🏆</h1>
-            <h2>Players:</h2>
+            <h2 style={{color: "white"}}>Players</h2>
             <TableContainer component={Paper}>
-                <Table sx={{width: "100%", margin: "0px 0"}} aria-label="simple table">
+                <Table sx={{width: "100%", backgroundColor: "lightgreen", margin: "0px 0px"}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left">First name</TableCell>

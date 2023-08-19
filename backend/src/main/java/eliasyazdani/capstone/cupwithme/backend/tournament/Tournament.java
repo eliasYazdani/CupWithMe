@@ -9,6 +9,7 @@ public record Tournament(
         String id,
         String tournamentName,
         String location,
-        int numberOfPlayers
+        int numberOfPlayers,
+        Match match
 ) {
 }

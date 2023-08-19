@@ -62,9 +62,6 @@ export default function App() {
     }
 
 
-    console.log(user);
-
-
     function me() {
         axios.get("/api/cup/users/me")
             .then(response => {
@@ -81,23 +78,27 @@ export default function App() {
 
     const navigate = useNavigate();
     return (
-        <>
+        <div className="app">
             <Routes>
-                <Route path={"/"} element={<Home isAuthenticated={isAuthenticated} user={user} onLogin={login}
-                                                 onLogout={logout}/>}/>
-                <Route path={"/signup"} element={<SignUp user={user} onSignup={signup}/>}/>
+                <Route path={"/"}
+                       element={<Home isAuthenticated={isAuthenticated} user={user} onLogin={login}
+                                      onLogout={logout}/>}/>
+                <Route path={"/signup"}
+                       element={<SignUp user={user} onSignup={signup} navigate={navigate}/>}/>
                 <Route path={"/players"}
-                       element={<PlayerList players={players} allPlayerList={allPlayerList} navigate={navigate}/>}/>
+                       element={<PlayerList players={players} allPlayerList={allPlayerList}
+                                            navigate={navigate}/>}/>
                 <Route path={"/tournaments"}
                        element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
                                                 navigate={navigate}/>}/>
-                <Route path={"/Bracket"}
-                       element={<TournamentBracket tournaments={tournaments} players={players}
+                <Route path="/Bracket/:tournamentId"
+                       element={<TournamentBracket allTournamentsList={allTournamentsList} tournaments={tournaments}
+                                                   players={players}
                                                    navigate={navigate}/>}/>
             </Routes>
 
 
-        </>
+        </div>
     )
 }
 

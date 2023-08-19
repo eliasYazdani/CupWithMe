@@ -1,5 +1,5 @@
 import {FormEvent, useState} from "react";
-
+import "./CSS/LoginPage.css"
 
 type PropsLogin = {
     user: string
@@ -17,14 +17,23 @@ export default function LoginPage(propsLogin: PropsLogin) {
     }
 
     return (
-        <form onSubmit={onLogin}>
+        <form onSubmit={onLogin} className="login-form">
+            <p style={{color: "white"}}>{propsLogin.user}</p>
 
-            <p>{propsLogin.user}</p>
-            <p> Login</p>
-            <input value={username} onChange={event => setUsername(event.target.value)} placeholder="Username"/>
-            <input value={password} onChange={event => setPassword(event.target.value)} placeholder="Password"
-                   type="password"/>
-            <button> Login</button>
+            <input
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                placeholder="Username"
+            />
+            <input
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Password"
+                type="password"
+            />
+            <button className="login-button">
+                <span className="white-text">Login</span>
+            </button>
         </form>
     );
 }
