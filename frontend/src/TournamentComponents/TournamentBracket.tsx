@@ -96,7 +96,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                     (_, matchIndex) => (
                                         <div key={matchIndex}>
                                             <Match
-                                                id={selectedTournament.matches.id}
+                                                id={selectedTournament.matches[matchIndex].id}
                                                 matchIndex={matchIndex}
                                                 players={propsTournamentBracket.players}
                                                 onScoreChange1={handleScoreChange1}
