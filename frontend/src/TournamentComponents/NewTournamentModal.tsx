@@ -22,9 +22,9 @@ type PropsNewTournamentModal = {
 }
 
 export default function NewTournamentModal(propsNewTournamentModal: PropsNewTournamentModal) {
-    const [tournamentName, setTournamentName] = useState(propsNewTournamentModal.tournament?.tournamentName)
-    const [location, setLocation] = useState(propsNewTournamentModal.tournament?.location)
-    const [numberOfPlayers, setNumberOfPlayers] = useState(propsNewTournamentModal.tournament?.numberOfPlayers)
+    const [tournamentName, setTournamentName] = useState(propsNewTournamentModal.tournament?.tournamentName || "")
+    const [location, setLocation] = useState(propsNewTournamentModal.tournament?.location || "")
+    const [numberOfPlayers, setNumberOfPlayers] = useState(propsNewTournamentModal.tournament?.numberOfPlayers || 0)
     const [errorTextTournamentName, setErrorTextTournamentName] = useState<string>("")
     const [errorTextLocation, setErrorTextLocation] = useState<string>("")
     const [errorTextNumberOfPlayers, setErrorTextNumberOfPlayers] = useState<string>("")
@@ -58,9 +58,9 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
     }
 
     useEffect(() => {
-        setTournamentName(propsNewTournamentModal.tournament?.tournamentName)
-        setLocation(propsNewTournamentModal.tournament?.location)
-        setNumberOfPlayers(propsNewTournamentModal.tournament?.numberOfPlayers)
+        setTournamentName(propsNewTournamentModal.tournament?.tournamentName || "")
+        setLocation(propsNewTournamentModal.tournament?.location || "")
+        setNumberOfPlayers(propsNewTournamentModal.tournament?.numberOfPlayers || 0)
     }, [propsNewTournamentModal.tournament])
 
     const handleClose = () => {
@@ -90,7 +90,8 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
                 "tournamentName": tournamentName,
                 "location": location,
                 "numberOfPlayers": numberOfPlayers,
-                "matchesWithoutId": initialMatches
+                "matchesWithoutId": initialMatches,
+                "champion": ""
             } as TournamentWithoutId)
                 .then(() => propsNewTournamentModal.allTournamentsList())
                 .then(() => propsNewTournamentModal.setOpen(false))

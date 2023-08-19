@@ -12,7 +12,7 @@ public record TournamentWithoutID(
         String location,
         @Positive
         int numberOfPlayers,
-
-        List<MatchWithoutId> matchesWithoutId
+        List<MatchWithoutId> matchesWithoutId,
+        String champion
 ) {
 }

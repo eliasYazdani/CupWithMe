@@ -38,7 +38,8 @@ public class TournamentService {
                 tournamentWithoutID.tournamentName(),
                 tournamentWithoutID.location(),
                 tournamentWithoutID.numberOfPlayers(),
-                newMatches
+                newMatches,
+                tournamentWithoutID.champion()
         );
         tournamentRepository.insert(newTournament);
         return newTournament;
@@ -71,7 +72,8 @@ public class TournamentService {
                 tournamentWithoutIdWithMatch.tournamentName(),
                 tournamentWithoutIdWithMatch.location(),
                 tournamentWithoutIdWithMatch.numberOfPlayers(),
-                newChangedMatch
+                newChangedMatch,
+                tournamentWithoutIdWithMatch.champion()
         );
         return tournamentRepository.save(newChangedTournament);
 
