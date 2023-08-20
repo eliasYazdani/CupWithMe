@@ -64,10 +64,10 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
             const updatedMatches =
                 selectedTournament.matches.map(match => ({
                     id: match.id,
-                    player1: match.player1,
-                    score1: match.score1,
-                    player2: match.player2,
-                    score2: match.score2
+                    player1: player1,
+                    score1: score1,
+                    player2: player2,
+                    score2: score2
                 }));
             axios.put("/api/cup/tournaments/" + tournamentId, {
                 "tournamentName": selectedTournament.tournamentName,
@@ -85,8 +85,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
             .then(() => propsTournamentBracket.allTournamentsList())
             .then(() => propsTournamentBracket.navigate("/tournaments"))
     }
-    // Dummy usage of the variables to satisfy TypeScript's type checking
-    console.log(score1, player1, score2, player2);
+
     return (
         <div>
             <div key={selectedTournament.id}>
@@ -106,7 +105,11 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                                 onScoreChange1={handleScoreChange1}
                                                 onPlayerChange1={handlePlayerChange1}
                                                 onScoreChange2={handleScoreChange2}
-                                                onPlayerChange2={handlePlayerChange2}/>
+                                                onPlayerChange2={handlePlayerChange2}
+                                                score1={score1}
+                                                score2={score2}
+                                                player1={player1}
+                                                player2={player2}/>
 
                                         </div>
                                     )

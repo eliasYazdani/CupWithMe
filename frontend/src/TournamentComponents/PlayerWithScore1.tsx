@@ -9,13 +9,15 @@ type PropsPlayerWithScore1 = {
     players: Player[]
     onScoreChange1: (event: React.ChangeEvent<HTMLInputElement>) => void; // Add the onScoreChange prop
     onPlayerChange1: (event: SelectChangeEvent) => void; // Add the onPlayerChange prop
+    score1: number | null | undefined;
+    player1: string | undefined;
 
 }
 
 export default function PlayerWithScore1(propsPlayerWithScore1: PropsPlayerWithScore1) {
 
-    const [playerSelect1, setPlayerSelect1] = React.useState('');
-    const [playerScore1, setPlayerScore1] = useState<number | ''>(''); // State to store the entered score
+    const [playerScore1, setPlayerScore1] = useState<number | null | undefined>(propsPlayerWithScore1.score1);
+    const [playerSelect1, setPlayerSelect1] = useState(propsPlayerWithScore1.player1);
 
 
     const handleChangePlayer1 = (event: SelectChangeEvent) => {

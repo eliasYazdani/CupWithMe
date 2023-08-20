@@ -11,6 +11,10 @@ type PropsMatch = {
     onScoreChange2: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onPlayerChange1: (event: SelectChangeEvent) => void
     onPlayerChange2: (event: SelectChangeEvent) => void
+    score1: number | null | undefined;
+    score2: number | null | undefined;
+    player1: string | undefined;
+    player2: string | undefined;
 };
 export default function Match(propsMatch: PropsMatch) {
     return (
@@ -19,11 +23,15 @@ export default function Match(propsMatch: PropsMatch) {
                 players={propsMatch.players}
                 onScoreChange1={propsMatch.onScoreChange1} // Pass the matchIndex along with player and score
                 onPlayerChange1={propsMatch.onPlayerChange1}
+                score1={propsMatch.score1}
+                player1={propsMatch.player1}
             />
             <PlayerWithScore2
                 players={propsMatch.players}
                 onScoreChange2={propsMatch.onScoreChange2} // Pass the matchIndex along with player and score
                 onPlayerChange2={propsMatch.onPlayerChange2}
+                score2={propsMatch.score2}
+                player2={propsMatch.player2}
             />
         </div>
     );
