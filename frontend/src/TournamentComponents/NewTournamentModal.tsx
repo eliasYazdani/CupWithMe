@@ -22,9 +22,9 @@ type PropsNewTournamentModal = {
 }
 
 export default function NewTournamentModal(propsNewTournamentModal: PropsNewTournamentModal) {
-    const [tournamentName, setTournamentName] = useState(propsNewTournamentModal.tournament?.tournamentName)
-    const [location, setLocation] = useState(propsNewTournamentModal.tournament?.location)
-    const [numberOfPlayers, setNumberOfPlayers] = useState(propsNewTournamentModal.tournament?.numberOfPlayers)
+    const [tournamentName, setTournamentName] = useState(propsNewTournamentModal.tournament?.tournamentName || "")
+    const [location, setLocation] = useState(propsNewTournamentModal.tournament?.location || "")
+    const [numberOfPlayers, setNumberOfPlayers] = useState(propsNewTournamentModal.tournament?.numberOfPlayers || 0)
     const [errorTextTournamentName, setErrorTextTournamentName] = useState<string>("")
     const [errorTextLocation, setErrorTextLocation] = useState<string>("")
     const [errorTextNumberOfPlayers, setErrorTextNumberOfPlayers] = useState<string>("")
@@ -58,9 +58,9 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
     }
 
     useEffect(() => {
-        setTournamentName(propsNewTournamentModal.tournament?.tournamentName)
-        setLocation(propsNewTournamentModal.tournament?.location)
-        setNumberOfPlayers(propsNewTournamentModal.tournament?.numberOfPlayers)
+        setTournamentName(propsNewTournamentModal.tournament?.tournamentName || "")
+        setLocation(propsNewTournamentModal.tournament?.location || "")
+        setNumberOfPlayers(propsNewTournamentModal.tournament?.numberOfPlayers || 0)
     }, [propsNewTournamentModal.tournament])
 
     const handleClose = () => {
@@ -76,11 +76,22 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
         setNumberOfPlayers(0)
 
         if (tournamentName !== "" && location !== "" && numberOfPlayers !== undefined && numberOfPlayers > 0) {
+            const initialMatches = [];
+            for (let i = 0; i < (numberOfPlayers - 1); i++) {
+                initialMatches.push({
+                    player1: "",
+                    score1: 0,
+                    player2: "",
+                    score2: 0
+                });
+            }
+            console.log("Initial matches array:", initialMatches);
             axios.post("/api/cup/tournaments", {
                 "tournamentName": tournamentName,
                 "location": location,
                 "numberOfPlayers": numberOfPlayers,
-                "matchWithoutId": {"player1": "", "score1": 0, "player2": "", "score2": 0}
+                "matchesWithoutId": initialMatches,
+                "champion": ""
             } as TournamentWithoutId)
                 .then(() => propsNewTournamentModal.allTournamentsList())
                 .then(() => propsNewTournamentModal.setOpen(false))

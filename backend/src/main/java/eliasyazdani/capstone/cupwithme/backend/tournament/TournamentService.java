@@ -5,6 +5,7 @@ import eliasyazdani.capstone.cupwithme.backend.player.IdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -21,19 +22,24 @@ public class TournamentService {
     }
 
     public Tournament addNewTournament(TournamentWithoutID tournamentWithoutID) {
-        Match newMatch = new Match(
-                idService.randomId(),
-                tournamentWithoutID.matchWithoutId().player1(),
-                tournamentWithoutID.matchWithoutId().score1(),
-                tournamentWithoutID.matchWithoutId().player2(),
-                tournamentWithoutID.matchWithoutId().score2()
-        );
+        List<Match> newMatches = new ArrayList<>();
+        for (MatchWithoutId matchWithoutId : tournamentWithoutID.matchesWithoutId()) {
+            Match newMatch = new Match(
+                    idService.randomId(),
+                    matchWithoutId.player1(),
+                    matchWithoutId.score1(),
+                    matchWithoutId.player2(),
+                    matchWithoutId.score2()
+            );
+            newMatches.add(newMatch);
+        }
         Tournament newTournament = new Tournament(
                 idService.randomId(),
                 tournamentWithoutID.tournamentName(),
                 tournamentWithoutID.location(),
                 tournamentWithoutID.numberOfPlayers(),
-                newMatch
+                newMatches,
+                tournamentWithoutID.champion()
         );
         tournamentRepository.insert(newTournament);
         return newTournament;
@@ -50,22 +56,27 @@ public class TournamentService {
     }
 
     public Tournament changeTournamentInfo(String id, TournamentWithoutIdWithMatch tournamentWithoutIdWithMatch) {
-        Match matchToEdit = new Match(
-                tournamentWithoutIdWithMatch.match().id(),
-                tournamentWithoutIdWithMatch.match().player1(),
-                tournamentWithoutIdWithMatch.match().score1(),
-                tournamentWithoutIdWithMatch.match().player2(),
-                tournamentWithoutIdWithMatch.match().score2()
-        );
+        List<Match> newChangedMatch = new ArrayList<>();
+        for (Match match : tournamentWithoutIdWithMatch.matches()) {
+            Match newMatch = new Match(
+                    match.id(),
+                    match.player1(),
+                    match.score1(),
+                    match.player2(),
+                    match.score2()
+            );
+            newChangedMatch.add(newMatch);
+        }
         Tournament newChangedTournament = new Tournament(
                 id,
                 tournamentWithoutIdWithMatch.tournamentName(),
                 tournamentWithoutIdWithMatch.location(),
                 tournamentWithoutIdWithMatch.numberOfPlayers(),
-                matchToEdit
+                newChangedMatch,
+                tournamentWithoutIdWithMatch.champion()
         );
-
         return tournamentRepository.save(newChangedTournament);
+
     }
 
     public List<Tournament> deleteTournament(String id) {

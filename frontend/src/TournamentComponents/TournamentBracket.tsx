@@ -25,7 +25,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     const [player1, setPlayer1] = useState(propsTournamentBracket.match?.player1)
     const [score2, setScore2] = useState(propsTournamentBracket.match?.score2)
     const [player2, setPlayer2] = useState(propsTournamentBracket.match?.player2)
-    const [winnerName, setWinnerName] = useState("");
+    const [champion, setChampion] = useState("");
     const {tournamentId} = useParams();
     const selectedTournament = propsTournamentBracket.tournaments.find(
         (tournament) => tournament.id === tournamentId
@@ -40,8 +40,8 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     const totalBracketSize = Math.pow(2, Math.ceil(Math.log2(numPlayers)));
 
 
-    const handleChangeWinner = (event: SelectChangeEvent) => {
-        setWinnerName(event.target.value);
+    const handleChangeChampion = (event: SelectChangeEvent) => {
+        setChampion(event.target.value);
     };
 
     const handleScoreChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,17 +61,20 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
         if (selectedTournament) {
             const tournamentId = selectedTournament.id;
 
+            const updatedMatches =
+                selectedTournament.matches.map(match => ({
+                    id: match.id,
+                    player1: player1,
+                    score1: score1,
+                    player2: player2,
+                    score2: score2
+                }));
             axios.put("/api/cup/tournaments/" + tournamentId, {
                 "tournamentName": selectedTournament.tournamentName,
                 "location": selectedTournament.location,
                 "numberOfPlayers": selectedTournament.numberOfPlayers,
-                "match": {
-                    "id": selectedTournament.match.id,
-                    "player1": player1,
-                    "score1": score1,
-                    "player2": player2,
-                    "score2": score2
-                }
+                "matches": updatedMatches,
+                "champion": champion,
             } as TournamentWithoutIdWithMatch)
                 .then(() => propsTournamentBracket.allTournamentsList())
         }
@@ -82,6 +85,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
             .then(() => propsTournamentBracket.allTournamentsList())
             .then(() => propsTournamentBracket.navigate("/tournaments"))
     }
+
     return (
         <div>
             <div key={selectedTournament.id}>
@@ -95,13 +99,17 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                     (_, matchIndex) => (
                                         <div key={matchIndex}>
                                             <Match
-                                                id={selectedTournament.match.id}
+                                                id={selectedTournament.matches[matchIndex].id}
                                                 matchIndex={matchIndex}
                                                 players={propsTournamentBracket.players}
                                                 onScoreChange1={handleScoreChange1}
                                                 onPlayerChange1={handlePlayerChange1}
                                                 onScoreChange2={handleScoreChange2}
-                                                onPlayerChange2={handlePlayerChange2}/>
+                                                onPlayerChange2={handlePlayerChange2}
+                                                score1={score1}
+                                                score2={score2}
+                                                player1={player1}
+                                                player2={player2}/>
 
                                         </div>
                                     )
@@ -117,9 +125,9 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
-                                value={winnerName}
+                                value={champion}
                                 label="Player name"
-                                onChange={handleChangeWinner}
+                                onChange={handleChangeChampion}
                                 autoWidth
                             >
                                 <MenuItem value="">
