@@ -119,7 +119,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                     ))}
                     {/* Winner's name input */}
                     <div className="winner-input">
-                        <h1 style={{color: "gold"}}>Winner🏆</h1>
+                        <h1 style={{color: "gold"}}>Champion🏆</h1>
                         <FormControl sx={{m: 1, width: "70%"}}>
                             <InputLabel id="demo-simple-select-label" style={{color: 'gold'}}>Players</InputLabel>
                             <Select
@@ -142,7 +142,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                         </FormControl>
                     </div>
                 </div>
-                <div style={{display: "flex", flexDirection: "row", gap: "100px", justifyItems: "center"}}>
+                <div style={{display: "flex", flexDirection: "row", gap: "100px", justifyContent: "center"}}>
                     <Button
                         variant="contained"
                         onClick={() => propsTournamentBracket.navigate("/")}
