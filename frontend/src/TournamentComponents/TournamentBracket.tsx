@@ -142,7 +142,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                         </FormControl>
                     </div>
                 </div>
-                <div style={{display: "flex", flexDirection: "row", gap: "100px", justifyContent: "center"}}>
+                <div style={{display: "flex", flexDirection: "row", gap: "100px", justifyItems: "center"}}>
                     <Button
                         variant="contained"
                         onClick={() => propsTournamentBracket.navigate("/")}
