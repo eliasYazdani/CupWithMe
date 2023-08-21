@@ -36,7 +36,6 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase())))
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
-                                .requestMatchers("/").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/cup/players").permitAll()
                                 .requestMatchers("/api/cup/players").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/cup/players/**").permitAll()
