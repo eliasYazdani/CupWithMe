@@ -48,7 +48,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/cup/users/login").permitAll()
                                 .requestMatchers("/api/cup/users/logout").permitAll()
                                 .requestMatchers("/api/cup/users/signup").permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .logout(logout -> logout.logoutUrl("/api/cup/users/logout")
                         .deleteCookies("JSESSIONID")
