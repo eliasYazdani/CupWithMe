@@ -5,6 +5,7 @@ Whether you're a player or an organizer, our application streamlines the process
 registration to match results.
 Explore the thrill of competition as you navigate through the tournament brackets and witness the rise of champions.
 Join us in this interactive journey of sportsmanship and skill as we bring the excitement of tournaments to life.
-> > > > > > > main
+Join us in this interactive journey of sportsmanship and skill as we bring the excitement of tournaments to life.
+
 
 <img width="840" alt="Bildschirmfoto 2023-08-20 um 20 00 30" src="https://github.com/eliasYazdani/CupWithMe/assets/134424453/234ffa31-e595-4450-bd59-48f9bbd6ec8c">
