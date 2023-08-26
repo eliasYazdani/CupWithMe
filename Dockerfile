@@ -6,6 +6,6 @@ LABEL maintainer="elias_yazdani@yahoo.com"
 
 EXPOSE 8080
 
-ADD backend/target/CupWithMe.jar app.jar
+ADD backend/target/CupWithMe-win.jar app.jar
 
 CMD [ "sh", "-c", "java -jar /app.jar" ]

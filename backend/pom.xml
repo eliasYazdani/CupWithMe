@@ -73,7 +73,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>CupWithMe</finalName>
+		<finalName>CupWithMe-win</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
