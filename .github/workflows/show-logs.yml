@@ -10,18 +10,18 @@ jobs:
       - name: Get logs from docker
         uses: appleboy/ssh-action@master
         with:
-          host: capstone-project.de
+          host: 3.126.121.48
           #Set App Name (replace "example" with "alpha"-"tango")
-          username: cgn-java-23-2-elias
-          password: ${{ secrets.SSH_PASSWORD }}
+          username: ec2-user
+          password: ${{ EC2_PRIVATE_KEY }}
           #Set App Name (replace "example" with "alpha"-"tango")
           script: |
-            sudo docker logs cgn-java-23-2-elias
+            sudo docker logs i-01d707aa78a42ea71
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
           #Set App Name (replace "example" with "alpha"-"tango")
-          url: http://cgn-java-23-2-elias.capstone-project.de
+          url: http://3.126.121.48
           max-attempts: 3
           retry-delay: 5s
           retry-all: true
