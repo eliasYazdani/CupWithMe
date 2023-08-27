@@ -96,7 +96,7 @@ jobs:
           script: |
             sudo docker stop  i-01d707aa78a42ea71
             sudo docker rm i-01d707aa78a42ea71
-            sudo docker run --pull=always --name cupwithme-win --ip 192.168.1.10 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme-win:latest
+            sudo docker run --pull=always --name cupwithme-win --ip 172-31-23-12 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme-win:latest
             sleep 15s
             sudo docker logs i-01d707aa78a42ea71
 
