@@ -86,7 +86,7 @@ jobs:
       - name: Restart docker container
         uses: appleboy/ssh-action@master
         with:
-          host: 3.126.121.48
+          host:  ec2-3-126-121-48.eu-central-1.compute.amazonaws.com
           #Set App Name (replace "example" with "alpha"-"tango")
           username: ec2-user
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY  }}
@@ -94,17 +94,17 @@ jobs:
           #Set dockerhub project (replace "bartfastiel/java-capstone-project.de-example-app")
           #Set IP (replace "10.0.1.99" with "10.0.1.1"-"10.0.1.20")
           script: |
-            sudo docker stop  cupwithme-win
-            sudo docker rm cupwithme-win
-           docker run --pull=always --name cupwithme-win --publish 80:8080 --restart always --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme-win:latest
+            sudo docker stop  ec2-user
+            sudo docker rm ec2-user
+           docker run --pull=always --name ec2-user --publish 80:8080 --detach --env MONGO_DB_URI=${{ secrets.MONGO_DB_URI }} sia1981/cupwithme-win:latest
             sleep 15s
-            sudo docker logs cupwithme-win
+            sudo docker logs ec2-user
 
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
           #Set App Name (replace "example" with "alpha"-"tango")
-          url:  http://3.126.121.48
+          url:  http://ec2-3-126-121-48.eu-central-1.compute.amazonaws.com
           max-attempts: 3
           retry-delay: 5s
           retry-all: true
