@@ -13,10 +13,10 @@ jobs:
           host: 3.126.121.48
           #Set App Name (replace "example" with "alpha"-"tango")
           username: ec2-user
-          password: ${{ secrets.EC2_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PRIVATE_KEY }}
           #Set App Name (replace "example" with "alpha"-"tango")
           script: |
-            sudo docker logs i-01d707aa78a42ea71
+            sudo docker logs cupwithme-win
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
