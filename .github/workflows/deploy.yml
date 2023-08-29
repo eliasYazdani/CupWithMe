@@ -89,7 +89,7 @@ jobs:
           host: 3.126.121.48
           #Set App Name (replace "example" with "alpha"-"tango")
           username: ec2-user
-          password: ${{ secrets.EC2_PRIVATE_KEY  }}
+          ssh-key: ${{ secrets.EC2_PRIVATE_KEY  }}
           #Set App Name (replace "example" with "alpha"-"tango")
           #Set dockerhub project (replace "bartfastiel/java-capstone-project.de-example-app")
           #Set IP (replace "10.0.1.99" with "10.0.1.1"-"10.0.1.20")
