@@ -10,18 +10,18 @@ jobs:
       - name: Get logs from docker
         uses: appleboy/ssh-action@master
         with:
-          host: ec2-3-126-121-48.eu-central-1.compute.amazonaws.com
+          host: ec2-18-194-137-76.eu-central-1.compute.amazonaws.com
           #Set App Name (replace "example" with "alpha"-"tango")
           username: ec2-user
           password: ${{ secrets.SSH_PRIVATE_KEY }}
           #Set App Name (replace "example" with "alpha"-"tango")
           script: |
-            sudo docker logs ec2-user
+             docker logs ec2-user
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
           #Set App Name (replace "example" with "alpha"-"tango")
-          url: http://ec2-3-126-121-48.eu-central-1.compute.amazonaws.com
+          url: http://ec2-18-194-137-76.eu-central-1.compute.amazonaws.com
           max-attempts: 3
           retry-delay: 5s
           retry-all: true

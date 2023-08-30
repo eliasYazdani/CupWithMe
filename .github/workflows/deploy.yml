@@ -86,10 +86,10 @@ jobs:
       - name: Restart docker container
         uses: appleboy/ssh-action@master
         with:
-          host: ec2-3-126-121-48.eu-central-1.compute.amazonaws.com
+          host: ec2-18-194-137-76.eu-central-1.compute.amazonaws.com
           #Set App Name (replace "example" with "alpha"-"tango")
           username: ec2-user
-          key: ${{ secrets.SSH_PRIVATE_KEY  }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           #Set App Name (replace "example" with "alpha"-"tango")
           #Set dockerhub project (replace "bartfastiel/java-capstone-project.de-example-app")
           #Set IP (replace "10.0.1.99" with "10.0.1.1"-"10.0.1.20")
@@ -104,7 +104,7 @@ jobs:
         uses: jtalk/url-health-check-action@v3
         with:
           #Set App Name (replace "example" with "alpha"-"tango")
-          url:  http://ec2-3-126-121-48.eu-central-1.compute.amazonaws.com
+          url:  http://ec2-18-194-137-76.eu-central-1.compute.amazonaws.com
           max-attempts: 3
           retry-delay: 5s
           retry-all: true
