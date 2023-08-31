@@ -87,6 +87,7 @@ export default function App() {
                        element={<SignUp user={user} onSignup={signup} navigate={navigate}/>}/>
                 <Route path={"/players"}
                        element={<PlayerList players={players} allPlayerList={allPlayerList}
+                                            user={user}
                                             navigate={navigate}/>}/>
                 <Route path={"/tournaments"}
                        element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
