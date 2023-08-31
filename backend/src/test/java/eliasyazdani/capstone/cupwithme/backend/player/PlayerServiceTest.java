@@ -17,26 +17,26 @@ class PlayerServiceTest {
     PlayerService playerService = new PlayerService(playerRepository, idService);
 
     @Test
-    void getAllPlayersTest() {
+    void getAllPlayersForAdminTest() {
         //  given
-        List<Player> testPlayerFromDB = List.of(new Player("a1", "E", "Y", 42),
-                new Player("a2", "I", "S", 35));
-        Mockito.when(playerRepository.findAll())
+        List<Player> testPlayerFromDB = List.of(new Player("adminA","a1", "E", "Y", 42),
+                new Player("adminA","a2", "I", "S", 35));
+        Mockito.when(playerRepository.findByAdmin("adminA"))
                 .thenReturn(testPlayerFromDB);
         //  when
-        List<Player> actual = playerService.getAllPlayers();
+        List<Player> actual = playerService.getAllPlayersForAdmin("adminA");
 
         //  then
-        verify(playerRepository).findAll();
+        verify(playerRepository).findByAdmin("adminA");
         Assertions.assertEquals(testPlayerFromDB, actual);
     }
 
     @Test
     void addNewPlayerTest() {
         // given
-        PlayerWithoutId testPlayerWithoutId = new PlayerWithoutId("ATest", "BTest", 20);
+        PlayerWithoutId testPlayerWithoutId = new PlayerWithoutId("adminA","ATest", "BTest", 20);
         Player testPlayer =
-                new Player("1A", testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
+                new Player("1A",testPlayerWithoutId.admin(), testPlayerWithoutId.firstName(), testPlayerWithoutId.lastName(), testPlayerWithoutId.age());
         Mockito.when(idService.randomId()).thenReturn("1A");
         Mockito.when(playerRepository.insert(testPlayer))
                 .thenReturn(testPlayer);
@@ -53,7 +53,7 @@ class PlayerServiceTest {
     void getDetailsByIdTest() {
         // Given
         Optional<Player> expected = Optional.of(
-                new Player("1a", "P", "Y", 46));
+                new Player("1a","adminA", "P", "Y", 46));
         String idToFind = "1a";
         when(playerRepository.findById(idToFind)).thenReturn(expected);
         // When
@@ -76,10 +76,11 @@ class PlayerServiceTest {
     @Test
     void changePlayerInfoTest() {
         // Given
-        PlayerWithoutId newPlayerInfoWithoutID = new PlayerWithoutId("A", "B", 28);
+        PlayerWithoutId newPlayerInfoWithoutID = new PlayerWithoutId("adminA","A", "B", 28);
         String idToUpdate = "1A";
         Player newPlayerInfo = new Player(
                 idToUpdate,
+                newPlayerInfoWithoutID.admin(),
                 newPlayerInfoWithoutID.firstName(),
                 newPlayerInfoWithoutID.lastName(),
                 newPlayerInfoWithoutID.age());
