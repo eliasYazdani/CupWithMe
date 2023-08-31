@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public record Player(
         @Id
         String id,
+        String admin,
         String firstName,
         String lastName,
         int age
