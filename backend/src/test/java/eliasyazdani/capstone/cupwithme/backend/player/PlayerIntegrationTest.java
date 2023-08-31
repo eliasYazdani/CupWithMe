@@ -35,6 +35,7 @@ class PlayerIntegrationTest {
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/api/cup/players")
+                                .with(csrf())
                 )
                 //  THEN
                 .andExpect(
@@ -87,6 +88,7 @@ class PlayerIntegrationTest {
                 """;
 
         mockMvc.perform(get("/api/cup/players/1A")
+                        .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedPlayer));
@@ -121,7 +123,7 @@ class PlayerIntegrationTest {
     @Test
     @WithMockUser
     void whenExistId_thenDeleteAndReturnNothing() throws Exception {
-        Player playerToDelete = new Player("2A","admiA", "A", "S", 29);
+        Player playerToDelete = new Player("2A","adminA", "A", "S", 29);
         playerRepository.insert(playerToDelete);
 
 

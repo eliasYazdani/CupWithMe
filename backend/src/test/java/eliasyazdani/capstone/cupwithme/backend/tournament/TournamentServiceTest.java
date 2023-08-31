@@ -22,21 +22,21 @@ class TournamentServiceTest {
     @Test
     void getAllTournamentsTest() {
         //  given
-        List<Tournament> testTournamentsFromDB = List.of(new Tournament("1A", "Bezirk1", "Hamburg", 2,
+        List<Tournament> testTournamentsFromDB = List.of(new Tournament("1A","adminA", "Bezirk1", "Hamburg", 2,
                 List.of(new Match("M1", "A", 2, "B", 1),
                         new Match("M2", "C", 3, "D", 0),
                         new Match("M3", "A", 2, "C", 0)), "A"));
-        new Tournament("2A", "Bezirk2", "Berlin", 2,
+        new Tournament("2A","adminA", "Bezirk2", "Berlin", 2,
                 List.of(new Match("M4", "E", 2, "F", 3),
                         new Match("M5", "G", 5, "H", 1),
                         new Match("M6", "G", 1, "F", 3)), "F");
-        Mockito.when(tournamentRepository.findAll())
+        Mockito.when(tournamentRepository.findTournamentByAdmin("adminA"))
                 .thenReturn(testTournamentsFromDB);
         //  when
-        List<Tournament> actual = tournamentService.getAllTournaments();
+        List<Tournament> actual = tournamentService.getAllTournamentsForAdmin("adminA");
 
         //  then
-        verify(tournamentRepository).findAll();
+        verify(tournamentRepository).findTournamentByAdmin("adminA");
         Assertions.assertEquals(testTournamentsFromDB, actual);
 
     }
@@ -51,9 +51,9 @@ class TournamentServiceTest {
                 List.of(new Match("M1", "", 0, "", 0),
                         new Match("M2", "", 0, "", 0),
                         new Match("M3", "", 0, "", 0));
-        TournamentWithoutID testTournamentWithoutId = new TournamentWithoutID("Bezirk1", "Hamburg", 4, testMatchesWithoutIdInTournamentWithoutId, "");
+        TournamentWithoutID testTournamentWithoutId = new TournamentWithoutID("adminA","Bezirk1", "Hamburg", 4, testMatchesWithoutIdInTournamentWithoutId, "");
         Tournament testNewTournament =
-                new Tournament("1A", testTournamentWithoutId.tournamentName(), testTournamentWithoutId.location(), testTournamentWithoutId.numberOfPlayers(),
+                new Tournament("1A", testTournamentWithoutId.admin(), testTournamentWithoutId.tournamentName(), testTournamentWithoutId.location(), testTournamentWithoutId.numberOfPlayers(),
                         tesNewMatchesWithId, "");
         Mockito.when(idService.randomId()).thenReturn("M1").thenReturn("M2").thenReturn("M3").thenReturn("1A");
         Mockito.when(tournamentRepository.insert(testNewTournament))
@@ -72,7 +72,7 @@ class TournamentServiceTest {
     void getDetailsByIdTest() {
         // Given
         Optional<Tournament> expected = Optional.of(
-                new Tournament("1a", "2022", "Hamburg", 4, List.of(new Match("M1", "A", 2, "B", 1),
+                new Tournament("1a", "adminA","2022", "Hamburg", 4, List.of(new Match("M1", "A", 2, "B", 1),
                         new Match("M2", "C", 3, "D", 0),
                         new Match("M3", "A", 2, "C", 0)), "A"));
         String idToFind = "1a";
@@ -88,7 +88,6 @@ class TournamentServiceTest {
     void getDetailsNotFoundId() {
         // Given
         String idToFind = "1A";
-
         when(tournamentRepository.findById(idToFind)).thenReturn(Optional.empty());
 
         // When  and Then
@@ -103,10 +102,11 @@ class TournamentServiceTest {
                 new Match("M2", "C", 3, "D", 0),
                 new Match("M3", "A", 2, "C", 0));
         TournamentWithoutIdWithMatch newTournamentInfoWithoutIdWithMatch = new TournamentWithoutIdWithMatch(
-                "2023", "Berlin", 4, newMatchesInfo, "A");
+                "adminA","2023", "Berlin", 4, newMatchesInfo, "A");
         String idToUpdate = "1A";
         Tournament newTournamentInfo = new Tournament(
                 idToUpdate,
+                newTournamentInfoWithoutIdWithMatch.admin(),
                 newTournamentInfoWithoutIdWithMatch.tournamentName(),
                 newTournamentInfoWithoutIdWithMatch.location(),
                 newTournamentInfoWithoutIdWithMatch.numberOfPlayers(),

@@ -2,6 +2,7 @@ package eliasyazdani.capstone.cupwithme.backend.tournament;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +14,9 @@ public class TournamentController {
     private final TournamentService tournamentService;
 
     @GetMapping
-    public List<Tournament> getAllTournaments() {
-        return tournamentService.getAllTournaments();
+    public List<Tournament> getAllTournamentsForAdmin(Authentication authentication) {
+        String loggedInAdmin = authentication.getName();
+        return tournamentService.getAllTournamentsForAdmin(loggedInAdmin);
     }
 
     @PostMapping()

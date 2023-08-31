@@ -53,7 +53,7 @@ class TournamentIntegrationTest {
                         post("/api/cup/tournaments")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
-                                        {"tournamentName": "Bezirk2","location": "Hamburg","numberOfPlayers": 4,
+                                        { "admin":"adminA","tournamentName": "Bezirk2","location": "Hamburg","numberOfPlayers": 4,
                                         "matchesWithoutId":[{"player1":"","score1":0,"player2": "","score2": 0},{"player1":"","score1":0,"player2": "","score2": 0},{"player1":"","score1":0,"player2": "","score2": 0}],
                                         "champion":""}
                                         """)
@@ -61,6 +61,7 @@ class TournamentIntegrationTest {
                 )
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("id").isNotEmpty())
+                .andExpect(jsonPath("admin").value("adminA"))
                 .andExpect(jsonPath("tournamentName").value("Bezirk2"))
                 .andExpect(jsonPath("location").value("Hamburg"))
                 .andExpect(jsonPath("numberOfPlayers").value(4))
@@ -77,11 +78,12 @@ class TournamentIntegrationTest {
                 new Match("M1", "A", 2, "B", 1),
                 new Match("M2", "C", 3, "D", 0),
                 new Match("M3", "A", 2, "C", 0));
-        Tournament searchedTournament = new Tournament("1A", "Bezirk1", "Hamburg", 4, matchInSearchedTournament, "A");
+        Tournament searchedTournament = new Tournament("1A", "adminA","Bezirk1", "Hamburg", 4, matchInSearchedTournament, "A");
         tournamentRepository.insert(searchedTournament);
         String expectedTournament = """
                     {
                         "id": "1A",
+                        "admin":"adminA",
                         "tournamentName": "Bezirk1",
                         "location": "Hamburg",
                         "numberOfPlayers": 4,
@@ -104,11 +106,11 @@ class TournamentIntegrationTest {
     @WithMockUser
     void whenExistedIdWithNewInfo_thenReturnThisIdWithNewInfo() throws Exception {
         List<Match> matchesInSearchedTournamentToUpdate = List.of(
-                new Match("M1", "A", 2, "B", 1),
-                new Match("M2", "C", 3, "D", 0),
-                new Match("M3", "A", 2, "C", 0));
+                new Match("M1", "E", 0, "F", 2),
+                new Match("M2", "G", 3, "H", 1),
+                new Match("M3", "F", 2, "G", 1));
         Tournament tournamentToUpdate = new Tournament(
-                "1A", "Bezirk2", "Berlin", 4, matchesInSearchedTournamentToUpdate, "A");
+                "1A", "adminA","Bezirk2", "Berlin", 4, matchesInSearchedTournamentToUpdate, "F");
         tournamentRepository.insert(tournamentToUpdate);
 
 
@@ -117,6 +119,7 @@ class TournamentIntegrationTest {
                         .content("""
                                     {
                                         "id": "1A",
+                                        "admin":"adminA",
                                         "tournamentName": "2022",
                                         "location": "Hamburg",
                                         "numberOfPlayers": 4,
@@ -132,6 +135,7 @@ class TournamentIntegrationTest {
                 .andExpect(content().json("""
                             {
                             "id": "1A",
+                            "admin":"adminA",
                             "tournamentName": "2022",
                             "location": "Hamburg",
                             "numberOfPlayers": 4,
@@ -152,7 +156,7 @@ class TournamentIntegrationTest {
                 new Match("M2", "C", 3, "D", 0),
                 new Match("M3", "A", 2, "C", 0));
         Tournament tournamentToDelete = new Tournament(
-                "1A", "Bezirk1", "Hamburg", 16, matchesInTournamentToDelete, "A");
+                "1A", "adminA","Bezirk1", "Hamburg", 16, matchesInTournamentToDelete, "A");
         tournamentRepository.insert(tournamentToDelete);
 
 

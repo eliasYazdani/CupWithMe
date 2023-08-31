@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 public record TournamentWithoutID(
+        String admin,
         @NotBlank
         String tournamentName,
         @NotBlank

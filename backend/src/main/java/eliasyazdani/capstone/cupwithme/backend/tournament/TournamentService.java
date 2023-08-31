@@ -17,8 +17,8 @@ public class TournamentService {
     private final IdService idService;
 
 
-    public List<Tournament> getAllTournaments() {
-        return tournamentRepository.findAll();
+    public List<Tournament> getAllTournamentsForAdmin(String admin) {
+        return tournamentRepository.findTournamentByAdmin(admin);
     }
 
     public Tournament addNewTournament(TournamentWithoutID tournamentWithoutID) {
@@ -35,6 +35,7 @@ public class TournamentService {
         }
         Tournament newTournament = new Tournament(
                 idService.randomId(),
+                tournamentWithoutID.admin(),
                 tournamentWithoutID.tournamentName(),
                 tournamentWithoutID.location(),
                 tournamentWithoutID.numberOfPlayers(),
@@ -46,9 +47,9 @@ public class TournamentService {
     }
 
     public Tournament getDetailsById(String id) {
-        Optional<Tournament> foundtournament = tournamentRepository.findById(id);
-        if (foundtournament.isPresent()) {
-            return foundtournament.get();
+        Optional<Tournament> foundTournament = tournamentRepository.findById(id);
+        if (foundTournament.isPresent()) {
+            return foundTournament.get();
         } else {
             throw new NoSuchElementException();
         }
@@ -69,6 +70,7 @@ public class TournamentService {
         }
         Tournament newChangedTournament = new Tournament(
                 id,
+                tournamentWithoutIdWithMatch.admin(),
                 tournamentWithoutIdWithMatch.tournamentName(),
                 tournamentWithoutIdWithMatch.location(),
                 tournamentWithoutIdWithMatch.numberOfPlayers(),
