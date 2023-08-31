@@ -91,10 +91,12 @@ export default function App() {
                                             navigate={navigate}/>}/>
                 <Route path={"/tournaments"}
                        element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
+                                                user={user}
                                                 navigate={navigate}/>}/>
                 <Route path="/Bracket/:tournamentId"
                        element={<TournamentBracket allTournamentsList={allTournamentsList} tournaments={tournaments}
                                                    players={players}
+                                                   user={user}
                                                    navigate={navigate}/>}/>
             </Routes>
 

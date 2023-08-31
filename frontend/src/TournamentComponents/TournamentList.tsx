@@ -19,6 +19,7 @@ type PropsTournamentList = {
     navigate: NavigateFunction,
     tournaments: Tournament[],
     allTournamentList: () => void
+    user: string
 
 
 }
@@ -86,7 +87,7 @@ export default function TournamentList(propsTournamentList: PropsTournamentList)
                 </Button>
             </div>
             <NewTournamentModal visibilitySaveToAddNewTournamentButton={visibilitySaveToAddNewTournamentButton}
-
+                                user={propsTournamentList.user}
                                 open={open} setOpen={setOpen}
                                 allTournamentsList={propsTournamentList.allTournamentList}
 
