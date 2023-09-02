@@ -20,12 +20,13 @@ type PropsPlayerModal = {
     visibilitySaveToChangePlayerButton: boolean
     visibilityDeletePlayerButton: boolean
     allPlayersList: () => void
+    user:string
 
 }
 export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
-    const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName || "")
-    const [lastName, setLastName] = useState(propsPlayerModal.player?.lastName || "")
-    const [age, setAge] = useState(propsPlayerModal.player?.age || 0)
+    const [firstName, setFirstName] = useState(propsPlayerModal.player?.firstName ?? "")
+    const [lastName, setLastName] = useState(propsPlayerModal.player?.lastName ?? "")
+    const [age, setAge] = useState(propsPlayerModal.player?.age ?? 0)
     const [errorTextFirstName, setErrorTextFirstName] = useState<string>("")
     const [errorTextLastName, setErrorTextLastName] = useState<string>("")
     const [errorTextAge, setErrorTextAge] = useState<string>("")
@@ -59,9 +60,9 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     }
 
     useEffect(() => {
-        setFirstName(propsPlayerModal.player?.firstName || "")
-        setLastName(propsPlayerModal.player?.lastName || "")
-        setAge(propsPlayerModal.player?.age || 0)
+        setFirstName(propsPlayerModal.player?.firstName ?? "")
+        setLastName(propsPlayerModal.player?.lastName ?? "")
+        setAge(propsPlayerModal.player?.age ?? 0)
     }, [propsPlayerModal.player])
 
     const handleClose = () => {
@@ -76,6 +77,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
         setAge(0)
         if (firstName !== "" && lastName !== "" && age !== undefined && age > 0) {
             axios.post("/api/cup/players", {
+                "admin": propsPlayerModal.user,
                 "firstName": firstName,
                 "lastName": lastName,
                 "age": age,
@@ -88,6 +90,7 @@ export default function NewPlayerModal(propsPlayerModal: PropsPlayerModal) {
     const handleSaveChange = () => {
         if (firstName !== "" && lastName !== "" && age !== undefined && age > 0) {
             axios.put("/api/cup/players/" + propsPlayerModal.player?.id, {
+                "admin": propsPlayerModal.user,
                 "firstName": firstName,
                 "lastName": lastName,
                 "age": age,

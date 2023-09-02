@@ -9,6 +9,7 @@ import java.util.List;
 public record Tournament(
         @Id
         String id,
+        String admin,
         String tournamentName,
         String location,
         int numberOfPlayers,

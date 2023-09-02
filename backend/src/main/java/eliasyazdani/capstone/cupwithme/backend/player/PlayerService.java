@@ -15,13 +15,15 @@ public class PlayerService {
     private final IdService idService;
 
 
-    public List<Player> getAllPlayers() {
-        return playerRepository.findAll();
+    public List<Player> getAllPlayersForAdmin(String admin) {
+
+        return playerRepository.findByAdmin(admin);
     }
 
     public Player addNewPlayer(PlayerWithoutId playerWithoutId) {
         Player newPlayer = new Player(
                 idService.randomId(),
+                playerWithoutId.admin(),
                 playerWithoutId.firstName(),
                 playerWithoutId.lastName(),
                 playerWithoutId.age());
@@ -32,6 +34,7 @@ public class PlayerService {
     public Player changePlayerInfo(String id,PlayerWithoutId playerWithoutId) {
         Player newChangedPlayer = new Player(
                 id,
+                playerWithoutId.admin(),
                 playerWithoutId.firstName(),
                 playerWithoutId.lastName(),
                 playerWithoutId.age());

@@ -16,6 +16,7 @@ type PropsPlayerList = {
     navigate: NavigateFunction
     players: Player[],
     allPlayerList: () => void
+    user:string
 }
 
 export default function PlayerList(propsPlayerList: PropsPlayerList) {
@@ -84,12 +85,14 @@ export default function PlayerList(propsPlayerList: PropsPlayerList) {
                             visibilityDeletePlayerButton={visibilityDeletePlayerButton}
                             open={open} setOpen={setOpen}
                             allPlayersList={propsPlayerList.allPlayerList}
+                            user={propsPlayerList.user}
             />
             <NewPlayerModal visibilitySaveToAddNewPlayerButton={visibilitySaveToAddNewPlayerButton}
                             visibilitySaveToChangePlayerButton={visibilitySaveChangePlayerButton}
                             visibilityDeletePlayerButton={visibilityDeletePlayerButton}
                             open={open} setOpen={setOpen}
                             allPlayersList={propsPlayerList.allPlayerList}
+                            user={propsPlayerList.user}
                             player={selectedPlayer}/>
         </div>
     );

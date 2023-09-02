@@ -1,9 +1,11 @@
 package eliasyazdani.capstone.cupwithme.backend.player;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -24,12 +26,16 @@ class PlayerIntegrationTest {
 
     @Autowired
     PlayerRepository playerRepository;
+    @MockBean
+    IdService idService;
 
     @Test
+    @WithMockUser
     void expectEmptyListOnGet() throws Exception {
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/api/cup/players")
+                                .with(csrf())
                 )
                 //  THEN
                 .andExpect(
@@ -48,17 +54,18 @@ class PlayerIntegrationTest {
     @Test
     @WithMockUser
     void whenAddNewPlayer_thenReturnNewPlayer() throws Exception {
+        Mockito.when(idService.randomId()).thenReturn("1A");
         mockMvc.perform(
                         post("/api/cup/players")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
-                                        {"firstName": "testA","lastName": "testB","age": 25}
+                                        {"admin":"adminA","firstName": "testA","lastName": "testB","age": 25}
                                         """)
                                 .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                        {"firstName": "testA","lastName": "testB","age": 25}
+                        {"id":"1A","admin":"adminA","firstName": "testA","lastName": "testB","age": 25}
                         """
                 ));
 
@@ -68,11 +75,12 @@ class PlayerIntegrationTest {
     @DirtiesContext
     @Test
     void expectSearchedPlayer_whenGetRequestWithIdPlayer() throws Exception {
-        Player searchedPlayer = new Player("1A", "M", "S", 65);
+        Player searchedPlayer = new Player("1A","adminA", "M", "S", 65);
         playerRepository.insert(searchedPlayer);
         String expectedPlayer = """
                     {
                         "id": "1A",
+                        "admin": "adminA",
                         "firstName": "M",
                         "lastName": "S",
                         "age": 65
@@ -80,6 +88,7 @@ class PlayerIntegrationTest {
                 """;
 
         mockMvc.perform(get("/api/cup/players/1A")
+                        .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedPlayer));
@@ -91,7 +100,7 @@ class PlayerIntegrationTest {
     @WithMockUser
     void whenExistedIdWithNewInfo_thenReturnThisIdWithNewInfo() throws Exception {
 
-        Player playerToUpdate = new Player("1A", "F", "Y", 55);
+        Player playerToUpdate = new Player("1A","adminA", "F", "Y", 55);
         playerRepository.insert(playerToUpdate);
 
 
@@ -100,13 +109,13 @@ class PlayerIntegrationTest {
                         put("/api/cup/players/1A")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
-                                        {"id": "1A","firstName": "I","lastName": "A","age": 66}
+                                        {"id": "1A","admin": "adminA","firstName": "I","lastName": "A","age": 66}
                                         """)
                                 .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                        {"id": "1A","firstName": "I","lastName": "A","age": 66}
+                        {"id": "1A","admin":"adminA","firstName": "I","lastName": "A","age": 66}
                         """));
     }
 
@@ -114,7 +123,7 @@ class PlayerIntegrationTest {
     @Test
     @WithMockUser
     void whenExistId_thenDeleteAndReturnNothing() throws Exception {
-        Player playerToDelete = new Player("2A", "A", "S", 29);
+        Player playerToDelete = new Player("2A","adminA", "A", "S", 29);
         playerRepository.insert(playerToDelete);
 
 

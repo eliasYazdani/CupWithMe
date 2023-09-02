@@ -1,9 +1,8 @@
 package eliasyazdani.capstone.cupwithme.backend.player;
-
+import org.springframework.security.core.Authentication;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,8 +14,9 @@ public class PlayerController {
 
 
     @GetMapping()
-    public List<Player> getAllPlayers() {
-        return playerService.getAllPlayers();
+    public List<Player> getAllPlayersForAdmin(Authentication authentication) {
+        String loggedInAdmin = authentication.getName();
+        return playerService.getAllPlayersForAdmin(loggedInAdmin);
     }
 
     @PostMapping()

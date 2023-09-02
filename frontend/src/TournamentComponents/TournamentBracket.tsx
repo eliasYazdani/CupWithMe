@@ -18,6 +18,7 @@ type PropsTournamentBracket = {
     tournaments: Tournament[];
     match?: MatchModel;
     allTournamentsList: () => void
+    user: string
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {
@@ -70,6 +71,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                     score2: score2
                 }));
             axios.put("/api/cup/tournaments/" + tournamentId, {
+                "admin": propsTournamentBracket.user,
                 "tournamentName": selectedTournament.tournamentName,
                 "location": selectedTournament.location,
                 "numberOfPlayers": selectedTournament.numberOfPlayers,
