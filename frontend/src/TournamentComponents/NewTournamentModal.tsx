@@ -78,7 +78,7 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
 
         if (tournamentName !== "" && location !== "" && numberOfPlayers !== undefined && numberOfPlayers > 0) {
             const initialMatches = [];
-            for (let i = 0; i < (numberOfPlayers - 1); i++) {
+            for (let i = 0; i < (Math.pow(2, Math.ceil(Math.log2(numberOfPlayers))) - 1); i++) {
                 initialMatches.push({
                     player1: "",
                     score1: 0,
