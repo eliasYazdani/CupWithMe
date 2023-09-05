@@ -10,12 +10,14 @@ import PlayerList from "./PlayerComponents/PlayerList.tsx";
 import {Tournament} from "./Models/Tournament.ts";
 import SignUp from "./SignUp.tsx";
 import {UserWithoutId} from "./Models/UserWithoutId.ts";
+import {MatchModel} from "./Models/MatchModel.ts";
 
 
 export default function App() {
     const [players, setPlayers] = useState<Player[]>([])
     const [tournaments, setTournaments] = useState<Tournament[]>([])
     const [user, setUser] = useState<string>("")
+    const [matchesToUpdate, setMatchesToUpdate] = useState<MatchModel[]>([])
 
     const isAuthenticated = user !== undefined && user !== "anonymousUser"
 
@@ -33,7 +35,11 @@ export default function App() {
                 setTournaments(response.data)
             })
     }
-
+ function handleMatchesToUpdete(tournamentId: string){
+       const selectedTournament= tournaments.find((tournament)=>tournament.id===tournamentId)
+       if(selectedTournament){setMatchesToUpdate(selectedTournament.matches)}
+ }
+    console.log(matchesToUpdate)
     function signup(newUserToSignup: UserWithoutId) {
         axios.post("/api/cup/users/signup", newUserToSignup,)
             .then(() => {
@@ -92,12 +98,14 @@ export default function App() {
                 <Route path={"/tournaments"}
                        element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
                                                 user={user}
-                                                navigate={navigate}/>}/>
+                                                navigate={navigate}
+                                                handleMatchesToUpdate={handleMatchesToUpdete}/>}/>
                 <Route path="/Bracket/:tournamentId"
                        element={<TournamentBracket allTournamentsList={allTournamentsList} tournaments={tournaments}
                                                    players={players}
                                                    user={user}
-                                                   navigate={navigate}/>}/>
+                                                   navigate={navigate}
+                                                   matchesToUpdate={matchesToUpdate}/>}/>
             </Routes>
 
 

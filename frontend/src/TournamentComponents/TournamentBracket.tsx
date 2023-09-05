@@ -19,6 +19,7 @@ type PropsTournamentBracket = {
     match?: MatchModel;
     allTournamentsList: () => void
     user: string
+    matchesToUpdate: MatchModel[]
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {

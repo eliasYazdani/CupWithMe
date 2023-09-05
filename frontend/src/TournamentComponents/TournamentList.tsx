@@ -20,6 +20,7 @@ type PropsTournamentList = {
     tournaments: Tournament[],
     allTournamentList: () => void
     user: string
+    handleMatchesToUpdate:(tournamentId: string)=> void
 
 
 }
@@ -36,6 +37,7 @@ export default function TournamentList(propsTournamentList: PropsTournamentList)
         setOpen(true)
     }
     const handleClickTournament = (tournament: Tournament) => {
+        propsTournamentList.handleMatchesToUpdate(tournament.id)
         propsTournamentList.navigate(`/Bracket/${tournament.id}`);
     }
 
