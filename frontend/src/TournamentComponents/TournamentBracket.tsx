@@ -3,7 +3,7 @@ import {NavigateFunction, useParams} from "react-router-dom";
 import {Player} from "../Models/Player.ts";
 import Match from "./Match.tsx";
 import {Tournament} from "../Models/Tournament.ts";
-import React, {useState} from "react";
+import  {useState} from "react";
 import "../CSS/TournamentBracket.css";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {SelectChangeEvent} from "@mui/material/Select";
@@ -23,11 +23,8 @@ type PropsTournamentBracket = {
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {
-    const [score1, setScore1] = useState(propsTournamentBracket.match?.score1)
-    const [player1, setPlayer1] = useState(propsTournamentBracket.match?.player1)
-    const [score2, setScore2] = useState(propsTournamentBracket.match?.score2)
-    const [player2, setPlayer2] = useState(propsTournamentBracket.match?.player2)
     const [champion, setChampion] = useState("");
+    const [updatedMatches, setUpdatedMatches] = useState([...propsTournamentBracket.matchesToUpdate]);
     const {tournamentId} = useParams();
     const selectedTournament = propsTournamentBracket.tournaments.find(
         (tournament) => tournament.id === tournamentId
@@ -46,31 +43,41 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
         setChampion(event.target.value);
     };
 
-    const handleScoreChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setScore1(parseInt(event.target.value));
+    const handleScoreChange1 = (matchId: string, score1: number) => {
+        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
+        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
+        if (matchToUpdate) {
+            matchToUpdate.score1 = score1;
+           setUpdatedMatches(updatedMatches)
+        }
     };
-    const handlePlayerChange1 = (event: SelectChangeEvent) => {
-        setPlayer1(event.target.value);
-    }
-    const handleScoreChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setScore2(parseInt(event.target.value));
+    const handlePlayerChange1 = (matchId: string, player1: string) => {
+        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
+        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
+        if (matchToUpdate) {
+            matchToUpdate.player1 = player1;
+            setUpdatedMatches(updatedMatches)        }
     };
-    const handlePlayerChange2 = (event: SelectChangeEvent) => {
-        setPlayer2(event.target.value);
-    }
+    const handleScoreChange2 = (matchId: string, score2: number) => {
+        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
+        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
+        if (matchToUpdate) {
+            matchToUpdate.score2 = score2;
+            setUpdatedMatches(updatedMatches)        }
+    };
+    const handlePlayerChange2 = (matchId: string, player2: string) => {
+        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
+        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
+        if (matchToUpdate) {
+            matchToUpdate.player2 = player2;
+            setUpdatedMatches(updatedMatches)        }
+    };
 
     const handleSaveBracket = () => {
         if (selectedTournament) {
             const tournamentId = selectedTournament.id;
 
-            const updatedMatches =
-                selectedTournament.matches.map(match => ({
-                    id: match.id,
-                    player1: player1,
-                    score1: score1,
-                    player2: player2,
-                    score2: score2
-                }));
+console.log(updatedMatches)
             axios.put("/api/cup/tournaments/" + tournamentId, {
                 "admin": propsTournamentBracket.user,
                 "tournamentName": selectedTournament.tournamentName,
@@ -105,14 +112,36 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                                 id={selectedTournament.matches[matchIndex].id}
                                                 matchIndex={matchIndex}
                                                 players={propsTournamentBracket.players}
-                                                onScoreChange1={handleScoreChange1}
-                                                onPlayerChange1={handlePlayerChange1}
-                                                onScoreChange2={handleScoreChange2}
-                                                onPlayerChange2={handlePlayerChange2}
-                                                score1={score1}
-                                                score2={score2}
-                                                player1={player1}
-                                                player2={player2}/>
+                                                onScoreChange1={(event) => {
+                                                    const scoreValue = event?.target?.value;
+                                                    if (scoreValue !== undefined) {
+                                                        handleScoreChange1(selectedTournament.matches[matchIndex].id, parseInt(scoreValue));
+                                                    }
+                                                }}
+                                                onPlayerChange1={(event) => {
+                                                    const playerValue = event?.target?.value;
+                                                    if (playerValue !== undefined) {
+                                                        handlePlayerChange1(selectedTournament.matches[matchIndex].id, playerValue);
+                                                    }
+                                                }}
+                                                onScoreChange2={(event) => {
+                                                    const scoreValue = event?.target?.value;
+                                                    if (scoreValue !== undefined) {
+                                                        handleScoreChange2(selectedTournament.matches[matchIndex].id, parseInt(scoreValue));
+                                                    }
+                                                }}
+                                                onPlayerChange2={(event) => {
+                                                    const playerValue = event?.target?.value;
+                                                    if (playerValue !== undefined) {
+                                                        handlePlayerChange2(selectedTournament.matches[matchIndex].id, playerValue);
+                                                    }
+                                                }}
+                                                score1={propsTournamentBracket.matchesToUpdate[matchIndex].score1}
+                                                score2={propsTournamentBracket.matchesToUpdate[matchIndex].score2}
+                                                player1={propsTournamentBracket.matchesToUpdate[matchIndex].player1}
+                                                player2={propsTournamentBracket.matchesToUpdate[matchIndex].player2}
+
+                                            />
 
                                         </div>
                                     )
