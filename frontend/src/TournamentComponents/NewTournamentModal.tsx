@@ -85,12 +85,12 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
                 for (let m = 0; m < (((Math.pow(2, Math.ceil(Math.log2(numberOfPlayers)))) /(Math.pow(2, r+1)))); m++) {
                     initialMatches.push({
                         player1: "",
-                        score1: null,
+                        score1:0,
                         player2: "",
-                        score2: null
+                        score2:0
                     });
                 }
-                initialRounds.push({matches: initialMatches})
+                initialRounds.push({matchesWithoutId: initialMatches})
            }
 
 

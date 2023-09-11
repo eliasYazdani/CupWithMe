@@ -14,7 +14,7 @@ public record TournamentWithoutIdWithMatch(
         @Positive
         int numberOfPlayers,
 
-        List<Match> matches,
+        List<Round> rounds,
 
         String champion
 ) {

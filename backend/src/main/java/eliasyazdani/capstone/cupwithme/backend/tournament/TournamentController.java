@@ -24,20 +24,20 @@ public class TournamentController {
         return tournamentService.addNewTournament(tournamentWithoutID);
     }
 
-    @GetMapping("/{id}")
-    public Tournament getDetails(@PathVariable String id) {
-        return tournamentService.getDetailsById(id);
-    }
+  @GetMapping("/{id}")
+  public Tournament getDetails(@PathVariable String id) {
+      return tournamentService.getDetailsById(id);
+  }
 
-    @PutMapping("/{id}")
-    public Tournament changeTournamentInfo(@PathVariable String id, @Valid @RequestBody TournamentWithoutIdWithMatch tournamentWithoutIdWithMatch) {
-        return tournamentService.changeTournamentInfo(id, tournamentWithoutIdWithMatch);
-    }
-
-    @DeleteMapping("/{id}")
-    public List<Tournament> deleteTournament(@PathVariable String id) {
-        return tournamentService.deleteTournament(id);
-    }
+  //  @PutMapping("/{id}")
+  //  public Tournament changeTournamentInfo(@PathVariable String id, @Valid @RequestBody TournamentWithoutIdWithMatch tournamentWithoutIdWithMatch) {
+  //      return tournamentService.changeTournamentInfo(id, tournamentWithoutIdWithMatch);
+  //  }
+//
+  //  @DeleteMapping("/{id}")
+  //  public List<Tournament> deleteTournament(@PathVariable String id) {
+  //      return tournamentService.deleteTournament(id);
+  //  }
 
 
 }
