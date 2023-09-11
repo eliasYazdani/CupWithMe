@@ -10,6 +10,8 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import axios from "axios";
 import {red} from "@mui/material/colors";
+import {MatchWithoutId} from "../Models/MatchWithoutId.ts";
+import {RoundWithoutId} from "../Models/RoundWithoutId.ts";
 
 
 type PropsNewTournamentModal = {
@@ -77,22 +79,28 @@ export default function NewTournamentModal(propsNewTournamentModal: PropsNewTour
         setNumberOfPlayers(0)
 
         if (tournamentName !== "" && location !== "" && numberOfPlayers !== undefined && numberOfPlayers > 0) {
-            const initialMatches = [];
-            for (let i = 0; i < (Math.pow(2, Math.ceil(Math.log2(numberOfPlayers))) - 1); i++) {
-                initialMatches.push({
-                    player1: "",
-                    score1: 0,
-                    player2: "",
-                    score2: 0
-                });
-            }
-            console.log("Initial matches array:", initialMatches);
+           const initialRounds:RoundWithoutId[]=[];
+           for(let r=0; r<Math.ceil(Math.log2(numberOfPlayers)); r++){
+               const initialMatches:MatchWithoutId[] = [];
+                for (let m = 0; m < (((Math.pow(2, Math.ceil(Math.log2(numberOfPlayers)))) /(Math.pow(2, r+1)))); m++) {
+                    initialMatches.push({
+                        player1: "",
+                        score1: null,
+                        player2: "",
+                        score2: null
+                    });
+                }
+                initialRounds.push({matches: initialMatches})
+           }
+
+
+            console.log("Initial rounds array:", initialRounds);
             axios.post("/api/cup/tournaments", {
                 "admin": propsNewTournamentModal.user,
                 "tournamentName": tournamentName,
                 "location": location,
                 "numberOfPlayers": numberOfPlayers,
-                "matchesWithoutId": initialMatches,
+                "roundsWithoutId": initialRounds,
                 "champion": ""
             } as TournamentWithoutId)
                 .then(() => propsNewTournamentModal.allTournamentsList())

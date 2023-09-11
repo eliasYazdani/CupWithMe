@@ -1,4 +1,5 @@
-import {MatchModel} from "./MatchModel.ts";
+
+import {Round} from "./Round.ts";
 
 
 export type Tournament = {
@@ -7,6 +8,6 @@ export type Tournament = {
     tournamentName: string,
     location: string,
     numberOfPlayers: number,
-    matches: MatchModel[],
+    rounds: Round[],
     champion: string
 }
