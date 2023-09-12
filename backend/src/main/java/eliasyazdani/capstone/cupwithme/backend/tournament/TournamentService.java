@@ -90,13 +90,12 @@ public class TournamentService {
 //
     //   }
 //
-    //   public List<Tournament> deleteTournament (String id){
-    //       if (!tournamentRepository.existsById(id)) {
-    //           throw new NoSuchElementException();
-    //       }
-    //       tournamentRepository.deleteById(id);
-    //       return tournamentRepository.findAll();
-    //   }
+      public void deleteTournament (String id){
+          if (!tournamentRepository.existsById(id)) {
+              throw new NoSuchElementException();
+          }
+          tournamentRepository.deleteById(id);
+      }
 
 
 }

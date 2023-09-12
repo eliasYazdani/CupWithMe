@@ -10,6 +10,7 @@ import {SelectChangeEvent} from "@mui/material/Select";
 import {MatchModel} from "../Models/MatchModel.ts";
 import axios from "axios";
 import {TournamentWithoutIdWithMatch} from "../Models/TournamentWithoutIdWithMatch.ts";
+import {Round} from "../Models/Round.ts";
 
 
 type PropsTournamentBracket = {
@@ -19,12 +20,12 @@ type PropsTournamentBracket = {
     match?: MatchModel;
     allTournamentsList: () => void
     user: string
-    matchesToUpdate: MatchModel[]
+    roundsToUpdate: Round[]
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {
     const [champion, setChampion] = useState("");
-    const [updatedMatches, setUpdatedMatches] = useState([...propsTournamentBracket.matchesToUpdate]);
+    const [updatedRounds, setUpdatedRounds] = useState([...propsTournamentBracket.roundsToUpdate]);
     const {tournamentId} = useParams();
     const selectedTournament = propsTournamentBracket.tournaments.find(
         (tournament) => tournament.id === tournamentId
@@ -34,61 +35,67 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
         return <div>Loading or No Tournament Found</div>;
     }
 
-    const numPlayers = selectedTournament.numberOfPlayers;
-    const numRounds = Math.ceil(Math.log2(numPlayers));
-    const totalBracketSize = Math.pow(2, Math.ceil(Math.log2(numPlayers)));
 
 
     const handleChangeChampion = (event: SelectChangeEvent) => {
         setChampion(event.target.value);
     };
 
-    const handleScoreChange1 = (matchId: string, score1: number) => {
-        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
-        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
-        if (matchToUpdate) {
-            matchToUpdate.score1 = score1;
-           setUpdatedMatches(updatedMatches)
-        }
+    const handleScoreChange1 = (
+        roundIndex: number,
+        matchIndex: number,
+        score1: number | null|undefined,
+    ) => {
+        const updatedRoundsCopy = [...updatedRounds];
+        updatedRoundsCopy[roundIndex].matches[matchIndex].score1 = score1;
+        setUpdatedRounds(updatedRoundsCopy);
     };
-    const handlePlayerChange1 = (matchId: string, player1: string) => {
-        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
-        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
-        if (matchToUpdate) {
-            matchToUpdate.player1 = player1;
-            setUpdatedMatches(updatedMatches)        }
+    const handleScoreChange2 = (
+        roundIndex: number,
+        matchIndex: number,
+        score2: number | null|undefined
+    ) => {
+        const updatedRoundsCopy = [...updatedRounds];
+        updatedRoundsCopy[roundIndex].matches[matchIndex].score2 = score2;
+        setUpdatedRounds(updatedRoundsCopy);
     };
-    const handleScoreChange2 = (matchId: string, score2: number) => {
-        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
-        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
-        if (matchToUpdate) {
-            matchToUpdate.score2 = score2;
-            setUpdatedMatches(updatedMatches)        }
+
+    const handlePlayerChange1 = (
+        roundIndex: number,
+        matchIndex: number,
+        player1: string|undefined,
+    ) => {
+        const updatedMatchesCopy = [...updatedRounds];
+        updatedMatchesCopy[roundIndex].matches[matchIndex].player1 = player1;
+        setUpdatedRounds(updatedMatchesCopy);
     };
-    const handlePlayerChange2 = (matchId: string, player2: string) => {
-        const updatedMatches = [...propsTournamentBracket.matchesToUpdate];
-        const matchToUpdate = updatedMatches.find((match) => match.id === matchId);
-        if (matchToUpdate) {
-            matchToUpdate.player2 = player2;
-            setUpdatedMatches(updatedMatches)        }
+    const handlePlayerChange2 = (
+        roundIndex: number,
+        matchIndex: number,
+        player2: string|undefined
+    ) => {
+        const updatedMatchesCopy = [...updatedRounds];
+        updatedMatchesCopy[roundIndex].matches[matchIndex].player2 = player2;
+        setUpdatedRounds(updatedMatchesCopy);
     };
 
     const handleSaveBracket = () => {
         if (selectedTournament) {
             const tournamentId = selectedTournament.id;
-
-console.log(updatedMatches)
-            axios.put("/api/cup/tournaments/" + tournamentId, {
-                "admin": propsTournamentBracket.user,
-                "tournamentName": selectedTournament.tournamentName,
-                "location": selectedTournament.location,
-                "numberOfPlayers": selectedTournament.numberOfPlayers,
-                "matches": updatedMatches,
-                "champion": champion,
-            } as TournamentWithoutIdWithMatch)
-                .then(() => propsTournamentBracket.allTournamentsList())
+            console.log("Sending data to the backend:", updatedRounds);
+            console.log("Sending data to the backend:", champion);
+            axios
+                .put("/api/cup/tournaments/" + tournamentId, {
+                    admin: propsTournamentBracket.user,
+                    tournamentName: selectedTournament.tournamentName,
+                    location: selectedTournament.location,
+                    numberOfPlayers: selectedTournament.numberOfPlayers,
+                    rounds: updatedRounds, // Send the updated rounds
+                    champion: champion,
+                } as TournamentWithoutIdWithMatch)
+                .then(() => propsTournamentBracket.allTournamentsList());
         }
-    }
+    };
 
     const handleDeleteBracket = () => {
         axios.delete("/api/cup/tournaments/" + tournamentId,)
@@ -99,47 +106,44 @@ console.log(updatedMatches)
     return (
         <div>
             <div key={selectedTournament.id}>
-                <h1 style={{color: "white"}}>{selectedTournament.tournamentName + " in " + selectedTournament.location + "🏆"} </h1>
+                <h1 style={{ color: "white" }}>
+                    {selectedTournament.tournamentName +
+                        " in " +
+                        selectedTournament.location +
+                        "🏆"}
+                </h1>
                 <div className="bracket-container">
-                    {[...Array(numRounds)].map((_, roundIndex) => (
+                    {selectedTournament.rounds.map((round, roundIndex) => (
                         <div key={roundIndex} className="round">
-                            <h4 style={{color: "white"}}>Round {roundIndex + 1}</h4>
+                            <h4 style={{ color: "white" }}>Round {roundIndex + 1}</h4>
                             <div className="round-matches">
-                                {[...Array(totalBracketSize / Math.pow(2, roundIndex + 1))].map(
-                                    (_, matchIndex) => (
-                                        <div key={matchIndex}>
-                                            <Match
-                                                id={selectedTournament.matches[matchIndex].id}
-                                                matchIndex={matchIndex}
-                                                players={propsTournamentBracket.players}
-                                                onScoreChange1={(event) => {
-                                                    const scoreValue = event?.target?.value;
-                                                    if (scoreValue !== undefined) {
-                                                        handleScoreChange1(selectedTournament.matches[matchIndex].id, parseInt(scoreValue));
-                                                    }
-                                                }}
-                                                onPlayerChange1={(event) => {
-                                                    const playerValue = event?.target?.value;
-                                                    if (playerValue !== undefined) {
-                                                        handlePlayerChange1(selectedTournament.matches[matchIndex].id, playerValue);
-                                                    }
-                                                }}
-                                                onScoreChange2={(event) => {
-                                                    const scoreValue = event?.target?.value;
-                                                    if (scoreValue !== undefined) {
-                                                        handleScoreChange2(selectedTournament.matches[matchIndex].id, parseInt(scoreValue));
-                                                    }
-                                                }}
-                                                onPlayerChange2={(event) => {
-                                                    const playerValue = event?.target?.value;
-                                                    if (playerValue !== undefined) {
-                                                        handlePlayerChange2(selectedTournament.matches[matchIndex].id, playerValue);
-                                                    }
-                                                }}
-                                                score1={propsTournamentBracket.matchesToUpdate[matchIndex].score1}
-                                                score2={propsTournamentBracket.matchesToUpdate[matchIndex].score2}
-                                                player1={propsTournamentBracket.matchesToUpdate[matchIndex].player1}
-                                                player2={propsTournamentBracket.matchesToUpdate[matchIndex].player2}
+                                {round.matches.map((match, matchIndex) => (
+                                    <div key={matchIndex}>
+                                        <Match
+                                            // Pass appropriate match data
+                                            id={match.id}
+                                            matchIndex={matchIndex}
+                                            players={propsTournamentBracket.players}
+                                            onScoreChange1={(event) => {
+                                                const scoreValue = event?.target?.value;
+                                                handleScoreChange1(roundIndex, matchIndex, parseInt(scoreValue));
+                                            }}
+                                            onPlayerChange1={(event) => {
+                                                const playerValue = event?.target?.value;
+                                                handlePlayerChange1(roundIndex, matchIndex, playerValue);
+                                            }}
+                                            onScoreChange2={(event) => {
+                                                const scoreValue = event?.target?.value;
+                                                handleScoreChange2(roundIndex, matchIndex, parseInt(scoreValue) );
+                                            }}
+                                            onPlayerChange2={(event) => {
+                                                const playerValue = event?.target?.value;
+                                                handlePlayerChange2(roundIndex, matchIndex, playerValue);
+                                            }}
+                                            score1={match.score1}
+                                            score2={match.score2}
+                                            player1={match.player1}
+                                            player2={match.player2}
 
                                             />
 
