@@ -29,11 +29,11 @@ public class TournamentController {
       return tournamentService.getDetailsById(id);
   }
 
-  //  @PutMapping("/{id}")
-  //  public Tournament changeTournamentInfo(@PathVariable String id, @Valid @RequestBody TournamentWithoutIdWithMatch tournamentWithoutIdWithMatch) {
-  //      return tournamentService.changeTournamentInfo(id, tournamentWithoutIdWithMatch);
-  //  }
-//
+  @PutMapping("/{id}")
+  public Tournament changeTournamentInfo(@PathVariable String id, @Valid @RequestBody TournamentWithoutIdWithRounds tournamentWithoutIdWithRounds) {
+      return tournamentService.changeTournamentInfo(id, tournamentWithoutIdWithRounds);
+  }
+
     @DeleteMapping("/{id}")
     public void deleteTournament(@PathVariable String id) {
         tournamentService.deleteTournament(id);

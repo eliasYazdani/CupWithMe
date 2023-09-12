@@ -2,7 +2,7 @@
 import {Round} from "./Round.ts";
 
 
-export type TournamentWithoutIdWithMatch = {
+export type TournamentWithoutIdWithRounds = {
     admin:string,
     tournamentName: string,
     location: string,

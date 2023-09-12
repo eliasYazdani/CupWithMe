@@ -9,7 +9,7 @@ import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {SelectChangeEvent} from "@mui/material/Select";
 import {MatchModel} from "../Models/MatchModel.ts";
 import axios from "axios";
-import {TournamentWithoutIdWithMatch} from "../Models/TournamentWithoutIdWithMatch.ts";
+import { TournamentWithoutIdWithRounds} from "../Models/TournamentWithoutIdWithRounds.ts";
 import {Round} from "../Models/Round.ts";
 
 
@@ -92,7 +92,7 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                     numberOfPlayers: selectedTournament.numberOfPlayers,
                     rounds: updatedRounds, // Send the updated rounds
                     champion: champion,
-                } as TournamentWithoutIdWithMatch)
+                } as TournamentWithoutIdWithRounds)
                 .then(() => propsTournamentBracket.allTournamentsList());
         }
     };

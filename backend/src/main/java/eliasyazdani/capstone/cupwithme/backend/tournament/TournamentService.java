@@ -55,47 +55,54 @@ public class TournamentService {
         return newTournament;
     }
 
-   public Tournament getDetailsById (String id){
-       Optional<Tournament> foundTournament = tournamentRepository.findById(id);
-       if (foundTournament.isPresent()) {
-           return foundTournament.get();
-       } else {
-           throw new NoSuchElementException();
-       }
+    public Tournament getDetailsById(String id) {
+        Optional<Tournament> foundTournament = tournamentRepository.findById(id);
+        if (foundTournament.isPresent()) {
+            return foundTournament.get();
+        } else {
+            throw new NoSuchElementException();
+        }
 
-   }
+    }
 
-    //   public Tournament changeTournamentInfo (String id, TournamentWithoutIdWithMatch tournamentWithoutIdWithMatch){
-    //       List<Match> newChangedMatch = new ArrayList<>();
-    //       for (Match match : tournamentWithoutIdWithMatch.matches()) {
-    //           Match newMatch = new Match(
-    //                   match.id(),
-    //                   match.player1(),
-    //                   match.score1(),
-    //                   match.player2(),
-    //                   match.score2()
-    //           );
-    //           newChangedMatch.add(newMatch);
-    //       }
-    //       Tournament newChangedTournament = new Tournament(
-    //               id,
-    //               tournamentWithoutIdWithMatch.admin(),
-    //               tournamentWithoutIdWithMatch.tournamentName(),
-    //               tournamentWithoutIdWithMatch.location(),
-    //               tournamentWithoutIdWithMatch.numberOfPlayers(),
-    //               newChangedMatch,
-    //               tournamentWithoutIdWithMatch.champion()
-    //       );
-    //       return tournamentRepository.save(newChangedTournament);
-//
-    //   }
-//
-      public void deleteTournament (String id){
-          if (!tournamentRepository.existsById(id)) {
-              throw new NoSuchElementException();
-          }
-          tournamentRepository.deleteById(id);
-      }
+    public Tournament changeTournamentInfo(String id, TournamentWithoutIdWithRounds tournamentWithoutIdWithRounds) {
+        List<Round> newChangedRounds = new ArrayList<>();
+        for (Round round : tournamentWithoutIdWithRounds.rounds()) {
+            List<Match> newChangedMatches = new ArrayList<>();
+            for (Match match : round.matches()) {
+                Match newMatch = new Match(
+                        match.id(),
+                        match.player1(),
+                        match.score1(),
+                        match.player2(),
+                        match.score2()
+                );
+                newChangedMatches.add(newMatch);
+            }
+            Round newChangedRound = new Round(
+                    round.id(),
+                    newChangedMatches
+            );
+            newChangedRounds.add(newChangedRound);
+        }
+        Tournament newChangedTournament = new Tournament(
+                id,
+                tournamentWithoutIdWithRounds.admin(),
+                tournamentWithoutIdWithRounds.tournamentName(),
+                tournamentWithoutIdWithRounds.location(),
+                tournamentWithoutIdWithRounds.numberOfPlayers(),
+                newChangedRounds,
+                tournamentWithoutIdWithRounds.champion()
+        );
+        return tournamentRepository.save(newChangedTournament);
+    }
+
+    public void deleteTournament(String id) {
+        if (!tournamentRepository.existsById(id)) {
+            throw new NoSuchElementException();
+        }
+        tournamentRepository.deleteById(id);
+    }
 
 
 }

@@ -32,6 +32,7 @@ export default function App() {
     function allTournamentsList() {
         axios.get("/api/cup/tournaments")
             .then(response => {
+                console.log(response.data),
                 setTournaments(response.data)
             })
     }
