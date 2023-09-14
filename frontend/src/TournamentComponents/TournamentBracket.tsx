@@ -44,40 +44,39 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     const handleScoreChange1 = (
         roundIndex: number,
         matchIndex: number,
-        score1: number | null|undefined,
+        score1: number | null | undefined,
     ) => {
-        const updatedRoundsCopy = [...updatedRounds];
-        updatedRoundsCopy[roundIndex].matches[matchIndex].score1 = score1;
-        setUpdatedRounds(updatedRoundsCopy);
+        propsTournamentBracket.roundsToUpdate[roundIndex].matches[matchIndex].score1 = score1;
+        setUpdatedRounds(propsTournamentBracket.roundsToUpdate);
     };
+
     const handleScoreChange2 = (
         roundIndex: number,
         matchIndex: number,
-        score2: number | null|undefined
+        score2: number | null | undefined
     ) => {
-        const updatedRoundsCopy = [...updatedRounds];
-        updatedRoundsCopy[roundIndex].matches[matchIndex].score2 = score2;
-        setUpdatedRounds(updatedRoundsCopy);
+        propsTournamentBracket.roundsToUpdate[roundIndex].matches[matchIndex].score2 = score2;
+        setUpdatedRounds(propsTournamentBracket.roundsToUpdate);
     };
 
     const handlePlayerChange1 = (
         roundIndex: number,
         matchIndex: number,
-        player1: string|undefined,
+        player1: string | undefined,
     ) => {
-        const updatedMatchesCopy = [...updatedRounds];
-        updatedMatchesCopy[roundIndex].matches[matchIndex].player1 = player1;
-        setUpdatedRounds(updatedMatchesCopy);
+        propsTournamentBracket.roundsToUpdate[roundIndex].matches[matchIndex].player1 = player1;
+        setUpdatedRounds(propsTournamentBracket.roundsToUpdate);
     };
+
     const handlePlayerChange2 = (
         roundIndex: number,
         matchIndex: number,
-        player2: string|undefined
+        player2: string | undefined
     ) => {
-        const updatedMatchesCopy = [...updatedRounds];
-        updatedMatchesCopy[roundIndex].matches[matchIndex].player2 = player2;
-        setUpdatedRounds(updatedMatchesCopy);
+        propsTournamentBracket.roundsToUpdate[roundIndex].matches[matchIndex].player2 = player2;
+        setUpdatedRounds(propsTournamentBracket.roundsToUpdate);
     };
+
 
     const handleSaveBracket = () => {
         if (selectedTournament) {
@@ -125,20 +124,16 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
                                             matchIndex={matchIndex}
                                             players={propsTournamentBracket.players}
                                             onScoreChange1={(event) => {
-                                                const scoreValue = event?.target?.value;
-                                                handleScoreChange1(roundIndex, matchIndex, parseInt(scoreValue));
+                                                handleScoreChange1(roundIndex, matchIndex, parseInt(event.target.value));
                                             }}
                                             onPlayerChange1={(event) => {
-                                                const playerValue = event?.target?.value;
-                                                handlePlayerChange1(roundIndex, matchIndex, playerValue);
+                                                handlePlayerChange1(roundIndex, matchIndex, event.target.value);
                                             }}
                                             onScoreChange2={(event) => {
-                                                const scoreValue = event?.target?.value;
-                                                handleScoreChange2(roundIndex, matchIndex, parseInt(scoreValue) );
+                                                handleScoreChange2(roundIndex, matchIndex, parseInt(event.target.value) );
                                             }}
                                             onPlayerChange2={(event) => {
-                                                const playerValue = event?.target?.value;
-                                                handlePlayerChange2(roundIndex, matchIndex, playerValue);
+                                                handlePlayerChange2(roundIndex, matchIndex, event.target.value);
                                             }}
                                             score1={match.score1}
                                             score2={match.score2}

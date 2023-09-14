@@ -32,11 +32,11 @@ export default function App() {
     function allTournamentsList() {
         axios.get("/api/cup/tournaments")
             .then(response => {
-                console.log(response.data),
+                console.log(response.data)
                 setTournaments(response.data)
             })
     }
- function handleMatchesToUpdete(tournamentId: string){
+ function handleMatchesToUpdate(tournamentId: string){
        const selectedTournament= tournaments.find((tournament)=>tournament.id===tournamentId)
        if(selectedTournament){setRoundsToUpdate(selectedTournament.rounds)}
  }
@@ -100,7 +100,7 @@ export default function App() {
                        element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
                                                 user={user}
                                                 navigate={navigate}
-                                                handleMatchesToUpdate={handleMatchesToUpdete}/>}/>
+                                                handleMatchesToUpdate={handleMatchesToUpdate}/>}/>
                 <Route path="/Bracket/:tournamentId"
                        element={<TournamentBracket allTournamentsList={allTournamentsList} tournaments={tournaments}
                                                    players={players}
