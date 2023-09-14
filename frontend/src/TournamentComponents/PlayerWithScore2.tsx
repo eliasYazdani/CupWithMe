@@ -22,11 +22,11 @@ export default function PlayerWithScore2(propsPlayerWithScore2: PropsPlayerWithS
 
     const handleChangePlayer2 = (event: SelectChangeEvent) => {
         propsPlayerWithScore2.onPlayerChange2(event)
-        setPlayerSelect2(propsPlayerWithScore2.player2);
+        setPlayerSelect2(event.target.value);
     };
     const handleChangeScore2 = (event: React.ChangeEvent<HTMLInputElement>) => {
         propsPlayerWithScore2.onScoreChange2(event);
-        setPlayerScore2(propsPlayerWithScore2.score2);
+        setPlayerScore2(parseInt(event.target.value));
     };
 
     return (

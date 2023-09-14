@@ -24,12 +24,11 @@ type PropsTournamentBracket = {
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {
-    const [champion, setChampion] = useState("");
     const [updatedRounds, setUpdatedRounds] = useState([...propsTournamentBracket.roundsToUpdate]);
     const {tournamentId} = useParams();
     const selectedTournament = propsTournamentBracket.tournaments.find(
-        (tournament) => tournament.id === tournamentId
-    );
+        (tournament) => tournament.id === tournamentId);
+    const [champion, setChampion] = useState(selectedTournament?selectedTournament.champion:"");
 
     if (!selectedTournament) {
         return <div>Loading or No Tournament Found</div>;
