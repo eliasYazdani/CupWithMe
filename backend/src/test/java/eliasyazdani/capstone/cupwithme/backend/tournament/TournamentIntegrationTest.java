@@ -54,7 +54,10 @@ class TournamentIntegrationTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                         { "admin":"adminA","tournamentName": "Bezirk2","location": "Hamburg","numberOfPlayers": 4,
-                                        "matchesWithoutId":[{"player1":"","score1":0,"player2": "","score2": 0},{"player1":"","score1":0,"player2": "","score2": 0},{"player1":"","score1":0,"player2": "","score2": 0}],
+                                        "roundsWithoutId":[
+                                        {"matchesWithoutId":[{"player1":"","score1":0,"player2": "","score2": 0},
+                                                             {"player1":"","score1":0,"player2": "","score2": 0}]},
+                                        {"matchesWithoutId":[{"player1":"","score1":0,"player2": "","score2": 0}]}],
                                         "champion":""}
                                         """)
                                 .with(csrf())
@@ -65,8 +68,8 @@ class TournamentIntegrationTest {
                 .andExpect(jsonPath("tournamentName").value("Bezirk2"))
                 .andExpect(jsonPath("location").value("Hamburg"))
                 .andExpect(jsonPath("numberOfPlayers").value(4))
-                .andExpect(jsonPath("matches").isArray())
-                .andExpect(jsonPath("matches", hasSize(3))) // Check the array size based on your input
+                .andExpect(jsonPath("rounds").isArray())
+                .andExpect(jsonPath("rounds", hasSize(2)))
                 .andExpect(jsonPath("champion").isEmpty());
     }
 
@@ -74,27 +77,30 @@ class TournamentIntegrationTest {
     @Test
     @WithMockUser
     void expectSearchedTournament_whenGetRequestWithIdTournament() throws Exception {
-        List<Match> matchInSearchedTournament = List.of(
-                new Match("M1", "A", 2, "B", 1),
-                new Match("M2", "C", 3, "D", 0),
-                new Match("M3", "A", 2, "C", 0));
-        Tournament searchedTournament = new Tournament("1A", "adminA","Bezirk1", "Hamburg", 4, matchInSearchedTournament, "A");
+        List<Round> roundsInSearchedTournament = List.of(
+                new Round("R1", List.of(new Match("M1", "A", 2, "B", 0),
+                        new Match("M2", "C", 1, "D", 2))),
+                new Round("R2", List.of(new Match("M3", "A", 2, "D", 1))));
+
+        Tournament searchedTournament = new Tournament(
+                "T1", "adminA", "Bezirk1", "Hamburg", 4, roundsInSearchedTournament, "A");
         tournamentRepository.insert(searchedTournament);
         String expectedTournament = """
                     {
-                        "id": "1A",
+                        "id": "T1",
                         "admin":"adminA",
                         "tournamentName": "Bezirk1",
                         "location": "Hamburg",
                         "numberOfPlayers": 4,
-                        "matches":[{"id":"M1","player1":"A","score1":2,"player2": "B","score2": 1},
-                                   {"id":"M2","player1":"C","score1":3,"player2": "D","score2": 0},
-                                   {"id":"M3","player1":"A","score1":2,"player2": "C","score2": 0}],
+                        "rounds": [
+                        {"id":"R1","matches":[{"id":"M1","player1":"A","score1":2,"player2": "B","score2": 0},
+                                              {"id":"M2","player1":"C","score1":1,"player2": "D","score2": 2}]},
+                        {"id":"R2","matches":[{"id":"M3","player1":"A","score1":2,"player2": "D","score2": 1}]}],
                         "champion": "A"
                     }
                 """;
 
-        mockMvc.perform(get("/api/cup/tournaments/1A")
+        mockMvc.perform(get("/api/cup/tournaments/T1")
                         .with(csrf())
                 )
                 .andExpect(status().isOk())
@@ -105,12 +111,12 @@ class TournamentIntegrationTest {
     @Test
     @WithMockUser
     void whenExistedIdWithNewInfo_thenReturnThisIdWithNewInfo() throws Exception {
-        List<Match> matchesInSearchedTournamentToUpdate = List.of(
-                new Match("M1", "E", 0, "F", 2),
-                new Match("M2", "G", 3, "H", 1),
-                new Match("M3", "F", 2, "G", 1));
+        List<Round> roundsInSearchedTournamentToUpdate = List.of(
+                new Round("R1", List.of(new Match("M1", "A", 2, "B", 0),
+                        new Match("M2", "C", 1, "D", 2))),
+                new Round("R2", List.of(new Match("M3", "A", 2, "D", 1))));
         Tournament tournamentToUpdate = new Tournament(
-                "1A", "adminA","Bezirk2", "Berlin", 4, matchesInSearchedTournamentToUpdate, "F");
+                "T1", "adminA", "Bezirk2", "Berlin", 4, roundsInSearchedTournamentToUpdate, "A");
         tournamentRepository.insert(tournamentToUpdate);
 
 
@@ -118,18 +124,19 @@ class TournamentIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                     {
-                                        "id": "1A",
+                                        "id": "T1",
                                         "admin":"adminA",
                                         "tournamentName": "2022",
                                         "location": "Hamburg",
                                         "numberOfPlayers": 4,
-                                        "matches":[{"id":"M1","player1":"A","score1":2,"player2": "B","score2": 1},
-                                                   {"id":"M2","player1":"C","score1":3,"player2": "D","score2": 0},
-                                                   {"id":"M3","player1":"A","score1":2,"player2": "C","score2": 0}],
-                                        "champion": "A"
+                                        "rounds": [
+                                         {"id":"R1","matches":[{"id":"M1","player1":"E","score1":3,"player2": "F","score2": 2},
+                                                               {"id":"M2","player1":"G","score1":1,"player2": "G","score2": 3}]},
+                                         {"id":"R2","matches":[{"id":"M3","player1":"E","score1":2,"player2": "G","score2": 3}]}],
+                                        "champion": "G"
                                     }
                                 """)
-                                .with(csrf())
+                        .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -139,10 +146,11 @@ class TournamentIntegrationTest {
                             "tournamentName": "2022",
                             "location": "Hamburg",
                             "numberOfPlayers": 4,
-                            "matches":[{"id":"M1","player1":"A","score1":2,"player2": "B","score2": 1},
-                                       {"id":"M2","player1":"C","score1":3,"player2": "D","score2": 0},
-                                       {"id":"M3","player1":"A","score1":2,"player2": "C","score2": 0}],
-                            "champion": "A"
+                             "rounds": [
+                             {"id":"R1","matches":[{"id":"M1","player1":"E","score1":3,"player2": "F","score2": 2},
+                                                    {"id":"M2","player1":"G","score1":1,"player2": "G","score2": 3}]},
+                             {"id":"R2","matches":[{"id":"M3","player1":"E","score1":2,"player2": "G","score2": 3}]}],
+                             "champion": "G"
                         }
                             """));
     }
@@ -151,17 +159,17 @@ class TournamentIntegrationTest {
     @Test
     @WithMockUser
     void whenExistId_thenDeleteAndReturnNothing() throws Exception {
-        List<Match> matchesInTournamentToDelete = List.of(
-                new Match("M1", "A", 2, "B", 1),
-                new Match("M2", "C", 3, "D", 0),
-                new Match("M3", "A", 2, "C", 0));
+        List<Round> roundsInSearchedTournamentToDelete = List.of(
+                new Round("R1", List.of(new Match("M1", "A", 2, "B", 0),
+                        new Match("M2", "C", 1, "D", 2))),
+                new Round("R2", List.of(new Match("M3", "A", 2, "D", 1))));
         Tournament tournamentToDelete = new Tournament(
-                "1A", "adminA","Bezirk1", "Hamburg", 16, matchesInTournamentToDelete, "A");
+                "T1", "adminA", "Bezirk2", "Berlin", 4, roundsInSearchedTournamentToDelete, "A");
         tournamentRepository.insert(tournamentToDelete);
 
 
         mockMvc.perform(
-                        delete("/api/cup/tournaments/1A")
+                        delete("/api/cup/tournaments/T1")
                                 .with(csrf())
                 )
                 .andExpect(status().isOk());

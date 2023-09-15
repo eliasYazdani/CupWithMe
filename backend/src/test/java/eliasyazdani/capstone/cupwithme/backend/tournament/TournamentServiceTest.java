@@ -72,7 +72,7 @@ class TournamentServiceTest {
         Tournament newTournamentWithId =
                 new Tournament("T1", newTournamentWithoutId.admin(), newTournamentWithoutId.tournamentName(), newTournamentWithoutId.location(), newTournamentWithoutId.numberOfPlayers(),
                         roundsWithId, "");
-        Mockito.when(idService.randomId()).thenReturn("R1").thenReturn("M1").thenReturn("M2").thenReturn("R2").thenReturn("M3").thenReturn("T1");
+        Mockito.when(idService.randomId()).thenReturn("M1").thenReturn("M2").thenReturn("R1").thenReturn("M3").thenReturn("R2").thenReturn("T1");
         Mockito.when(tournamentRepository.insert(newTournamentWithId))
                 .thenReturn(newTournamentWithId);
         // when
