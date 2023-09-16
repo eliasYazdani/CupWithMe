@@ -38,6 +38,4 @@ public class TournamentController {
     public void deleteTournament(@PathVariable String id) {
         tournamentService.deleteTournament(id);
     }
-
-
 }

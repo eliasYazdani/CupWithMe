@@ -9,6 +9,4 @@ public record Round(
         String id,
         List<Match> matches
 ) {
-
-
 }
