@@ -17,16 +17,17 @@ type PropsPlayerWithScore1 = {
 export default function PlayerWithScore1(propsPlayerWithScore1: PropsPlayerWithScore1) {
 
     const [playerScore1, setPlayerScore1] = useState<number | null | undefined>(propsPlayerWithScore1.score1);
-    const [playerSelect1, setPlayerSelect1] = useState(propsPlayerWithScore1.player1);
+    const [playerSelect1, setPlayerSelect1] = useState<string|undefined>(propsPlayerWithScore1.player1);
 
 
     const handleChangePlayer1 = (event: SelectChangeEvent) => {
         setPlayerSelect1(event.target.value);
         propsPlayerWithScore1.onPlayerChange1(event)
+
     };
     const handleChangeScore1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPlayerScore1(parseInt(event.target.value));
         propsPlayerWithScore1.onScoreChange1(event);
+        setPlayerScore1(parseInt(event.target.value));
     };
 
     return (

@@ -2,6 +2,7 @@ import {Player} from "../Models/Player.ts";
 import PlayerWithScore1 from "./PlayerWithScore1.tsx";
 import PlayerWithScore2 from "./PlayerWithScore2.tsx";
 import {SelectChangeEvent} from "@mui/material/Select";
+import React from "react";
 
 type PropsMatch = {
     id: string
@@ -21,14 +22,14 @@ export default function Match(propsMatch: PropsMatch) {
         <div style={{display: 'flex', flexDirection: 'column', margin: 'auto'}}>
             <PlayerWithScore1
                 players={propsMatch.players}
-                onScoreChange1={propsMatch.onScoreChange1} // Pass the matchIndex along with player and score
+                onScoreChange1={propsMatch.onScoreChange1}
                 onPlayerChange1={propsMatch.onPlayerChange1}
                 score1={propsMatch.score1}
                 player1={propsMatch.player1}
             />
             <PlayerWithScore2
                 players={propsMatch.players}
-                onScoreChange2={propsMatch.onScoreChange2} // Pass the matchIndex along with player and score
+                onScoreChange2={propsMatch.onScoreChange2}
                 onPlayerChange2={propsMatch.onPlayerChange2}
                 score2={propsMatch.score2}
                 player2={propsMatch.player2}

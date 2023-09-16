@@ -1,12 +1,13 @@
-import {MatchModel} from "./MatchModel.ts";
+
+import {Round} from "./Round.ts";
 
 
-export type TournamentWithoutIdWithMatch = {
+export type TournamentWithoutIdWithRounds = {
     admin:string,
     tournamentName: string,
     location: string,
     numberOfPlayers: number,
-    matches: MatchModel[],
+    rounds: Round[],
     champion: string
 
 }

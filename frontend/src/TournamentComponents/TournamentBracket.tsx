@@ -3,13 +3,14 @@ import {NavigateFunction, useParams} from "react-router-dom";
 import {Player} from "../Models/Player.ts";
 import Match from "./Match.tsx";
 import {Tournament} from "../Models/Tournament.ts";
-import React, {useState} from "react";
+import {useState} from "react";
 import "../CSS/TournamentBracket.css";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {SelectChangeEvent} from "@mui/material/Select";
 import {MatchModel} from "../Models/MatchModel.ts";
 import axios from "axios";
-import {TournamentWithoutIdWithMatch} from "../Models/TournamentWithoutIdWithMatch.ts";
+import {TournamentWithoutIdWithRounds} from "../Models/TournamentWithoutIdWithRounds.ts";
+import {Round} from "../Models/Round.ts";
 
 
 type PropsTournamentBracket = {
@@ -19,68 +20,77 @@ type PropsTournamentBracket = {
     match?: MatchModel;
     allTournamentsList: () => void
     user: string
+    roundsToUpdate: Round[]
 };
 
 export default function TournamentBracket(propsTournamentBracket: PropsTournamentBracket) {
-    const [score1, setScore1] = useState(propsTournamentBracket.match?.score1)
-    const [player1, setPlayer1] = useState(propsTournamentBracket.match?.player1)
-    const [score2, setScore2] = useState(propsTournamentBracket.match?.score2)
-    const [player2, setPlayer2] = useState(propsTournamentBracket.match?.player2)
-    const [champion, setChampion] = useState("");
+    const [updatedRounds, setUpdatedRounds] = useState([...propsTournamentBracket.roundsToUpdate]);
     const {tournamentId} = useParams();
     const selectedTournament = propsTournamentBracket.tournaments.find(
-        (tournament) => tournament.id === tournamentId
-    );
+        (tournament) => tournament.id === tournamentId);
+    const [champion, setChampion] = useState(selectedTournament?selectedTournament.champion:"");
 
     if (!selectedTournament) {
         return <div>Loading or No Tournament Found</div>;
     }
 
-    const numPlayers = selectedTournament.numberOfPlayers;
-    const numRounds = Math.ceil(Math.log2(numPlayers));
-    const totalBracketSize = Math.pow(2, Math.ceil(Math.log2(numPlayers)));
-
-
+    const handleScoreChange1 = (
+        roundIndex: number,
+        matchIndex: number,
+        score1: number | null | undefined,
+    ) => {
+        const updatedRoundsCopy = [...updatedRounds];
+        updatedRoundsCopy[roundIndex].matches[matchIndex].score1 = score1;
+        setUpdatedRounds(updatedRoundsCopy);
+    };
+    const handlePlayerChange1 = (
+        roundIndex: number,
+        matchIndex: number,
+        player1: string | undefined,
+    ) => {
+        const updatedMatchesCopy = [...updatedRounds];
+        updatedMatchesCopy[roundIndex].matches[matchIndex].player1 = player1;
+        setUpdatedRounds(updatedMatchesCopy);
+    };
+    const handleScoreChange2 = (
+        roundIndex: number,
+        matchIndex: number,
+        score2: number | null | undefined
+    ) => {
+        const updatedRoundsCopy = [...updatedRounds];
+        updatedRoundsCopy[roundIndex].matches[matchIndex].score2 = score2;
+        setUpdatedRounds(updatedRoundsCopy);
+    };
+    const handlePlayerChange2 = (
+        roundIndex: number,
+        matchIndex: number,
+        player2: string | undefined
+    ) => {
+        const updatedMatchesCopy = [...updatedRounds];
+        updatedMatchesCopy[roundIndex].matches[matchIndex].player2 = player2;
+        setUpdatedRounds(updatedMatchesCopy);
+    };
     const handleChangeChampion = (event: SelectChangeEvent) => {
         setChampion(event.target.value);
     };
 
-    const handleScoreChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setScore1(parseInt(event.target.value));
-    };
-    const handlePlayerChange1 = (event: SelectChangeEvent) => {
-        setPlayer1(event.target.value);
-    }
-    const handleScoreChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setScore2(parseInt(event.target.value));
-    };
-    const handlePlayerChange2 = (event: SelectChangeEvent) => {
-        setPlayer2(event.target.value);
-    }
-
     const handleSaveBracket = () => {
         if (selectedTournament) {
             const tournamentId = selectedTournament.id;
-
-            const updatedMatches =
-                selectedTournament.matches.map(match => ({
-                    id: match.id,
-                    player1: player1,
-                    score1: score1,
-                    player2: player2,
-                    score2: score2
-                }));
-            axios.put("/api/cup/tournaments/" + tournamentId, {
-                "admin": propsTournamentBracket.user,
-                "tournamentName": selectedTournament.tournamentName,
-                "location": selectedTournament.location,
-                "numberOfPlayers": selectedTournament.numberOfPlayers,
-                "matches": updatedMatches,
-                "champion": champion,
-            } as TournamentWithoutIdWithMatch)
-                .then(() => propsTournamentBracket.allTournamentsList())
+            console.log("Sending data to the backend:", updatedRounds);
+            console.log("Sending data to the backend:", champion);
+            axios
+                .put("/api/cup/tournaments/" + tournamentId, {
+                    admin: propsTournamentBracket.user,
+                    tournamentName: selectedTournament.tournamentName,
+                    location: selectedTournament.location,
+                    numberOfPlayers: selectedTournament.numberOfPlayers,
+                    rounds: updatedRounds, // Send the updated rounds
+                    champion: champion,
+                } as TournamentWithoutIdWithRounds)
+                .then(() => propsTournamentBracket.allTournamentsList());
         }
-    }
+    };
 
     const handleDeleteBracket = () => {
         axios.delete("/api/cup/tournaments/" + tournamentId,)
@@ -91,27 +101,42 @@ export default function TournamentBracket(propsTournamentBracket: PropsTournamen
     return (
         <div>
             <div key={selectedTournament.id}>
-                <h1 style={{color: "white"}}>{selectedTournament.tournamentName + " in " + selectedTournament.location + "🏆"} </h1>
+                <h1 style={{color: "white"}}>
+                    {selectedTournament.tournamentName +
+                        " in " +
+                        selectedTournament.location +
+                        "🏆"}
+                </h1>
                 <div className="bracket-container">
-                    {[...Array(numRounds)].map((_, roundIndex) => (
+                    {selectedTournament.rounds.map((round, roundIndex) => (
                         <div key={roundIndex} className="round">
                             <h4 style={{color: "white"}}>Round {roundIndex + 1}</h4>
                             <div className="round-matches">
-                                {[...Array(totalBracketSize / Math.pow(2, roundIndex + 1))].map(
-                                    (_, matchIndex) => (
+                                {round.matches.map((match, matchIndex) => (
                                         <div key={matchIndex}>
                                             <Match
-                                                id={selectedTournament.matches[matchIndex].id}
+                                                // Pass appropriate match data
+                                                id={match.id}
                                                 matchIndex={matchIndex}
                                                 players={propsTournamentBracket.players}
-                                                onScoreChange1={handleScoreChange1}
-                                                onPlayerChange1={handlePlayerChange1}
-                                                onScoreChange2={handleScoreChange2}
-                                                onPlayerChange2={handlePlayerChange2}
-                                                score1={score1}
-                                                score2={score2}
-                                                player1={player1}
-                                                player2={player2}/>
+                                                onScoreChange1={(event) => {
+                                                    handleScoreChange1(roundIndex, matchIndex, parseInt(event.target.value));
+                                                }}
+                                                onPlayerChange1={(event) => {
+                                                    handlePlayerChange1(roundIndex, matchIndex, event.target.value);
+                                                }}
+                                                onScoreChange2={(event) => {
+                                                    handleScoreChange2(roundIndex, matchIndex, parseInt(event.target.value));
+                                                }}
+                                                onPlayerChange2={(event) => {
+                                                    handlePlayerChange2(roundIndex, matchIndex, event.target.value);
+                                                }}
+                                                score1={match.score1}
+                                                score2={match.score2}
+                                                player1={match.player1}
+                                                player2={match.player2}
+
+                                            />
 
                                         </div>
                                     )

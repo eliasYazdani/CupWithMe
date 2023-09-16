@@ -1,4 +1,5 @@
-import {MatchWithoutId} from "./MatchWithoutId.ts";
+
+import {RoundWithoutId} from "./RoundWithoutId.ts";
 
 
 export type TournamentWithoutId = {
@@ -6,7 +7,7 @@ export type TournamentWithoutId = {
     tournamentName: string,
     location: string,
     numberOfPlayers: number,
-    matchesWithoutId: MatchWithoutId[],
+    roundsWithoutId: RoundWithoutId[],
     champion: string
 
 }
