@@ -8,12 +8,12 @@ type PropsLogin = {
 export default function LoginPage(propsLogin: PropsLogin) {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [showPassword, setShowPassword] = useState(false);
+
 
     function onLogin(event: FormEvent) {
         event.preventDefault()
         propsLogin.onLogin(username, password)
-
-
     }
 
     return (
@@ -25,16 +25,23 @@ export default function LoginPage(propsLogin: PropsLogin) {
                 onChange={(event) => setUsername(event.target.value)}
                 placeholder="Username"
             />
-            <input
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Password"
-                type="password"
-            />
+            <div className="password-container">
+                <input
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="Password"
+                    type={showPassword ? 'text' : 'password'}
+                />
+                <span
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                >
+                    {showPassword ? "🕶️" : "🔍️"}
+                </span>
+            </div>
             <button className="login-button">
                 <span className="white-text">Login</span>
             </button>
         </form>
     );
 }
-
