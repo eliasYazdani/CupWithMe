@@ -12,9 +12,16 @@ type PropsSignUp = {
 export default function SignUp(propsSignUp: PropsSignUp) {
     const [username, setUsername] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-
+    const [confirmPassword, setConfirmPassword] = useState<string>("")
+    const [error, setError] = useState<string>("");
     function onSignUp(event: FormEvent) {
         event.preventDefault()
+
+        if (password !== confirmPassword) {
+            setError("Passwords do not match");
+            return;
+        }
+
         const newUser: UserWithoutId = {
             username: username,
             password: password
@@ -37,8 +44,15 @@ export default function SignUp(propsSignUp: PropsSignUp) {
                 placeholder="Password"
                 type="password"
             />
+           <input
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                placeholder="Confirm Password"
+                type="password"
+            />
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <div className="buttons">
-                <Button variant="contained" onClick={onSignUp}
+                <Button variant="contained"  type="submit"
                         sx={{fontSize: "10px", padding: "5px 10px", margin: "40px 0"}}>
                     Sign Up
                 </Button>
