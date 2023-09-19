@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -15,13 +17,23 @@ public class MongoUserService {
 
 
     public String addNewUser(MongoUserWithoutId mongoUserWithoutId) {
+        Optional<MongoUser> existingUser = mongoUserRepository.findByUsername(mongoUserWithoutId.username());
 
-        String hashedPassword = passwordEncoder.encode(mongoUserWithoutId.password());
-        MongoUser newUser = new MongoUser(
-                idService.randomId(),
-                mongoUserWithoutId.username(),
-                hashedPassword);
-        mongoUserRepository.insert(newUser);
-        return newUser.username();
+        if (existingUser.isPresent()) {
+            return "This username is already taken";
+        } else {
+            String hashedPassword = passwordEncoder.encode(mongoUserWithoutId.password());
+            MongoUser newUser = new MongoUser(
+                    idService.randomId(),
+                    mongoUserWithoutId.username(),
+                    hashedPassword);
+            mongoUserRepository.insert(newUser);
+            return newUser.username();
+        }
+    }
+
+    public boolean doesUsernameExists(String username) {
+        Optional<MongoUser> existingUser = mongoUserRepository.findByUsername(username);
+        return existingUser.isPresent();
     }
 }

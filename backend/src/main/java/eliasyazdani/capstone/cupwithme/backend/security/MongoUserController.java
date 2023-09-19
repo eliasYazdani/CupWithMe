@@ -2,6 +2,7 @@ package eliasyazdani.capstone.cupwithme.backend.security;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,4 +27,10 @@ public class MongoUserController {
     String addNewUser(@Valid @RequestBody MongoUserWithoutId mongoUserWithoutId) {
         return mongoUserService.addNewUser(mongoUserWithoutId);
     }
+    @GetMapping("/check-username/{username}")
+    public ResponseEntity<Boolean> checkUsernameExist(@PathVariable String username){
+        boolean exists= mongoUserService.doesUsernameExists(username);
+        return ResponseEntity.ok(exists);
+    }
+
 }
