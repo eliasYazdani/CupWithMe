@@ -18,6 +18,7 @@ export default function App() {
     const [tournaments, setTournaments] = useState<Tournament[]>([])
     const [user, setUser] = useState<string>("")
     const [roundsToUpdate, setRoundsToUpdate] = useState<Round[]>([])
+    const [signupError, setSignupError] = useState<string | null>(""); // Add a state variable for signup error
 
     const isAuthenticated = user !== undefined && user !== "anonymousUser"
 
@@ -36,20 +37,39 @@ export default function App() {
                 setTournaments(response.data)
             })
     }
- function handleMatchesToUpdate(tournamentId: string){
-       const selectedTournament= tournaments.find((tournament)=>tournament.id===tournamentId)
-       if(selectedTournament){setRoundsToUpdate(selectedTournament.rounds)}
- }
-    console.log(roundsToUpdate)
+
+    function handleMatchesToUpdate(tournamentId: string) {
+        const selectedTournament = tournaments.find((tournament) => tournament.id === tournamentId)
+        if (selectedTournament) {
+            setRoundsToUpdate(selectedTournament.rounds)
+        }
+    }
+
+
     function signup(newUserToSignup: UserWithoutId) {
-        axios.post("/api/cup/users/signup", newUserToSignup,)
-            .then(() => {
-                login(newUserToSignup.username, newUserToSignup.password)
-            })
-            .then(() => {
-                navigate("/")
+        axios.get(`/api/cup/users/check-username/${newUserToSignup.username}`)
+            .then((response) => {
+                if (response.data === true) {
+                    setSignupError("This username is already taken");
+                } else {
+                    axios.post("/api/cup/users/signup", newUserToSignup)
+                        .then(() => {
+                            login(newUserToSignup.username, newUserToSignup.password);
+                        })
+                        .then(() => {
+                            navigate("/");
+                        })
+                        .catch((error) => {
+                            if (error.response) {
+                                console.error("Error during signup:", error);
+                                setSignupError(error.response.data);
+                            }
+                        });
+                    setSignupError("")
+                }
             })
     }
+
 
     function login(username: string, password: string) {
         axios.post("/api/cup/users/login", null, {auth: {username, password}})
@@ -88,21 +108,28 @@ export default function App() {
         <div className="app">
             <Routes>
                 <Route path={"/"}
-                       element={<Home isAuthenticated={isAuthenticated} user={user} onLogin={login}
+                       element={<Home isAuthenticated={isAuthenticated}
+                                      user={user} onLogin={login}
                                       onLogout={logout}/>}/>
                 <Route path={"/signup"}
-                       element={<SignUp user={user} onSignup={signup} navigate={navigate}/>}/>
+                       element={<SignUp user={user}
+                                        onSignup={signup}
+                                        signupError={signupError}
+                                        navigate={navigate}/>}/>
                 <Route path={"/players"}
-                       element={<PlayerList players={players} allPlayerList={allPlayerList}
+                       element={<PlayerList players={players}
+                                            allPlayerList={allPlayerList}
                                             user={user}
                                             navigate={navigate}/>}/>
                 <Route path={"/tournaments"}
-                       element={<TournamentList tournaments={tournaments} allTournamentList={allTournamentsList}
+                       element={<TournamentList tournaments={tournaments}
+                                                allTournamentList={allTournamentsList}
                                                 user={user}
                                                 navigate={navigate}
                                                 handleMatchesToUpdate={handleMatchesToUpdate}/>}/>
                 <Route path="/Bracket/:tournamentId"
-                       element={<TournamentBracket allTournamentsList={allTournamentsList} tournaments={tournaments}
+                       element={<TournamentBracket allTournamentsList={allTournamentsList}
+                                                   tournaments={tournaments}
                                                    players={players}
                                                    user={user}
                                                    navigate={navigate}
