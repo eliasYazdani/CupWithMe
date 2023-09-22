@@ -10,6 +10,7 @@
     min-height: 100vh; /* Ensure the background covers the entire viewport height */
     display: flex;
     flex-direction: column;
+
 }
 
 @media (max-width: 768px) {
