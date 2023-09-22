@@ -3,10 +3,10 @@ package eliasyazdani.capstone.cupwithme.backend.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eliasyazdani.capstone.cupwithme.backend.player.IdService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -25,11 +25,11 @@ class MongoUserIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
-    @Mock
+    @MockBean
     MongoUserService mongoUserService;
-    @Autowired
+    @MockBean
     MongoUserRepository mongoUserRepository;
-    @Autowired
+    @MockBean
     IdService idService;
     @Autowired
     private ObjectMapper objectMapper;
@@ -39,13 +39,12 @@ class MongoUserIntegrationTest {
     @DirtiesContext
     @WithMockUser(username = "test", password = "1234")
     void whenGetUserInfo_getUsername() throws Exception {
-        //GIVEN
 
-        //WHEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/cup/users/me")
-                        .contentType(MediaType.APPLICATION_JSON))
-
-                //THEN
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/cup/users/me")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(csrf())
+                )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().string("test"));
     }
@@ -53,24 +52,26 @@ class MongoUserIntegrationTest {
     @Test
     @WithMockUser(username = "test", password = "1234")
     void testLoginEndpoint() throws Exception {
+
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/cup/users/login")
                                 .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string("test"));
-
     }
 
     @DirtiesContext
     @Test
     @WithMockUser
     void testSignupEndpoint() throws Exception {
-        MongoUserWithoutId newUser = new MongoUserWithoutId("testuser", "testpassword");
+        MongoUserWithoutId newUserWithoutId = new MongoUserWithoutId("testuser", "testpassword");
+        MongoUser newUser = new MongoUser("testId", "testuser", "testPassword");
 
+        when(mongoUserService.addNewUser(newUserWithoutId)).thenReturn(newUser.username());
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/api/cup/users/signup")
-                                .content(objectMapper.writeValueAsString(newUser))
+                                .content(objectMapper.writeValueAsString(newUserWithoutId))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .with(csrf())
                 )
@@ -85,11 +86,12 @@ class MongoUserIntegrationTest {
         boolean expectedResult = true;
 
         when(mongoUserService.doesUsernameExists(usernameToCheck)).thenReturn(expectedResult);
-
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/check-username/{username}", usernameToCheck)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/cup/users/check-username/{username}", usernameToCheck)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .with(csrf())
+                )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/html"));
+                .andExpect(content().string(String.valueOf(expectedResult)));
     }
 }
