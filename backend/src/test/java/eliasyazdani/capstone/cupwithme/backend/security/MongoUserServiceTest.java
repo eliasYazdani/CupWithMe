@@ -35,7 +35,7 @@ class MongoUserServiceTest {
 
 
     @Test
-    void testAddNewUser() {
+    void testAddNewUser_WhenUserDoesNotExist_ReturnsUsername() {
         // Given
         String userId = "someUserId";
         String username = "testUser";
@@ -57,6 +57,20 @@ class MongoUserServiceTest {
         Mockito.verify(idService).randomId();
         Mockito.verify(passwordEncoder).encode(password);
         Mockito.verify(mongoUserRepository).insert(any(MongoUser.class));
+    }
+
+    @Test
+    void testAddNewUser_WhenUserAlreadyExists_ReturnsErrorMessage() {
+        // Given
+        String existingUsername = "existingUser";
+        MongoUserWithoutId existingUserWithoutId = new MongoUserWithoutId(existingUsername, "password");
+        when(mongoUserRepository.findByUsername(existingUsername)).thenReturn(Optional.of(new MongoUser("id",existingUsername,"password")));
+
+        // When
+        String result = mongoUserService.addNewUser(existingUserWithoutId);
+
+        // Then
+        assertEquals("This username is already taken", result);
     }
 
     @Test
