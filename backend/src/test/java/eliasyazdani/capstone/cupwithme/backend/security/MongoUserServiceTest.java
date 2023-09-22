@@ -8,7 +8,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -64,7 +66,7 @@ class MongoUserServiceTest {
         // Given
         String existingUsername = "existingUser";
         MongoUserWithoutId existingUserWithoutId = new MongoUserWithoutId(existingUsername, "password");
-        when(mongoUserRepository.findByUsername(existingUsername)).thenReturn(Optional.of(new MongoUser("id",existingUsername,"password")));
+        when(mongoUserRepository.findByUsername(existingUsername)).thenReturn(Optional.of(new MongoUser("id", existingUsername, "password")));
 
         // When
         String result = mongoUserService.addNewUser(existingUserWithoutId);

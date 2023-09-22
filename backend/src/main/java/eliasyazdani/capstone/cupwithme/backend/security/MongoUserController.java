@@ -27,9 +27,10 @@ public class MongoUserController {
     String addNewUser(@Valid @RequestBody MongoUserWithoutId mongoUserWithoutId) {
         return mongoUserService.addNewUser(mongoUserWithoutId);
     }
+
     @GetMapping("/check-username/{username}")
-    public ResponseEntity<Boolean> checkUsernameExist(@PathVariable String username){
-        boolean exists= mongoUserService.doesUsernameExists(username);
+    public ResponseEntity<Boolean> checkUsernameExist(@PathVariable String username) {
+        boolean exists = mongoUserService.doesUsernameExists(username);
         return ResponseEntity.ok(exists);
     }
 
