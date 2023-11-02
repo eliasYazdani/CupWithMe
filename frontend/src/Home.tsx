@@ -37,8 +37,8 @@ export default function Home(propsHome: PropsHome) {
                         </Button>
                     </div>
                     <img className="image"
-                         src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
-                         alt="Football field"/>
+                         src="https://cdn.pixabay.com/photo/2016/11/29/07/06/bleachers-1867992_1280.jpg"
+                         alt="Stadium"/>
                 </div>
             </div>
         ) : (
@@ -54,12 +54,16 @@ export default function Home(propsHome: PropsHome) {
                             </Button>
                         </div>
                         <div>
-                            <h2> 3 easy-peasy steps to goal </h2>
+                            <h2> 3 easy-peasy steps to your goal 🥅</h2>
                             <ol>
-                                <li> signup easily then will be logged-in</li>
-                                <li>add some new players</li>
-                                <li>create a tournament with basic Info and add the players into tournament  and enjoy it</li>
+                                <li> Sign up easily and log in</li>
+                                <li> Add some new players</li>
+                                <li> Create a tournament with basic infos, add the players into the tournament, and enjoy it</li>
                             </ol>
+                            <br/>
+                            <p>🚩For security purposes, please note that passwords are securely hashed and stored in the database.<br/>
+                                  This means that even system administrators cannot view your actual password.<br/>
+                                  Your password is protected with advanced cryptographic techniques to safeguard your account.</p>
                         </div>
                         <div >
 
@@ -67,8 +71,8 @@ export default function Home(propsHome: PropsHome) {
                     </div>
                 </div>
                 <img className="image"
-                     src="https://www.shutterstock.com/image-illustration/football-stadium-night-imaginary-modelled-600w-1912601503.jpg"
-                     alt="Football field"/>
+                     src="https://cdn.pixabay.com/photo/2016/11/29/07/06/bleachers-1867992_1280.jpg"
+                     alt="Stadium"/>
             </div>
         )
     );
